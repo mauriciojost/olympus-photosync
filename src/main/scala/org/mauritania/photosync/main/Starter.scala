@@ -1,6 +1,6 @@
 package org.mauritania.photosync.main
 
-import org.mauritania.photosync.olympus.api.Api._
+import org.mauritania.photosync.olympus.api.Api
 
 object Starter {
 
@@ -8,13 +8,25 @@ object Starter {
 
     println("Starting...")
 
-    println("Camera IP: " + getCameraIp())
-    println("Is reachable: " + isReachable())
-    val files = listFileIdsAndSize()
+    val api = new Api()
 
-    files.foreach(fileId => println("File '" + fileId._1 + "' with size '" + fileId._2 + "'"))
+    println("Camera IP: " + api.getCameraIp())
+    println("Is reachable: " + api.isReachable())
+    val files = api.listFileIdsAndSize()
 
-    downloadFile(files.head._1, files.head._1)
+    files.foreach{
+      fileIdAndSize => {
+        println("File '" + fileIdAndSize._1 + "' with size '" + fileIdAndSize._2 + "'")
+
+        val downloaded = api.fileHasBeenAlreadyDownloaded(fileIdAndSize._1)
+        println("Donwloaded: " + downloaded)
+        if (!downloaded) {
+          api.downloadFile(fileIdAndSize._1, fileIdAndSize._1)
+        }
+      }
+    }
+
+
 
     println("Done.")
 
