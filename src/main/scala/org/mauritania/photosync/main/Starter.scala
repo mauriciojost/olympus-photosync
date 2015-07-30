@@ -8,13 +8,9 @@ object Starter {
 
     println("Starting...")
 
-    val cameraIp = getCameraIp()
-    val isCameraReachable = isReachable()
-    val fileIds = listFileIds()
-
-    println(cameraIp)
-    println(isCameraReachable)
-    println(fileIds)
+    println("Camera IP: " + getCameraIp())
+    println("Is reachable: " + isReachable())
+    listFileIdsAndSize().foreach(fileId => println("File '" + fileId._1 + "' with size '" + fileId._2 + "'"))
 
     println("Done.")
 
