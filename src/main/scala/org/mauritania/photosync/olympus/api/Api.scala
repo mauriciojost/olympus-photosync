@@ -1,31 +1,44 @@
 package org.mauritania.photosync.olympus.api
 
+import java.io.FileOutputStream
 import java.net.{URL, InetAddress}
+import java.nio.channels.Channels
 import scala.io.Source
 
 object Api {
 
-  val DEFAULT_CAMERA_NETWORK_PROTOCOL = "http"
-  val DEFAULT_CAMERA_NETWORK_NAME = "oishare"
-  val DEFAULT_CAMERA_NETWORK_URL = "/DCIM/100OLYMP/"
-  val DEFAULT_CAMERA_NETWORK_PORT = 80
-  val DEFAULT_CAMERA_PING_TIMEOUT = 3000
+  val defaultServerProtocol = "http"
+  val defaultServerName = "oishare"
+  val defaultRelativeUrl = "/DCIM/100OLYMP/"
+  val defaultServerPort = 80
+  val defaultServerPingTimeout = 2000
 
-  //                  wlansd[17]="/DCIM/100OLYMP,P7290009.JPG,278023,0,18173,42481";
+  // Regex used to identify files from the server's response
+  // A valid line:   wlansd[17]="/DCIM/100OLYMP,P7290009.JPG,278023,0,18173,42481";
   val FILE_ID_REGEX = """.*=.*,(\w+\.\w+),(\d+),.*""".r
 
+  // Regex used to identify files from the server's response
+  // A valid line:   wlansd[17]="/DCIM/100OLYMP,P7290009.JPG,278023,0,18173,42481";
+  val FILE_ID_REGEX = """.*=.*,(\w+\.\w+),(\d+),.*""".r
+
+  var latestIpAddress : String = "192.168.0.10"
+
+  var latestFileIdsAndSize : List[(String, Int)] = List()
+
   def getCameraIp() : InetAddress = {
-    InetAddress.getByName(DEFAULT_CAMERA_NETWORK_NAME)
+    val inetAddress = InetAddress.getByName(defaultServerName)
+    latestIpAddress = inetAddress.getHostAddress
+    inetAddress
   }
 
   def isReachable() : Boolean = {
-    InetAddress.getByName(DEFAULT_CAMERA_NETWORK_NAME).isReachable(DEFAULT_CAMERA_PING_TIMEOUT)
+    InetAddress.getByName(defaultServerName).isReachable(defaultServerPingTimeout)
   }
 
   def listFileIdsAndSize() : List[(String, Int)] = {
 
     val html = Source.fromURL(
-      new URL(DEFAULT_CAMERA_NETWORK_PROTOCOL, DEFAULT_CAMERA_NETWORK_NAME, DEFAULT_CAMERA_NETWORK_PORT, DEFAULT_CAMERA_NETWORK_URL))
+      new URL(defaultServerProtocol, defaultServerName, defaultServerPort, defaultRelativeUrl))
     //val html = Source.fromURL("file:///tmp/olympus-files-report.txt")
 
     val htmlLines = html.getLines()
@@ -39,8 +52,25 @@ object Api {
 
   }
 
-  def downloadFile(fileId: String) : Iterable[String] = {
-    List()
+  def downloadFile(fileIdToDownload: String, localDestinationFilename: String) {
+
+    val urlSourceFile = 
+      new URL(
+        defaultServerProtocol, 
+        defaultServerName, 
+        defaultServerPort, 
+        defaultRelativeUrl.concat(fileIdToDownload))
+
+    val rbc = Channels.newChannel(urlSourceFile.openStream());
+    val fos = new FileOutputStream(localDestinationFilename);
+    fos.getChannel().transferFrom(rbc, 0, Long.MaxValue);
+
   }
+  
+  //private def fileHasBeenAlreadyDownloaded(fileToDownload: String) : Boolean = {
+    
+  //}
+  
 
 }
+

@@ -10,7 +10,11 @@ object Starter {
 
     println("Camera IP: " + getCameraIp())
     println("Is reachable: " + isReachable())
-    listFileIdsAndSize().foreach(fileId => println("File '" + fileId._1 + "' with size '" + fileId._2 + "'"))
+    val files = listFileIdsAndSize()
+
+    files.foreach(fileId => println("File '" + fileId._1 + "' with size '" + fileId._2 + "'"))
+
+    downloadFile(files.head._1, files.head._1)
 
     println("Done.")
 
