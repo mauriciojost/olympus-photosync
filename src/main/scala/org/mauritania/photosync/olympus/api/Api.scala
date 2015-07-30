@@ -3,12 +3,11 @@ package org.mauritania.photosync.olympus.api
 import java.io.{File, FileOutputStream}
 import java.net.{URL, InetAddress}
 import java.nio.channels.Channels
-import java.nio.file.{Files, Paths}
 import scala.io.Source
 import scala.util.matching.Regex
 
 class Api (
-
+          // TODO document these variables
   val serverProtocol : String = "http",
 
   val serverName : String = "oishare",
@@ -30,6 +29,7 @@ class Api (
 
 
   def getCameraIp() : InetAddress = {
+    // TODO fix this mess
     latestFileIdsAndSize = listFileIdsAndSize()
     latestServerIpAddress = InetAddress.getByName(serverName)
     latestServerIpAddress
@@ -39,6 +39,7 @@ class Api (
     getCameraIp().isReachable(serverPingTimeout)
   }
 
+  // TODO parametrize destination folder
   def listFileIdsAndSize() : List[(String, Long)] = {
 
     val html = Source.fromURL(
@@ -85,10 +86,10 @@ class Api (
     localSize == remoteSize
   }
 
+  // TODO add tests
   private def getLocalFilesAndSizes() : List[(String, Long)] = {
     val files = new File(".").listFiles()
     val filesAndSizes = files.map(file => (file.getName, file.length())).toList
-    println("Local files: " + filesAndSizes.length)
     filesAndSizes
   }
 

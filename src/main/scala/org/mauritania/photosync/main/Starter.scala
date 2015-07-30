@@ -4,6 +4,11 @@ import org.mauritania.photosync.olympus.api.Api
 
 object Starter {
 
+  // TODO add parameters
+  // TODO add README.md
+  // TODO add tasks to generate binaries
+  // TODO try to use mockups? (to learn)
+
   def main(args: Array[String]) : Unit = {
 
     println("Starting...")
@@ -25,8 +30,6 @@ object Starter {
         }
       }
     }
-
-
 
     println("Done.")
 
