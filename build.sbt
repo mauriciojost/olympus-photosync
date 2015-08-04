@@ -1,15 +1,22 @@
-name := """photosync"""
+import com.typesafe.sbt.SbtNativePackager._
+import NativePackagerKeys._
 
-organization := """org.mauritania"""
+name := "photosync"
 
-version := """0.1-SNAPSHOT"""
+version := "1.0"
 
-scalaVersion := "2.11.6"
+mainClass in Compile := Some("org.mauritania.photosync.main.Starter")
 
-fork in run := true
+packageArchetype.java_server
 
-libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
+maintainer in Windows := "Mauricio Jost <mauricio.jost@gmail.com>"
 
-libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.12"
+packageSummary in Windows := "Custom startscript parameters"
+
+packageDescription := "Custom startscript parameters"
+
+//libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
+
+//libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.12"
 
 libraryDependencies += "com.github.scopt" %% "scopt" % "3.3.0"
