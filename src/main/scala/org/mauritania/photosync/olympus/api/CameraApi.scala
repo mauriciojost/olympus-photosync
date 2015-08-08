@@ -3,6 +3,9 @@ package org.mauritania.photosync.olympus.api
 import java.io.{File, FileOutputStream}
 import java.net.{URL, InetAddress}
 import java.nio.channels.Channels
+
+import org.slf4j.LoggerFactory
+
 //import com.typesafe.scalalogging.LazyLogging
 
 import scala.io.{BufferedSource, Source}
@@ -25,9 +28,15 @@ class CameraApi(
            val serverPort: Int = 80,
 
            /**
-            * Relative URL at which the server replies with a list of files.
+            * Relative URL at which the server.
+            * Should not be changed.
             */
-           val serverRelativeUrl: String = "/DCIM/100OLYMP/",
+           val serverBaseUrl: String = "/DCIM",
+
+           /**
+            * Folder to synchronize.
+            */
+           val serverFolderName: String = "100OLYMP",
 
            /**
             * Timeout (in ms) to be used when pinging the server.
@@ -40,26 +49,29 @@ class CameraApi(
             */
            val fileRegex: Regex = """.*=.*,(\w+\.\w+),(\d+),.*""".r
 
-           ) /*extends LazyLogging*/ {
+           ) {
+
+  val logger = LoggerFactory.getLogger(this.getClass)
 
   def getServerIp(): InetAddress = {
-    //logger.debug("getServerIp")
+    logger.debug("getServerIp")
     InetAddress.getByName(serverName)
   }
 
   def isServerReachable(): Boolean = {
-    //logger.debug("isReachable")
+    logger.debug("isReachable")
     getServerIp().isReachable(serverPingTimeout)
   }
 
   def listFiles(): List[(String, Long)] = {
-    //logger.debug("listFiles")
-    generateFilesListFromHtml(Source.fromURL(new URL(serverProtocol, serverName, serverPort, serverRelativeUrl)))
+    logger.debug("listFiles")
+    generateFilesListFromHtml(Source.fromURL(new URL(serverProtocol, serverName, serverPort, generateRelativeUrl)))
   }
 
+
   def downloadFile(fileId: String, localDestination: File) {
-    //logger.debug("downloadFile")
-    val urlSourceFile = new URL( serverProtocol, serverName, serverPort, serverRelativeUrl.concat(fileId))
+    logger.debug("downloadFile")
+    val urlSourceFile = new URL( serverProtocol, serverName, serverPort, generateRelativeUrl.concat(fileId))
     val rbc = Channels.newChannel(urlSourceFile.openStream());
     val fos = new FileOutputStream(new File(localDestination, fileId));
     fos.getChannel().transferFrom(rbc, 0, Long.MaxValue);
@@ -76,6 +88,10 @@ class CameraApi(
     ).toList
 
     fileIdsAndSize
+  }
+
+  private def generateRelativeUrl: String = {
+    serverBaseUrl + "/" + serverFolderName + "/"
   }
 
 }

@@ -1,9 +1,8 @@
 package org.mauritania.photosync.main
 
-//import com.typesafe.scalalogging.Logger
 import org.mauritania.photosync.olympus.api.CameraApi
 import org.mauritania.photosync.olympus.sync.FilesManager
-//import org.slf4j.LoggerFactory
+import org.slf4j.LoggerFactory
 
 case class Config(hostname: String = "oishare",  debug: Boolean = false, mode: String = "", kwargs: Map[String,String] = Map())
 
@@ -11,7 +10,7 @@ object Starter {
 
   type FileInfo = (String, Long)
 
-  //val logger = Logger(LoggerFactory.getLogger(this.getClass))
+  val logger = LoggerFactory.getLogger(this.getClass)
 
   // TODO add parameters
   // TODO add README.md
@@ -31,7 +30,7 @@ object Starter {
     parser.parse(args, Config()) match {
       case Some(config) =>
 
-        //logger.info("Starting...")
+        logger.info("Starting...")
 
         val cameraApi = new CameraApi(
           serverName = config.hostname
@@ -39,11 +38,11 @@ object Starter {
 
         val manager = new FilesManager(cameraApi)
 
-        //logger.info("Synchronizing...")
+        logger.info("Synchronizing...")
 
         manager.sync()
 
-        //logger.debug("Done.")
+        logger.debug("Done.")
 
       case None =>
       // Bad arguments

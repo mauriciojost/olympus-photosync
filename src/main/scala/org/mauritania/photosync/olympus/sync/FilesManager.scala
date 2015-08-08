@@ -1,24 +1,21 @@
 package org.mauritania.photosync.olympus.sync
 
 import java.io.File
-//import com.typesafe.scalalogging.Logger
+import org.slf4j.LoggerFactory
 import org.mauritania.photosync.main.Starter.FileInfo
 import org.mauritania.photosync.olympus.api.CameraApi
-//import org.slf4j.LoggerFactory
 
 class FilesManager(
-                  api: CameraApi,
-                  outputDir : String = "output"
+                    api: CameraApi,
+                    outputDir: String = "output"
                     ) {
 
-  //val logger = Logger(LoggerFactory.getLogger(this.getClass))
-
+  val logger = LoggerFactory.getLogger(this.getClass)
 
   def isDownloaded(fileId: String, remoteFiles: List[FileInfo]): Boolean = {
     val locals = listLocalFiles()
     val localSize: Long = locals.toMap.get(fileId).getOrElse(0)
     val remoteSize: Long = remoteFiles.toMap.get(fileId).getOrElse(0)
-    //logger.info("Local file size: $localSize (real size is $remoteSize)")
     localSize == remoteSize
   }
 
@@ -40,10 +37,12 @@ class FilesManager(
 
     remoteFiles.foreach {
       fileIdAndSize => {
-        val downloaded = isDownloaded(fileIdAndSize._1, remoteFiles )
-        //logger.debug(s"File $fileIdAndSize._1 with size $fileIdAndSize._2 downloaded $downloaded")
+        val downloaded = isDownloaded(fileIdAndSize._1, remoteFiles)
         if (!downloaded) {
+          logger.debug("Downloading file {} with size {}", fileIdAndSize._1, fileIdAndSize._2)
           api.downloadFile(fileIdAndSize._1, outputDirectory)
+        } else {
+          logger.debug("Skipping file {} as it's been already downloaded", fileIdAndSize._1)
         }
       }
     }
