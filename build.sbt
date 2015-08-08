@@ -1,20 +1,17 @@
-//import com.typesafe.sbt.SbtNativePackager._
-//import NativePackagerKeys._
+import com.typesafe.sbt.SbtNativePackager._
+import NativePackagerKeys._
+
 name := "photosync"
 
 version := "1.0"
 
-
 mainClass in Compile := Some("org.mauritania.photosync.main.Starter")
 
+packageArchetype.java_server
 
+maintainer in Windows := "Mauricio Jost <mauricio.jost@gmail.com>"
 
-//packageArchetype.java_server
-
-//maintainer in Windows := "Mauricio Jost <mauricio.jost@gmail.com>"
-
-//packageSummary in Windows := "Custom startscript parameters"
-
+packageSummary in Windows := "Custom startscript parameters"
 
 scalaVersion := "2.9.1"
 
