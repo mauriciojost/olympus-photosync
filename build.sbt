@@ -3,7 +3,7 @@ import NativePackagerKeys._
 
 name := "photosync"
 
-version := "1.0"
+version := "0.1"
 
 mainClass in Compile := Some("org.mauritania.photosync.main.Starter")
 
