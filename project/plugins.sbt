@@ -2,4 +2,4 @@
 
 //resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
-//addSbtPlugin("com.typesafe.sbt" %% "sbt-native-packager" % "0.7.2")
+addSbtPlugin("com.typesafe.sbt" %% "sbt-native-packager" % "0.7.2")
