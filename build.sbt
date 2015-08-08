@@ -5,7 +5,7 @@ name := "photosync"
 version := "1.0"
 
 
-//mainClass in Compile := Some("org.mauritania.photosync.main.Starter")
+mainClass in Compile := Some("org.mauritania.photosync.main.Starter")
 
 
 
