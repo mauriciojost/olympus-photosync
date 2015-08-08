@@ -1,6 +1,6 @@
 # README
 
-This application allows to automatically download through WIFI all photos and videos taken with the camera Olumpus OMD E-M10.
+This application allows to automatically download through WIFI all photos and videos taken with the camera Olympus OMD E-M10.
 
 ## User
 
