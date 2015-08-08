@@ -1,3 +1,5 @@
-/project/
+/project/target/
+/project/project/
+/project/.idea/
 /.idea/
 /target/
