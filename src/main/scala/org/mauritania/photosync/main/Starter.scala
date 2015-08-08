@@ -21,7 +21,7 @@ object Starter {
 
     val parser = new scopt.OptionParser[Config]("photosync") {
       head("photosync", "0.1")
-      opt[String]('h', "hostname") required() valueName("<hostname>") action { (x, c) =>
+      opt[String]('h', "hostname") valueName("<hostname>") action { (x, c) =>
         c.copy(hostname = x) } text("hostname or IP address of the camera server")
       note("some notes.\n")
       help("help") text("Please read README.md file.")
