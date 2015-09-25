@@ -1,26 +1,37 @@
 # README
 
-This application allows to automatically download through WIFI all photos and videos taken with the camera Olympus OMD E-M10.
+This application allows to download media through WIFI from digital cameras of the series Olympus OMD E-Mx.
 
-## User
+Currently this application has only been tested with OMD E-M10 (because the developer owns one). Other similar cameras
+such as Olympus OMD E-M1 and E-M5 should work too. If someone is interested in helping me to support them better,
+and has such camera, please contact me.
+
+## Getting started
 
 ### Run the application
 
-Follow these steps: 
+This application should run on Windows, Linux and even MacOS.
+To transfer media from your camera to your PC follow these steps:
 
-- Connect to the WIFI service of your Olympus OMD E-M10 camera. 
+- Turn on the WIFI service of your camera.
 
-- To launch the application from Linux execute `./bin/photosync`.
+- Connect your PC to the WIFI provided by the camera (the SSID of the WIFI network should be something like
+"E-M10-V5PG53223").
 
-- To launch the application from Windows go to `bin` and execute `photosync.bat`.
+- Your PC should be connected to the camera WIFI. To verify such, you can open a web browser (like Explorer,
+Chrome, Firefox, etc.) and set as URL either `http://oishare/` or `http://192.168.0.10/`. If browsing any of these URLS
+results in a nice dark web page that mentions Olympus somewhere, then you can proceed!
 
-It will start synchronizing files.
+- Now you can launch the application.
 
-### User notes
+ - If you are using Linux/MacOS execute `<PHOTOSYNC>/bin/photosync`.
 
-You can verify that you are correctly connected to your camera by opening a browser (like Google Chrome or Internet Explorer) and browsing `http://oishare/`.
+ - If you are using Windows go to `<PHOTOSYNC>\bin` and execute `photosync.bat`.
 
-## Developer 
+A console application will launch, and it will start copying files from your camera to a local directory. By default,
+synchronized media files should be put in a directory called `output`.
+
+## Developer
 
 ### Build packages
 
@@ -35,3 +46,5 @@ sbt universal:packageBin
 ```
 sbt run
 ```
+
+If you want to contribute send me an e-mail to mauriciojost@gmail.com .
