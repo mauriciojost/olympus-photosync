@@ -18,9 +18,13 @@ To transfer media from your camera to your PC follow these steps:
 - Connect your PC to the WIFI provided by the camera (the SSID of the WIFI network should be something like
 "E-M10-V5PG53223").
 
+
+
 - Your PC should be connected to the camera WIFI. To verify such, you can open a web browser (like Explorer,
 Chrome, Firefox, etc.) and set as URL either `http://oishare/` or `http://192.168.0.10/`. If browsing any of these URLS
-results in a nice dark web page that mentions Olympus somewhere, then you can proceed!
+results in a nice dark web page that mentions Olympus somewhere as follows, then you can proceed:
+
+![PC correctly connected to the camera](doc/images/oishare-wifi-connected-ok.jpg)
 
 - Now you can launch the application.
 
