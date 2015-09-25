@@ -6,36 +6,52 @@ Currently this application has only been tested with OMD E-M10 (because the deve
 such as Olympus OMD E-M1 and E-M5 should work too. If someone is interested in helping me to support them better,
 and has such camera, please contact me.
 
-## Getting started
+## Get started
 
 ### Run the application
 
 This application should run on Windows, Linux and even MacOS.
 To transfer media from your camera to your PC follow these steps:
 
-- Turn on the WIFI service of your camera.
+1. Turn on the WIFI service of your camera.
 
-- Connect your PC to the WIFI provided by the camera (the SSID of the WIFI network should be something like
+2. Connect your PC to the WIFI provided by the camera (the SSID of the WIFI network should be something like
 "E-M10-V5PG53223").
 
-
-
-- Your PC should be connected to the camera WIFI. To verify such, you can open a web browser (like Explorer,
-Chrome, Firefox, etc.) and set as URL either `http://oishare/` or `http://192.168.0.10/`. If browsing any of these URLS
+3. Your PC should be connected to the camera WIFI. To verify such, you can open a web browser (like Explorer,
+Chrome, Firefox, etc.) and set as URL either `http://oishare/` or `http://192.168.0.10/`. If browsing any of these URLs
 results in a nice dark web page that mentions Olympus somewhere as follows, then you can proceed:
 
 ![PC correctly connected to the camera](doc/images/oishare-wifi-connected-ok.jpg)
 
-- Now you can launch the application.
+4. Now you can launch the application. You need to keep into account the Operating System you are using:
 
  - If you are using Linux/MacOS execute `<PHOTOSYNC>/bin/photosync`.
 
  - If you are using Windows go to `<PHOTOSYNC>\bin` and execute `photosync.bat`.
 
-A console application will launch, and it will start copying files from your camera to a local directory. By default,
-synchronized media files should be put in a directory called `output`.
+A console application will launch. It will start copying files from your camera to a local directory. By default,
+synchronized media files should be stored in a local directory called `<PHOTOSYNC>/output`.
 
-## Developer
+## Develop
+
+### Compile the application
+
+```
+sbt compile
+```
+
+### Test the application
+
+```
+sbt test
+```
+
+### Launch the application
+
+```
+sbt run
+```
 
 ### Build packages
 
@@ -45,10 +61,9 @@ To build the multi-platform package do the following:
 sbt universal:packageBin
 ```
 
-### Launch the application
+## Contribute
 
-```
-sbt run
-```
+If you want to contribute send me an e-mail to `mauriciojost@gmail.com` .
 
-If you want to contribute send me an e-mail to mauriciojost@gmail.com .
+If you own a OMD E-MX camera different than E-M10 and want it to be also supported, contact me
+by e-mail too, taking only 20 minutes of your time you can help me adapt my application to your camera.
