@@ -6,7 +6,7 @@ object ArgumentsParserBuilder {
 
   def buildParser() = new scopt.OptionParser[PhotosyncConfig]("photosync") {
 
-    head("photosync", "0.1")
+    head("photosync", "0.2")
 
     note("If you find any bugs, send me an e-mail to mauriciojostx@gmail.com .\n")
 
