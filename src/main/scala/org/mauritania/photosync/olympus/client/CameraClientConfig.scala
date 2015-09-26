@@ -3,6 +3,7 @@ package org.mauritania.photosync.olympus.client
 import scala.util.matching.Regex
 
 case class CameraClientConfig(
+
   /**
    * Protocol to be used to contact the server.
    * Should not be changed.

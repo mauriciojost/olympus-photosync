@@ -4,7 +4,7 @@ import java.io.{File, FileOutputStream}
 import java.net.URL
 import java.nio.channels.Channels
 import org.slf4j.LoggerFactory
-import scala.io.{BufferedSource, Source}
+import scala.io.Source
 
 class CameraClient(
   configuration: CameraClientConfig
@@ -14,12 +14,18 @@ class CameraClient(
 
   def listFiles(): List[(String, Long)] = {
     logger.debug("listFiles")
-    generateFilesListFromHtml(
-      Source.fromURL(new URL(
-        configuration.serverProtocol,
-        configuration.serverName,
-        configuration.serverPort,
-        generateRelativeUrl)))
+
+    val htmlLines = Source.fromURL(new URL(
+      configuration.serverProtocol,
+      configuration.serverName,
+      configuration.serverPort,
+      generateRelativeUrl)).getLines().toList
+
+    logger.info("DUMP>>>")
+    htmlLines.foreach(logger.info(_))
+    logger.info("<<<DUMP")
+
+    generateFilesListFromHtml(htmlLines)
   }
 
   def downloadFile(fileId: String, localDestination: File) {
@@ -34,8 +40,7 @@ class CameraClient(
     fos.getChannel().transferFrom(rbc, 0, Long.MaxValue);
   }
 
-  private def generateFilesListFromHtml(html: BufferedSource): List[(String, Long)] = {
-    val htmlLines = html.getLines()
+  private def generateFilesListFromHtml(htmlLines: List[String]): List[(String, Long)] = {
     val fileIdsAndSize = htmlLines.flatMap(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
