@@ -6,9 +6,9 @@ import org.mauritania.photosync.main.Starter.FileInfo
 import org.mauritania.photosync.olympus.api.CameraApi
 
 class FilesManager(
-                    api: CameraApi,
-                    outputDir: String = "output"
-                    ) {
+  api: CameraApi,
+  outputDir: String = "output"
+) {
 
   val logger = LoggerFactory.getLogger(this.getClass)
 

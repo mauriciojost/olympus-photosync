@@ -4,7 +4,7 @@ import org.mauritania.photosync.olympus.api.CameraApi
 import org.mauritania.photosync.olympus.sync.FilesManager
 import org.slf4j.LoggerFactory
 
-case class Config(hostname: String = "oishare",  debug: Boolean = false, mode: String = "", kwargs: Map[String,String] = Map())
+case class Config(hostname: String = "oishare", debug: Boolean = false, mode: String = "", kwargs: Map[String, String] = Map())
 
 object Starter {
 
@@ -21,10 +21,11 @@ object Starter {
 
     val parser = new scopt.OptionParser[Config]("photosync") {
       head("photosync", "0.1")
-      opt[String]('h', "hostname") valueName("<hostname>") action { (x, c) =>
-        c.copy(hostname = x) } text("hostname or IP address of the camera server")
+      opt[String]('h', "hostname") valueName ("<hostname>") action { (x, c) =>
+        c.copy(hostname = x)
+      } text ("hostname or IP address of the camera server")
       note("some notes.\n")
-      help("help") text("Please read README.md file.")
+      help("help") text ("Please read README.md file.")
     }
 
     parser.parse(args, Config()) match {
