@@ -14,7 +14,9 @@ This application should run on Windows, Linux and even MacOS.
 To transfer media from your camera to your PC follow these steps:
 
 1. Turn on the WIFI service of your camera using `Private` mode in `Wi-Fi Connect Settings`. This step
-is **very important**, if not set up correctly the phone won't let this application download media files! To change to `Private` mode go to the menu of your camera, and set `Wi-Fi Connect Settings` to `Private` as shown in the following image.
+is **very important**, if not set up correctly the phone won't let this application download media files! To change to
+`Private` mode go to the menu of your camera, and set `Wi-Fi Connect Settings` to `Private` as shown in the following
+image.
 
 ![Camera in private mode](doc/images/camera-in-wifi-connect-settings-private-mode.jpg)
 
