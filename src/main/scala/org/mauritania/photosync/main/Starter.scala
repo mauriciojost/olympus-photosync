@@ -11,6 +11,11 @@ object Starter {
 
   def main(args: Array[String]): Unit = {
 
+    logger.debug("DEBUG")
+    logger.info("INFO")
+    logger.warn("WARN")
+    logger.error("ERROR")
+
     buildParser().parse(args, PhotosyncConfig()) match {
       case Some(config) => startSynchronization(config)
       case None =>  throw new IllegalArgumentException("Bad arguments!")

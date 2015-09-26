@@ -16,7 +16,9 @@ packageSummary in Windows := "Custom startscript parameters"
 scalaVersion := "2.9.1"
 
 libraryDependencies ++= Seq(
-  "org.slf4j" % "slf4j-api" % "1.6.4",
-  "org.slf4j" % "slf4j-simple" % "1.6.4",
+  "org.slf4j" % "slf4j-api" % "1.7.5",
+  "org.slf4j" % "slf4j-log4j12" % "1.7.5",
   "com.github.scopt" %% "scopt" % "3.3.0"
 )
+
+
