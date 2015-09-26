@@ -33,6 +33,19 @@ results in a nice dark web page that mentions Olympus somewhere as follows, then
 A console application will launch. It will start copying files from your camera to a local directory. By default,
 synchronized media files should be stored in a local directory called `<PHOTOSYNC>/output`.
 
+### Configure
+
+This application uses several parameters to tune the connection with the camera server. To list these parameters you can do: 
+
+- If you are using Linux/MacOS execute `<PHOTOSYNC>/bin/photosync --help`.
+- If you are using Windows open a console, do `cd <PHOTOSYNC>\bin` and execute `photosync.bat --help`.
+
+For instance you can run the application using a different camera server name (or IP):
+
+```
+photosync[.bat] --server-name 192.168.0.10
+```
+
 ## Develop
 
 ### Compile the application
