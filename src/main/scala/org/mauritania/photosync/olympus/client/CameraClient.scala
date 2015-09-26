@@ -22,7 +22,7 @@ class CameraClient(
       generateRelativeUrl)).getLines().toList
 
     logger.info("DUMP>>>")
-    htmlLines.foreach(logger.info(_))
+    htmlLines.foreach(line => logger.info("@" + line + "@"))
     logger.info("<<<DUMP")
 
     generateFilesListFromHtml(htmlLines)
