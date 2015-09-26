@@ -2,13 +2,14 @@ package org.mauritania.photosync.olympus.sync
 
 import java.io.File
 import org.slf4j.LoggerFactory
-import org.mauritania.photosync.main.Starter.FileInfo
-import org.mauritania.photosync.olympus.api.CameraApi
+import org.mauritania.photosync.olympus.client.CameraClient
 
 class FilesManager(
-  api: CameraApi,
-  outputDir: String = "output"
+  api: CameraClient,
+  outputDir: String
 ) {
+
+  type FileInfo = (String, Long)
 
   val logger = LoggerFactory.getLogger(this.getClass)
 
