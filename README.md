@@ -13,7 +13,10 @@ and has such camera, please contact me.
 This application should run on Windows, Linux and even MacOS.
 To transfer media from your camera to your PC follow these steps:
 
-1. Turn on the WIFI service of your camera.
+1. Turn on the WIFI service of your camera using `Private` mode in `Wi-Fi Connect Settings`. This step
+is **very important**, if not set up correctly the phone won't let this application download media files! To change to `Private` mode go to the menu of your camera, and set `Wi-Fi Connect Settings` to `Private` as shown in the following image.
+
+![Camera in private mode](doc/images/camera-in-wifi-connect-settings-private-mode.jpg)
 
 2. Connect your PC to the WIFI provided by the camera (the SSID of the WIFI network should be something like
 "E-M10-V5PG53223").
@@ -48,19 +51,21 @@ photosync[.bat] --server-name 192.168.0.10
 
 ## Develop
 
-### Compile the application
+This application is written in Scala and uses SBT. Find below some useful commands for basic actions.
+
+To compile the application do:
 
 ```
 sbt compile
 ```
 
-### Test the application
+To test the application:
 
 ```
 sbt test
 ```
 
-### Launch the application
+To launch the application:
 
 ```
 sbt run
