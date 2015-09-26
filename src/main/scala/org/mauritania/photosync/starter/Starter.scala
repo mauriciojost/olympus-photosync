@@ -1,6 +1,6 @@
-package org.mauritania.photosync.main
+package org.mauritania.photosync.starter
 
-import org.mauritania.photosync.main.ArgumentsParserBuilder._
+import org.mauritania.photosync.starter.ArgumentsParserBuilder._
 import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.mauritania.photosync.olympus.sync.FilesManager
