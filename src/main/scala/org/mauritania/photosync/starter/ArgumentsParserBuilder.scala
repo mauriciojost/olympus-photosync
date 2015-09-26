@@ -1,4 +1,4 @@
-package org.mauritania.photosync.main
+package org.mauritania.photosync.starter
 
 import org.mauritania.photosync.olympus.PhotosyncConfig
 
