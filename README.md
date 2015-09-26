@@ -76,7 +76,7 @@ sbt universal:packageBin
 
 ## Contribute
 
-If you want to contribute send me an e-mail to `mauriciojost@gmail.com` .
+If you want to contribute send me an e-mail to `mauriciojostx@gmail.com` .
 
 If you own a OMD E-MX camera different than E-M10 and want it to be also supported, contact me
 by e-mail too, taking only 20 minutes of your time you can help me adapt my application to your camera.

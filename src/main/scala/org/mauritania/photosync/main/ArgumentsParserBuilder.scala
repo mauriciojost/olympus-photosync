@@ -8,7 +8,7 @@ object ArgumentsParserBuilder {
 
     head("photosync", "0.1")
 
-    note("If you find any bugs, send me an e-mail to mauriciojost@gmail.com .\n")
+    note("If you find any bugs, send me an e-mail to mauriciojostx@gmail.com .\n")
 
     help("help") text ("Please also read README.md file.")
 
