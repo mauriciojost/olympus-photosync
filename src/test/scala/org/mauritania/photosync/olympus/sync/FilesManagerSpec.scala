@@ -4,8 +4,7 @@ import org.specs2.mock.Mockito
 import org.specs2.mutable._
 import java.io.File
 import org.mauritania.photosync.olympus.client.CameraClient
-import java.nio.file.{Paths, Files}
-import java.nio.charset.StandardCharsets
+import org.mauritania.photosync.TestHelper._
 
 class FilesManagerSpec extends Specification with Mockito {
 
@@ -125,33 +124,6 @@ class FilesManagerSpec extends Specification with Mockito {
     val localDirectoryOfDownloads = localFileSimulatingDownloaded.getParentFile
     (localFileSimulatingDownloaded, localFilenameSimulatingDownloaded, localDirectoryOfDownloads)
   }
-
-  // Helpers
-  def touchFile(parent: File, filename: String): File = {
-    val f = new File(parent, filename)
-    f.createNewFile()
-    f.deleteOnExit()
-
-    f
-  }
-
-  def createTmpFile(prefix: String, size: Long): File = {
-    val file = File.createTempFile(prefix, "tmp")
-    file.deleteOnExit()
-    Files.write(Paths.get(file.getAbsolutePath()), (" " * size.toInt).getBytes(StandardCharsets.UTF_8))
-
-    file
-  }
-
-  def createTmpDir(prefix: String): File = {
-    val file = File.createTempFile("test", "tmp")
-    file.delete()
-    file.mkdir()
-    file.deleteOnExit()
-
-    file
-  }
-
 
 }
 

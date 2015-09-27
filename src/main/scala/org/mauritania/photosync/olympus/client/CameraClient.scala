@@ -7,7 +7,8 @@ import org.slf4j.LoggerFactory
 import scala.io.Source
 
 class CameraClient(
-  configuration: CameraClientConfig
+  configuration: CameraClientConfig,
+  urlTranslator: URL => URL
 ) {
 
   val logger = LoggerFactory.getLogger(this.getClass)
@@ -15,11 +16,15 @@ class CameraClient(
   def listFiles(): List[(String, Long)] = {
     logger.debug("listFiles")
 
-    val htmlLines = Source.fromURL(new URL(
-      configuration.serverProtocol,
-      configuration.serverName,
-      configuration.serverPort,
-      generateRelativeUrl)).getLines().toList
+    val htmlLines = Source.fromURL(
+      urlTranslator(
+        new URL(
+          configuration.serverProtocol,
+          configuration.serverName,
+          configuration.serverPort,
+          generateRelativeUrl)
+      )
+    ).getLines().toList
 
     logger.info("DUMP>>>")
     htmlLines.foreach(line => logger.info("@" + line + "@"))
@@ -28,13 +33,16 @@ class CameraClient(
     generateFilesListFromHtml(htmlLines)
   }
 
-  def downloadFile(remoteFileId: String, localTargetDirectory: File) : File = {
+  def downloadFile(remoteFileId: String, localTargetDirectory: File): File = {
     logger.debug("downloadFile")
-    val urlSourceFile = new URL(
-      configuration.serverProtocol,
-      configuration.serverName,
-      configuration.serverPort,
-      generateRelativeUrl.concat(remoteFileId))
+    val urlSourceFile = urlTranslator(
+      new URL(
+        configuration.serverProtocol,
+        configuration.serverName,
+        configuration.serverPort,
+        generateRelativeUrl.concat(remoteFileId)
+      )
+    )
     val rbc = Channels.newChannel(urlSourceFile.openStream());
     val destinationFile = new File(localTargetDirectory, remoteFileId)
     val fos = new FileOutputStream(destinationFile);
