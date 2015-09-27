@@ -72,7 +72,7 @@ class FilesManagerSpec extends Specification with Mockito {
       // The manager should tell the file's is bad and should be re-downloaded
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
 
-      fm.listLocalFiles().sortBy(x => x._1) mustEqual List(("photo1.jpg", 0L),("photo2.jpg", 0L)).sortBy(x => x._1)
+      fm.listLocalFiles().sortBy(x => x._1) mustEqual List(("photo1.jpg", 0L), ("photo2.jpg", 0L)).sortBy(x => x._1)
 
     }
 
@@ -94,13 +94,26 @@ class FilesManagerSpec extends Specification with Mockito {
 
       // The manager should download the file photo2.jpg
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
-      fm.sync() mustEqual(List(photo2))
+      fm.sync() mustEqual (List(photo2))
 
       // There should be downloaded photo2.jpg and old photo1.jpg in local directory
       photo1.exists() mustEqual true
       photo2.exists() mustEqual true
     }
 
+
+    "correctly list what are the remote files" in {
+
+      // Simulate camera telling that photo1.jpg and photo2.jpg are available
+      val cameraClientMock = mock[CameraClient]
+      val remoteFilesMock = List(("photo1.jpg", 100L), ("photo2.jpg", 100L))
+      cameraClientMock.listFiles().returns(remoteFilesMock)
+
+      // The manager should list both files
+      val fm = new FilesManager(cameraClientMock, new File("output"))
+      fm.listRemoteFiles() mustEqual (remoteFilesMock)
+
+    }
     // list what are the remote files from an Olympus OMD E-M10
 
   }
