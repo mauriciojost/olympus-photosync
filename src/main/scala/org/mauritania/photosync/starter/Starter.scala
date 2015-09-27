@@ -1,5 +1,6 @@
 package org.mauritania.photosync.starter
 
+import java.io.File
 import org.mauritania.photosync.starter.ArgumentsParserBuilder._
 import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClient
@@ -27,7 +28,7 @@ object Starter {
 
     logger.info("Starting synchronization camera -> PC...")
     val cameraClient = new CameraClient(config.client)
-    val manager = new FilesManager(cameraClient, config.outputDirectory)
+    val manager = new FilesManager(cameraClient, new File(config.outputDirectory))
 
     logger.info("Synchronizing media from camera -> PC...")
     manager.sync()

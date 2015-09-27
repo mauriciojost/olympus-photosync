@@ -6,7 +6,7 @@ import org.mauritania.photosync.olympus.client.CameraClient
 
 class FilesManager(
   api: CameraClient,
-  outputDir: String
+  outputDir: File
 ) {
 
   type FileInfo = (String, Long)
@@ -21,7 +21,7 @@ class FilesManager(
   }
 
   def listLocalFiles(): List[FileInfo] = {
-    val files = new File(outputDir).listFiles()
+    val files = outputDir.listFiles()
     val filesAndSizes = files.map(file => (file.getName, file.length())).toList
     filesAndSizes
   }
@@ -33,7 +33,7 @@ class FilesManager(
 
   def sync(): Unit = {
     val remoteFiles = api.listFiles()
-    val outputDirectory = new File(outputDir)
+    val outputDirectory = outputDir
     outputDirectory.mkdir()
 
     remoteFiles.foreach {

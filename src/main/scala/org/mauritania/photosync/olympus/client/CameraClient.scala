@@ -28,16 +28,18 @@ class CameraClient(
     generateFilesListFromHtml(htmlLines)
   }
 
-  def downloadFile(fileId: String, localDestination: File) {
+  def downloadFile(remoteFileId: String, localTargetDirectory: File) : File = {
     logger.debug("downloadFile")
     val urlSourceFile = new URL(
       configuration.serverProtocol,
       configuration.serverName,
       configuration.serverPort,
-      generateRelativeUrl.concat(fileId))
+      generateRelativeUrl.concat(remoteFileId))
     val rbc = Channels.newChannel(urlSourceFile.openStream());
-    val fos = new FileOutputStream(new File(localDestination, fileId));
+    val destinationFile = new File(localTargetDirectory, remoteFileId)
+    val fos = new FileOutputStream(destinationFile);
     fos.getChannel().transferFrom(rbc, 0, Long.MaxValue);
+    destinationFile.getAbsoluteFile
   }
 
   private def generateFilesListFromHtml(htmlLines: List[String]): List[(String, Long)] = {
