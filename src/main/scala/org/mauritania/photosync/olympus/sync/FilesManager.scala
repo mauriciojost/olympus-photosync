@@ -31,19 +31,21 @@ class FilesManager(
     filesAndSizes
   }
 
-  def sync(): Unit = {
+  def sync(): List[File] = {
     val remoteFiles = api.listFiles()
     val outputDirectory = outputDir
     outputDirectory.mkdir()
 
-    remoteFiles.foreach {
+    remoteFiles.flatMap {
       fileIdAndSize => {
         val downloaded = isDownloaded(fileIdAndSize._1, remoteFiles)
         if (!downloaded) {
           logger.debug("Downloading file {} with size {}", fileIdAndSize._1, fileIdAndSize._2)
-          api.downloadFile(fileIdAndSize._1, outputDirectory)
+          val downloadedFile = api.downloadFile(fileIdAndSize._1, outputDirectory)
+          Some(downloadedFile)
         } else {
           logger.debug("Skipping file {} as it's been already downloaded", fileIdAndSize._1)
+          None
         }
       }
     }
