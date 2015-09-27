@@ -59,7 +59,7 @@ class FilesManagerSpec extends Specification with Mockito {
 
     }
 
-    "correctly list locally downloaded files" in {
+    "correctly list locally (already) downloaded files" in {
 
       // Simulate downloads local directory and some photos
       val localDirectoryOfDownloads = createTmpDir("output")
@@ -76,7 +76,7 @@ class FilesManagerSpec extends Specification with Mockito {
 
     }
 
-    "correctly synchronize a file in the camera not present locally" in {
+    "correctly synchronize a remote file (in the camera) that was not yet downloaded locally" in {
 
       // Simulate downloads local directory and photo1.jpg
       val localDirectoryOfDownloads = createTmpDir("output")
@@ -90,7 +90,8 @@ class FilesManagerSpec extends Specification with Mockito {
       val cameraClientMock = mock[CameraClient]
       val remoteFilesMock = List(("photo2.jpg", 100L))
       cameraClientMock.listFiles().returns(remoteFilesMock)
-      cameraClientMock.downloadFile("photo2.jpg", localDirectoryOfDownloads).returns(touchFile(localDirectoryOfDownloads, "photo2.jpg"))
+      cameraClientMock.downloadFile("photo2.jpg", localDirectoryOfDownloads).
+        returns(touchFile(localDirectoryOfDownloads, "photo2.jpg"))
 
       // The manager should download the file photo2.jpg
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
@@ -114,7 +115,6 @@ class FilesManagerSpec extends Specification with Mockito {
       fm.listRemoteFiles() mustEqual (remoteFilesMock)
 
     }
-    // list what are the remote files from an Olympus OMD E-M10
 
   }
 
