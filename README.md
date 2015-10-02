@@ -6,6 +6,10 @@ Currently this application has only been tested with OMD E-M10 (because the deve
 such as Olympus OMD E-M1 and E-M5 should work too. If someone is interested in helping me to support them better,
 and has such camera, please contact me.
 
+## Build status
+
+[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)
+
 ## Get started
 
 ### Run the application
