@@ -8,7 +8,7 @@ and has such camera, please contact me.
 
 ## Build status
 
-[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)
+[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
 
 ## Get started
 
