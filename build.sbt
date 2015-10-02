@@ -3,7 +3,7 @@ import NativePackagerKeys._
 
 name := "photosync"
 
-version := "0.3-SNAPSHOT"
+version := "0.4-SNAPSHOT"
 
 
 mainClass in Compile := Some("org.mauritania.photosync.starter.Starter")
@@ -27,6 +27,6 @@ libraryDependencies ++= Seq(
   "com.github.scopt" %% "scopt" % "3.3.0")
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "1.6.1",
-  "org.specs2"    %% "specs2"    % "1.5"
+  "org.scalatest" %% "scalatest" % "1.6.1" % "test",
+  "org.specs2"    %% "specs2"    % "1.5" % "test"
 )
