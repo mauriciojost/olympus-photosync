@@ -3,8 +3,8 @@
 This application allows to download media through WIFI from digital cameras of the series Olympus OMD E-Mx.
 
 Currently this application has only been tested with OMD E-M10 (because the developer owns one). Other similar cameras
-such as Olympus OMD E-M1 and E-M5 should work too. If someone is interested in helping me to support them better,
-and has such camera, please contact me.
+such as Olympus OMD E-M1 and E-M5 should work too. If you own one of these two cameras and want them to be supported, you
+can help me by sending me by mail the logs you get when trying to execute it. 
 
 ## Build status
 
@@ -12,9 +12,14 @@ and has such camera, please contact me.
 
 ## Get started
 
+### Install the application
+
+There is no need to install this application. Just download the latest version (packaged as `photosync-XX.zip`)
+and unzip it somewhere (for example in `/home/user/` or `C:\`).  
+
 ### Run the application
 
-This application should run on Windows, Linux and even MacOS.
+This application runs on Windows and Linux (and should run on Mac OS too, but I don't have one, so I cannot verify).
 To transfer media from your camera to your PC follow these steps:
 
 1. Turn on the WIFI service of your camera using `Private` mode in `Wi-Fi Connect Settings`. This step
@@ -35,7 +40,8 @@ results in a nice dark web page that mentions Olympus somewhere as follows, then
 
 4. Now you can launch the application. You need to keep into account the Operating System you are using:
 
- - If you are using Linux/MacOS execute `<PHOTOSYNC>/bin/photosync`.
+ - If you are using Linux/MacOS execute `<PHOTOSYNC>/bin/photosync` (you might need to `chmod +x bin/photosync` before you 
+ can use it). 
 
  - If you are using Windows go to `<PHOTOSYNC>\bin` and execute `photosync.bat`.
 
@@ -87,7 +93,9 @@ sbt universal:packageBin
 
 ## Contribute
 
-If you want to contribute send me an e-mail to `mauriciojostx@gmail.com` .
+If you want to contribute send me an e-mail to `mauriciojostx@gmail.com` . If you find issues please 
+send me the log files you got, that will really help me trying to understand what's wrong.
 
 If you own a OMD E-MX camera different than E-M10 and want it to be also supported, contact me
-by e-mail too, taking only 20 minutes of your time you can help me adapt my application to your camera.
+by e-mail too. Taking only 20 minutes of your time you can help me adapt the application to your camera.
+
