@@ -3,7 +3,7 @@ import NativePackagerKeys._
 
 name := "photosync"
 
-version := "0.4-SNAPSHOT"
+version := "0.5"
 
 
 mainClass in Compile := Some("org.mauritania.photosync.starter.Starter")
@@ -12,7 +12,7 @@ mainClass in Compile := Some("org.mauritania.photosync.starter.Starter")
 packageArchetype.java_server
 
 
-maintainer in Windows := "Mauricio Jost <mauricio.jost@gmail.com>"
+maintainer in Windows := "Mauricio Jost <mauriciojostx@gmail.com>"
 
 
 packageSummary in Windows := "Custom startscript parameters"
