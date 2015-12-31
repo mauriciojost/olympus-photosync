@@ -1,0 +1,3 @@
+# README
+
+Logs for photosync. 

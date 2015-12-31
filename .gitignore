@@ -8,3 +8,5 @@
 /project/.idea/
 /.idea/
 /target/
+extras/packager/output/
+extras/packager/tmp/

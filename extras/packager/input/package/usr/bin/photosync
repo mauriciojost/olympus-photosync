@@ -1,0 +1,3 @@
+#!/bin/bash
+/opt/mauritania/photosync/bin/photosync -Dlog4j.configuration=file:///etc/photosync/log4j.properties $@
+
