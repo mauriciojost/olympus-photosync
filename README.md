@@ -14,8 +14,12 @@ can help me by sending me by mail the logs you get when trying to execute it.
 
 ### Install the application
 
-There is no need to install this application. Just download the latest version (packaged as `photosync-XX.zip`)
+There is no string need to install this application. Just download the latest version (packaged as `photosync-XX.zip`)
 and unzip it somewhere (for example in `/home/user/` or `C:\`).  
+
+#### Packages for Linux distributions coming
+
+Packages `.deb` and `.rpm` will be soon available.
 
 ### Run the application
 
