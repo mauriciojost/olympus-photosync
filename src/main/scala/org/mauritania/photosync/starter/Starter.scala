@@ -26,6 +26,8 @@ object Starter {
 
   def startSynchronization(config: PhotosyncConfig): Unit = {
 
+    logger.info("Loading configuration ({})...", config)
+
     logger.info("Starting synchronization camera -> PC...")
     val cameraClient = new CameraClient(config.client, url => url)
     val manager = new FilesManager(cameraClient, new File(config.outputDirectory))
