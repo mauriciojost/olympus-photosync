@@ -46,7 +46,7 @@ class CameraClientSpec extends Specification with Mockito {
       downloadedFileToCheck.deleteOnExit()
 
       done
-      
+
     }
 
   }
@@ -56,7 +56,10 @@ class CameraClientSpec extends Specification with Mockito {
       serverProtocol = "file",
       serverName = "localhost",
       serverBaseUrl = "./src/test/resources/",
-      serverFolderName = file
+      serverFolderName = file,
+      serverPort = 0,
+      serverPingTimeout = 0,
+      fileRegex = """.*=.*,(\w+\.\w+),(\d+),.*""".r
     )
 
   }
@@ -73,5 +76,5 @@ class CameraClientSpec extends Specification with Mockito {
   }
 
   def identityUrlTranslator(url: URL): URL = url
-  
+
 }

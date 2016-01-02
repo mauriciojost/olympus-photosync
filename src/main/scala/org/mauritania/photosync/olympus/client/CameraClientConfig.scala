@@ -6,45 +6,39 @@ case class CameraClientConfig(
 
   /**
    * Protocol to be used to contact the server.
-   * Should not be changed.
    */
-  val serverProtocol: String = "http",
+  val serverProtocol: String,
 
   /**
    * Name or IP address of the server.
-   * Should not be changed.
    */
-  val serverName: String = "oishare",
+  val serverName: String,
 
   /**
    * Port of the http service provided by the server.
-   * Should not be changed.
    */
-  val serverPort: Int = 80,
+  val serverPort: Int,
 
   /**
-   * Relative URL at which the server.
-   * Should not be changed.
+   * Relative URL used to contact the server.
    */
-  val serverBaseUrl: String = "/DCIM",
+  val serverBaseUrl: String,
 
   /**
-   * Folder to synchronize.
+   * Remote folder to be synchronized.
    */
-  val serverFolderName: String = "100OLYMP",
+  val serverFolderName: String,
 
   /**
    * Timeout (in ms) to be used when pinging the server.
-   * Should not be changed.
    */
-  val serverPingTimeout: Int = 2000,
+  val serverPingTimeout: Int,
 
   /*
    * Regex used to identify files from the server's response
    * Sample: wlansd[17]="/DCIM/100OLYMP,P7290009.JPG,278023,0,18173,42481";
-   * Should not be changed.
    */
-  val fileRegex: Regex = """.*=.*,(\w+\.\w+),(\d+),.*""".r
+  val fileRegex: Regex
 
 )
 
