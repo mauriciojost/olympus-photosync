@@ -7,7 +7,7 @@ ROOT_DIR=$INSTALLER_DIR/../../
 
 NAME=photosync
 VERSION=`cat ../../build.sbt | grep version | awk '{print $3}' | sed "s/\"//g"`
-MANTAINER="Mauricio Jost <mauriciojost@gmail.com>"
+MANTAINER="Mauricio Jost <mauriciojostx@gmail.com>"
 OUTPUT_TYPES="deb rpm"
 OPT_BASE_DIR=mauritania
 DESCRIPTION="Photosync allows to syncrhonize media from Olympus cameras to a PC wirelessly."
