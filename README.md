@@ -46,11 +46,24 @@ photosync --server-name 192.168.0.10
 
 #### Configure using the configuration file
 
-This project uses the `typesafehub/config` library to cope with configuration files. Below you can see a valid configuration file:
+This project uses the `typesafehub/config` library to cope with configuration files. Here you have a [valid sample configuration file](src/main/resources/application.conf).
 
-![Sample configuration file](src/main/resources/application.conf)
+A file containing the default settings is shipped with the package, and will be loaded by default. This can be changed by doing: 
 
-A configuration file containing the default settings is shipped with the package, and will be loaded by default. However, in case of installation through a Linux package, a different configuration file is set to be used: it is placed in `/etc/photosync/application.conf` for convenient modification.
+```
+photosync -Dconfig.file=/path/to/conf/file
+```
+
+##### Linux packages
+In case of installation through a Linux package, a different configuration file is set to be used: it is placed in `/etc/photosync/application.conf` for convenient modification.
+
+Remember to modify the `output.directory` to a write-able directory path, for instance: 
+
+```
+...
+output.directory=/mnt/nas/photos/
+...
+```
 
 ### Run the application
 
@@ -58,19 +71,19 @@ To transfer media from your camera to your PC follow these steps:
 
 1. Turn on the WIFI service of your camera using `Private` mode in `Wi-Fi Connect Settings`. 
 
-This step is **very important**, if not set up correctly the phone won't let this application download media files! To change to `Private` mode go to the menu of your camera, and set `Wi-Fi Connect Settings` to `Private` as shown in the following image.
+    This step is **very important**, if not set up correctly the phone won't let this application download media files! To change to `Private` mode go to the menu of your camera, and set `Wi-Fi Connect Settings` to `Private` as shown in the following image.
 
-![Camera in private mode](doc/images/camera-in-wifi-connect-settings-private-mode.jpg)
+    ![Camera in private mode](doc/images/camera-in-wifi-connect-settings-private-mode.jpg)
 
 2. Connect your PC to the WIFI provided by the camera. 
 
-The SSID of the WIFI network should be something like "E-M10-V5PG53223". Your PC should be connected to the camera WIFI. To verify such, you can open a web browser (like Explorer, Chrome, Firefox, etc.) and set as URL either `http://oishare/` or `http://192.168.0.10/`. If browsing any of these URLs results in a nice dark web page that mentions Olympus somewhere as follows, then you can proceed:
+    The SSID of the WIFI network should be something like "E-M10-V5PG53223". Your PC should be connected to the camera WIFI. To verify such, you can open a web browser (like Explorer, Chrome, Firefox, etc.) and set as URL either `http://oishare/` or `http://192.168.0.10/`. If browsing any of these URLs results in a nice dark web page that mentions Olympus somewhere as follows, then you can proceed:
 
-![PC correctly connected to the camera](doc/images/oishare-wifi-connected-ok.jpg)
+    ![PC correctly connected to the camera](doc/images/oishare-wifi-connected-ok.jpg)
 
 3. Now you can launch the application executing `photosync` (depending on how you installed the application and your OS)
 
-The application will start copying files from your camera to a local directory (as configured).
+    The application will start copying files from your camera to a local directory (as configured).
 
 ## Develop
 
