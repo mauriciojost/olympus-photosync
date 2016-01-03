@@ -36,6 +36,9 @@ mv $TMP_DIR/$NAME-$VERSION $TMP_DIR/opt/$OPT_BASE_DIR/$NAME
 echo "### Preparing sources from added resources..."
 cp -r $INPUT_DIR/package/* $TMP_DIR/
 
+echo "### Preparing configuration files..."
+cp -r $ROOT_DIR/src/main/resources/application.conf $TMP_DIR/etc/photosync/
+
 echo "### Creating target packages..."
 for target_type in $OUTPUT_TYPES
 do
