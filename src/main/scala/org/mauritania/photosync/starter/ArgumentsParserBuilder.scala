@@ -26,9 +26,18 @@ object ArgumentsParserBuilder {
 
     head("photosync", "0.5")
 
-    note("If you find any bugs, send me an e-mail to mauriciojostx@gmail.com .\n")
+    note(
+      """
+        |The official website of the project can be found here:
+        |   https://github.com/mauriciojost/olympus-photosync
+        |
+        |The documentation for the current version can be found here:
+        |   https://github.com/mauriciojost/olympus-photosync/tree/v0.5
+        |
+        |Feel free to contribute!
+        |""".stripMargin)
 
-    help("help") text ("Please also read README.md file.")
+    help("help") text ("show this message")
 
     opt[String]('n', "server-name").valueName("<server-name>").
       action { (propx, c) => c.copy(client = c.client.copy(serverName = propx)) }.
