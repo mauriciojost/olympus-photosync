@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 INSTALLER_DIR=$(readlink -e `dirname $0`)
 ROOT_DIR=$INSTALLER_DIR/../../
@@ -35,6 +36,7 @@ mv $TMP_DIR/$NAME-$VERSION $TMP_DIR/opt/$OPT_BASE_DIR/$NAME
 
 echo "### Preparing sources from added resources..."
 cp -r $INPUT_DIR/package/* $TMP_DIR/
+chmod a+rwx $TMP_DIR/var/log/$NAME
 
 echo "### Preparing configuration files..."
 cp -r $ROOT_DIR/src/main/resources/application.conf $TMP_DIR/etc/photosync/
