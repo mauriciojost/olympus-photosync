@@ -115,7 +115,7 @@ To build the multi-platform package do the following:
 sbt universal:packageBin
 ```
 
-To build Linux packages go to the `extras/packager/` directory and read the documentation.
+To build Linux packages go to the [extras/packager/](extras/packager/) directory and read the [README.md](extras/packager/README.md) documentation.
 
 ### Contribute
 
