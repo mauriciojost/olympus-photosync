@@ -7,7 +7,7 @@ import org.mauritania.photosync.olympus.client.CameraClientConfig
 object ArgumentsParserBuilder {
 
   def loadConfigFile(): PhotosyncConfig = {
-    val c = ConfigFactory.load("photosync");
+    val c = ConfigFactory.load();
     PhotosyncConfig(
       client = CameraClientConfig(
         serverProtocol = c.getString("server.protocol"),
