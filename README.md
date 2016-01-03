@@ -10,6 +10,8 @@ Currently this application has only been tested with OMD E-M10. Other similar ca
 
 ### Install/unzip the application 
 
+First download application package from [here](https://bitbucket.org/mauriciojost/olympus-photosync/downloads). If you use a Linux distribution I strongly suggest to download the `.deb` package for Debian/Ubuntu or the `.rpm` one for Red Hat or similar distributions.
+
 #### Using a `zip` package
 
 Installing the application is not mandatory. You can simply download the latest version (packaged as `photosync-XX.zip`) and unzip it somewhere (for example in `/home/user/` or `C:\`). Then the executables will be under the unzipped directory, on the `bin/` subdirectory.
@@ -22,7 +24,14 @@ When requested to execute `photosync` you will have to follow different steps de
 
 #### Using the Linux packages (`deb` and `rpm` files)
 
-Packages `.deb` and `.rpm` will be soon available. You can install them using `dpkg` and `rpm` tools.
+Packages `.deb` and `.rpm` are available for Linux distributions. You can install them using `dpkg` and `rpm` tools.
+
+For instance the `.deb` package can be installed in Ubuntu typing: 
+
+```
+sudo apt-get install openjdk-7-jre
+sudo dpkg -i photosync_x.x_all.deb
+```
 
 From now on, when requested to execute `photosync` you will have to follow these steps:
 
