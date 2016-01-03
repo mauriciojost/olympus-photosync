@@ -119,9 +119,14 @@ To build Linux packages go to the [extras/packager/](extras/packager/) directory
 
 ### Contribute
 
-If you want to contribute send me an e-mail to `mauriciojostx@gmail.com` . If you find issues please 
-send me the log files you got, that will really help me trying to understand what's wrong.
+This project is `open source` so you can help make it better.
 
-If you own a OMD E-MX camera different than E-M10 and want it to be also supported, contact me
-by e-mail too. Taking only 20 minutes of your time you can help me adapt the application to your camera.
+If **you find issues** please file an issue in [here](https://github.com/mauriciojost/olympus-photosync/issues) or send me by mail the logs you got, that will really help me trying to understand what's wrong. 
+
+If **you own a OMD E-MX camera different than E-M10** and want it to be also supported, contact me by e-mail too. Taking only 20 minutes of your time you can help me adapt the application to your camera.
+
+If **you want to simply contribute** you can create a pull request in the [main repository at github](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [mirror repository at bitbucket](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as `deprecated` in the future.
+
+If **you need more information** about the project you can send me an e-mail to `mauriciojostx@gmail.com`.
+
 
