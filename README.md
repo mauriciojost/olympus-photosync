@@ -1,69 +1,76 @@
 # README
 
-This application allows to download media through WIFI from digital cameras of the series Olympus OMD E-Mx.
-
-Currently this application has only been tested with OMD E-M10 (because the developer owns one). Other similar cameras
-such as Olympus OMD E-M1 and E-M5 should work too. If you own one of these two cameras and want them to be supported, you
-can help me by sending me by mail the logs you get when trying to execute it. 
-
-## Build status
-
 [![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
 
-## Get started
+This application allows to wirelessly download media from Olympus OMD E-Mx cameras to your PC.
 
-### Install the application
+Currently this application has only been tested with OMD E-M10. Other similar cameras such as Olympus OMD E-M1 and E-M5 should work too. If you own one of these two cameras and want them to be supported, you can help by sending by mail the logs you get when trying to execute it. 
 
-There is no string need to install this application. Just download the latest version (packaged as `photosync-XX.zip`)
-and unzip it somewhere (for example in `/home/user/` or `C:\`).  
+## Get started and sync your photos
 
-#### Packages for Linux distributions coming
+### Install/unzip the application 
 
-Packages `.deb` and `.rpm` will be soon available.
+#### Using a `zip` package
+
+Installing the application is not mandatory. You can simply download the latest version (packaged as `photosync-XX.zip`) and unzip it somewhere (for example in `/home/user/` or `C:\`). Then the executables will be under the unzipped directory, on the `bin/` subdirectory.
+
+When requested to execute `photosync` you will have to follow different steps depending on the OS you use: 
+
+ - If you are using Linux execute `<PHOTOSYNC>/bin/photosync` (you might need to set the file `<PHOTOSYNC>/bin/photosync` as `executable`). 
+ 
+ - If you are using Windows go to `<PHOTOSYNC>\bin` and execute `photosync.bat`.
+
+#### Using the Linux packages (`deb` and `rpm` files)
+
+Packages `.deb` and `.rpm` will be soon available. You can install them using `dpkg` and `rpm` tools.
+
+From now on, when requested to execute `photosync` you will have to follow these steps:
+
+ - Simply run `photosync` executable, which should be in the `PATH` environment variable.
+ 
+### Configure
+
+Before you run the application you need to configure it. 
+
+The application uses several parameters that can be set either through command line arguments, or by modifying the configuration file. Command line arguments take precedence over the configuration file.
+
+#### Configure using command line arguments
+
+There are several parameters to be set. To list these parameters you can execute `photosync --help`.
+
+For instance you can set the server name that is used by executing: 
+
+```
+photosync --server-name 192.168.0.10
+```
+
+#### Configure using the configuration file
+
+This project uses the `typesafehub/config` library to cope with configuration files. Below you can see a valid configuration file:
+
+![Sample configuration file](src/main/resources/application.conf)
+
+A configuration file containing the default settings is shipped with the package, and will be loaded by default. However, in case of installation through a Linux package, a different configuration file is set to be used: it is placed in `/etc/photosync/application.conf` for convenient modification.
 
 ### Run the application
 
-This application runs on Windows and Linux (and should run on Mac OS too, but I don't have one, so I cannot verify).
 To transfer media from your camera to your PC follow these steps:
 
-1. Turn on the WIFI service of your camera using `Private` mode in `Wi-Fi Connect Settings`. This step
-is **very important**, if not set up correctly the phone won't let this application download media files! To change to
-`Private` mode go to the menu of your camera, and set `Wi-Fi Connect Settings` to `Private` as shown in the following
-image.
+1. Turn on the WIFI service of your camera using `Private` mode in `Wi-Fi Connect Settings`. 
+
+This step is **very important**, if not set up correctly the phone won't let this application download media files! To change to `Private` mode go to the menu of your camera, and set `Wi-Fi Connect Settings` to `Private` as shown in the following image.
 
 ![Camera in private mode](doc/images/camera-in-wifi-connect-settings-private-mode.jpg)
 
-2. Connect your PC to the WIFI provided by the camera (the SSID of the WIFI network should be something like
-"E-M10-V5PG53223").
+2. Connect your PC to the WIFI provided by the camera. 
 
-3. Your PC should be connected to the camera WIFI. To verify such, you can open a web browser (like Explorer,
-Chrome, Firefox, etc.) and set as URL either `http://oishare/` or `http://192.168.0.10/`. If browsing any of these URLs
-results in a nice dark web page that mentions Olympus somewhere as follows, then you can proceed:
+The SSID of the WIFI network should be something like "E-M10-V5PG53223". Your PC should be connected to the camera WIFI. To verify such, you can open a web browser (like Explorer, Chrome, Firefox, etc.) and set as URL either `http://oishare/` or `http://192.168.0.10/`. If browsing any of these URLs results in a nice dark web page that mentions Olympus somewhere as follows, then you can proceed:
 
 ![PC correctly connected to the camera](doc/images/oishare-wifi-connected-ok.jpg)
 
-4. Now you can launch the application. You need to keep into account the Operating System you are using:
+3. Now you can launch the application executing `photosync` (depending on how you installed the application and your OS)
 
- - If you are using Linux/MacOS execute `<PHOTOSYNC>/bin/photosync` (you might need to `chmod +x bin/photosync` before you 
- can use it). 
-
- - If you are using Windows go to `<PHOTOSYNC>\bin` and execute `photosync.bat`.
-
-A console application will launch. It will start copying files from your camera to a local directory. By default,
-synchronized media files should be stored in a local directory called `<PHOTOSYNC>/output`.
-
-### Configure
-
-This application uses several parameters to tune the connection with the camera server. To list these parameters you can do: 
-
-- If you are using Linux/MacOS execute `<PHOTOSYNC>/bin/photosync --help`.
-- If you are using Windows open a console, do `cd <PHOTOSYNC>\bin` and execute `photosync.bat --help`.
-
-For instance you can run the application using a different camera server name (or IP):
-
-```
-photosync[.bat] --server-name 192.168.0.10
-```
+The application will start copying files from your camera to a local directory (as configured).
 
 ## Develop
 
@@ -95,7 +102,9 @@ To build the multi-platform package do the following:
 sbt universal:packageBin
 ```
 
-## Contribute
+To build Linux packages go to the `extras/packager/` directory and read the documentation.
+
+### Contribute
 
 If you want to contribute send me an e-mail to `mauriciojostx@gmail.com` . If you find issues please 
 send me the log files you got, that will really help me trying to understand what's wrong.
