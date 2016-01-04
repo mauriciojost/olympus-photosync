@@ -2,6 +2,6 @@ package org.mauritania.photosync
 
 object Constants {
 
-  val Version = "0.5"
+  val Version = "0.6"
 
 }
