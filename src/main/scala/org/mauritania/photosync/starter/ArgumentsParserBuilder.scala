@@ -1,6 +1,7 @@
 package org.mauritania.photosync.starter
 
 import com.typesafe.config.ConfigFactory
+import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClientConfig
 
@@ -24,7 +25,7 @@ object ArgumentsParserBuilder {
 
   def buildParser() = new scopt.OptionParser[PhotosyncConfig]("photosync") {
 
-    head("photosync", "0.5")
+    head("photosync", Constants.Version)
 
     note(
       """
@@ -32,10 +33,10 @@ object ArgumentsParserBuilder {
         |   https://github.com/mauriciojost/olympus-photosync
         |
         |The documentation for the current version can be found here:
-        |   https://github.com/mauriciojost/olympus-photosync/tree/v0.5
+        |   https://github.com/mauriciojost/olympus-photosync/tree/VERSION
         |
         |Feel free to contribute!
-        |""".stripMargin)
+        |""".stripMargin.replace("VERSION", Constants.Version))
 
     help("help") text ("show this message")
 
