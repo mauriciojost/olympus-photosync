@@ -53,8 +53,8 @@ do
     -v $VERSION -p $OUTPUT_DIR \
     --description "$DESCRIPTION" \
     --depends openjdk-7-jre \
-    --deb-use-file-permissions \
-    --rpm-use-file-permissions \
+    --after-install $INPUT_DIR/scripts/after-install.sh \
+    --before-remove $INPUT_DIR/scripts/before-remove.sh \
     etc opt usr var
 
 done
