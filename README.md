@@ -138,4 +138,7 @@ If **you want to simply contribute** you can create a pull request in the [main 
 
 If **you need more information** about the project you can send me an e-mail to `mauriciojostx@gmail.com`.
 
+If **you like the project** feel free to star it! 
+
+
 
