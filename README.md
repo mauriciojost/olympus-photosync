@@ -10,7 +10,7 @@ Currently this application has only been tested with Olympus OMD E-M10 and Olymp
 
 ### Install/unzip the application 
 
-First download application package from [here](https://bitbucket.org/mauriciojost/olympus-photosync/downloads). If you use a Linux distribution I strongly suggest to download the `.deb` package for Debian/Ubuntu or the `.rpm` one for Red Hat or similar distributions.
+First [**download** the application package from here](https://bitbucket.org/mauriciojost/olympus-photosync/downloads). If you use a Linux distribution I strongly suggest to download the `.deb` package for Debian/Ubuntu or the `.rpm` one for Red Hat or similar distributions.
 
 #### Using a `zip` package
 
@@ -55,7 +55,7 @@ photosync --server-name 192.168.0.10
 
 #### Configure using the configuration file
 
-This project uses the `typesafehub/config` library to cope with configuration files. Here you have a [valid sample configuration file](src/main/resources/application.conf).
+This project uses the `typesafehub/config` library to cope with configuration files. Here you have a [valid **sample configuration file**](src/main/resources/application.conf).
 
 A file containing the default settings is shipped with the package, and will be loaded by default. This can be changed by doing: 
 
@@ -130,11 +130,11 @@ To build Linux packages go to the [extras/packager/](extras/packager/) directory
 
 This project is `open source` so you can help make it better.
 
-If **you find issues** please file an issue in [here](https://github.com/mauriciojost/olympus-photosync/issues) or send me by mail the logs you got, that will really help me trying to understand what's wrong. 
+If **you find issues** please [**file an issue** in here](https://github.com/mauriciojost/olympus-photosync/issues) or send me by mail the logs you got, that will really help me trying to understand what's wrong. 
 
 If **you own a OMD E-MX camera different than E-M10** and want it to be also supported, contact me by e-mail too. Taking only 20 minutes of your time you can help me adapt the application to your camera.
 
-If **you want to simply contribute** you can create a pull request in the [main repository at github](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [mirror repository at bitbucket](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as `deprecated` in the future.
+If **you want to simply contribute** you can create a pull request in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as `deprecated` in the future.
 
 If **you need more information** about the project you can send me an e-mail to `mauriciojostx@gmail.com`.
 
