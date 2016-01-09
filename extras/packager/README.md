@@ -1,6 +1,6 @@
 # README
 
-This sub project packages the project into .deb and .rmp files.
+This sub project packages the project into `.deb` and `.rpm` files.
 
 ## Run
 
@@ -9,3 +9,5 @@ Simply launch:
 ```
 bash build.bash
 ```
+
+Packages will be generated in the `output` directory.
