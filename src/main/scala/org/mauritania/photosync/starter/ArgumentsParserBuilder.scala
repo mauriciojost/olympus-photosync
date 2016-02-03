@@ -33,7 +33,7 @@ object ArgumentsParserBuilder {
         |   https://github.com/mauriciojost/olympus-photosync
         |
         |The documentation for the current version can be found here:
-        |   https://github.com/mauriciojost/olympus-photosync/tree/VERSION
+        |   https://github.com/mauriciojost/olympus-photosync/tree/vVERSION
         |
         |Feel free to contribute!
         |""".stripMargin.replace("VERSION", Constants.Version))
