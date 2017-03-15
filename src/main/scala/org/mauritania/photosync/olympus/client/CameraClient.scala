@@ -27,7 +27,7 @@ class CameraClient(
     ).getLines().toList
 
     logger.info("DUMP>>>")
-    htmlLines.foreach(line => logger.info("@" + line + "@"))
+    htmlLines.foreach(logger.info)
     logger.info("<<<DUMP")
 
     generateFilesListFromHtml(htmlLines)
