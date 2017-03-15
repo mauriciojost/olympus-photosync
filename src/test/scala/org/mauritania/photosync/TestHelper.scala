@@ -8,11 +8,11 @@ object TestHelper {
 
   // Helpers
   def touchFile(parent: File, filename: String): File = {
-    val f = new File(parent, filename)
-    f.createNewFile()
-    f.deleteOnExit()
+    val file = new File(parent, filename)
+    file.createNewFile()
+    file.deleteOnExit()
 
-    f
+    file
   }
 
   def createTmpFile(prefix: String, size: Long): File = {
