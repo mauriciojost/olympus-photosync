@@ -6,6 +6,8 @@ This application allows to wirelessly download media from Olympus OMD E-Mx camer
 
 Currently this application has only been tested with Olympus OMD E-M10 and Olympus TG-860. Other similar cameras (for example Olympus OMD E-M1 and E-M5) should work too. If you own one of these two cameras and want them to be supported, you can help by sending by mail the logs you get when trying to execute it. 
 
+[**DOWNLOAD**](https://bitbucket.org/mauriciojost/olympus-photosync/downloads)
+
 ## Get started and sync your photos
 
 ### Install/unzip the application 
@@ -55,23 +57,14 @@ photosync --server-name 192.168.0.10
 
 #### Configure using the configuration file
 
-This project uses the `typesafehub/config` library to cope with configuration files. Here you have a [valid **sample configuration file**](src/main/resources/application.conf).
+This project uses the `typesafehub/config` library to cope with configuration files. 
 
-A file containing the default settings is shipped with the package, and will be loaded by default. This can be changed by doing: 
+Here you have a [valid **sample configuration file**](src/main/resources/application.conf).
 
-```
-photosync -Dconfig.file=/path/to/conf/file
-```
-
-##### Linux packages
-In case of installation through a Linux package, a different configuration file is set to be used: it is placed in `/etc/photosync/application.conf` for convenient modification.
-
-Remember to modify the `output.directory` to a write-able directory path, for instance: 
+The application can read a custom configuration file if its path is specified as a parameter as follows: 
 
 ```
-...
-output.directory=/mnt/nas/photos/
-...
+photosync -Dconfig.file=/path/to/application.conf 
 ```
 
 ### Run the application
@@ -124,7 +117,19 @@ To build the multi-platform package do the following:
 sbt universal:packageBin
 ```
 
-To build Linux packages go to the [extras/packager/](extras/packager/) directory and read the [README.md](extras/packager/README.md) documentation.
+The project uses `sbt-native-packager` so you can build other packages by doing:
+
+```
+universal:packageBin
+
+universal:packageZipTarball
+
+debian:packageBin
+
+docker:publishLocal
+
+rpm:packageBin
+```
 
 ### Contribute
 
