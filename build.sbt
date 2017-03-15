@@ -1,4 +1,4 @@
-enablePlugins(WindowsPlugin, UniversalPlugin)
+enablePlugins(WindowsPlugin, UniversalPlugin, JavaAppPackaging)
 
 name := "photosync"
 
