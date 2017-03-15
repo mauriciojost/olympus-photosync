@@ -1,25 +1,20 @@
-import com.typesafe.sbt.SbtNativePackager._
-import NativePackagerKeys._
+enablePlugins(WindowsPlugin, UniversalPlugin)
 
 name := "photosync"
 
 version := "0.6"
 
+scalaVersion := "2.11.8"
 
 mainClass in Compile := Some("org.mauritania.photosync.starter.Starter")
 
+maintainer := "Mauricio Jost <mauriciojostx@gmail.com>"
 
-packageArchetype.java_server
+packageSummary := "Custom startscript parameters"
 
-
-maintainer in Windows := "Mauricio Jost <mauriciojostx@gmail.com>"
-
-
-packageSummary in Windows := "Custom startscript parameters"
-
-
-scalaVersion := "2.9.1"
-
+resolvers ++= Seq(
+  "Bintray repository" at "https://dl.bintray.com/scalaz-releases/"
+)
 
 libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-api" % "1.7.5",
@@ -28,6 +23,9 @@ libraryDependencies ++= Seq(
   "com.github.scopt" %% "scopt" % "3.3.0")
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "1.6.1" % "test",
-  "org.specs2"    %% "specs2"    % "1.5" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+  "org.specs2" %% "specs2-core" % "3.8.9" % "test",
+  "org.specs2" %% "specs2-mock" % "3.8.9" % "test"
 )
+
+
