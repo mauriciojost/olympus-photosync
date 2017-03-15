@@ -3,9 +3,9 @@ package org.mauritania.photosync.olympus.client
 import java.net.URL
 
 import org.specs2.mock.Mockito
-import org.specs2.mutable._
+import org.specs2.mutable.Specification
 import java.io.File
-import org.mauritania.photosync.TestHelper._
+import org.mauritania.photosync.TestHelper
 
 class CameraClientSpec extends Specification with Mockito {
 
@@ -36,7 +36,7 @@ class CameraClientSpec extends Specification with Mockito {
       )
       cc.listFiles() mustEqual List(("OR.ORF", 15441739L))
 
-      val outputDirectory = createTmpDir("output")
+      val outputDirectory = TestHelper.createTmpDir("output")
       cc.downloadFile("OR.ORF", outputDirectory)
 
       val downloadedFileToCheck = new File(outputDirectory, "OR.ORF")

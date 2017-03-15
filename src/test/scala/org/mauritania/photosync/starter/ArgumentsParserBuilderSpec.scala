@@ -2,7 +2,7 @@ package org.mauritania.photosync.starter
 
 import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClientConfig
-import org.specs2.mutable._
+import org.specs2.mutable.Specification
 
 class ArgumentsParserBuilderSpec extends Specification {
 
