@@ -2,7 +2,7 @@ enablePlugins(WindowsPlugin, UniversalPlugin, JavaAppPackaging)
 
 name := "photosync"
 
-version := "0.6"
+version := "0.7-SNAPSHOT"
 
 scalaVersion := "2.11.8"
 
