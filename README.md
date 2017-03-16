@@ -16,13 +16,13 @@ First [**download** the application package from here](https://bitbucket.org/mau
 
 #### Using a `zip` package
 
-Installing the application is not mandatory. You can simply download the latest version (packaged as `photosync-XX.zip`) and unzip it somewhere (for example in `/home/user/` or `C:\`). Then the executables will be under the unzipped directory, on the `bin/` subdirectory.
+Installing the application is not mandatory. You can simply download the latest version (packaged as _photosync-XX.zip_) and unzip it somewhere (for example in `/home/user/` or `C:\`). Then the executables will be under the unzipped directory, on the `bin/` subdirectory.
 
-When requested to execute `photosync` you will have to follow different steps depending on the OS you use: 
+When requested to execute _photosync_ you will have to follow different steps depending on the OS you use: 
 
- - If you are using Linux execute `<PHOTOSYNC>/bin/photosync` (you might need to set the file `<PHOTOSYNC>/bin/photosync` as `executable`). 
+ - If you are using Linux execute _<PHOTOSYNC>/bin/photosync_ (you might need to set the file _<PHOTOSYNC>/bin/photosync_ as _executable_). 
  
- - If you are using Windows go to `<PHOTOSYNC>\bin` and execute `photosync.bat`.
+ - If you are using Windows go to _<PHOTOSYNC>\bin_ and execute _photosync.bat_.
 
 #### Using the Linux packages (`deb` and `rpm` files)
 
@@ -35,7 +35,7 @@ sudo apt-get install openjdk-7-jre
 sudo dpkg -i photosync_x.x_all.deb
 ```
 
-From now on, when requested to execute `photosync` you will have to follow these steps:
+From now on, when requested to execute _photosync_ you will have to follow these steps:
 
  - Simply run `photosync` executable, which should be in the `PATH` environment variable.
  
@@ -47,7 +47,11 @@ The application uses several parameters that can be set either through command l
 
 #### Configure using command line arguments
 
-There are several parameters to be set. To list these parameters you can execute `photosync --help`.
+There are several parameters to be set. To list these parameters you can execute: 
+
+```
+photosync --help
+```
 
 For instance you can set the server name that is used by executing: 
 
@@ -57,11 +61,9 @@ photosync --server-name 192.168.0.10
 
 #### Configure using the configuration file
 
-This project uses the `typesafehub/config` library to cope with configuration files. 
+This project uses the `typesafehub/config` library to cope with configuration files, and it should work correctly with the default configuration. However you may want to customize it to use different directories or in case your camera is not fully supported yet. Here you have a [valid **sample configuration file**](src/main/resources/application.conf), the same being used by default.
 
-Here you have a [valid **sample configuration file**](src/main/resources/application.conf).
-
-The application can read a custom configuration file if its path is specified as a parameter as follows: 
+Just put such configuration file somewhere and launch the application as follows: 
 
 ```
 photosync -Dconfig.file=/path/to/application.conf 
@@ -111,35 +113,47 @@ sbt run
 
 ### Build packages
 
-To build the multi-platform package do the following:
+The project uses _sbt-native-packager_ so you can build packages for many operating systems / distributions.
 
+To build the multi-platform `zip` package:
 ```
 sbt universal:packageBin
 ```
 
-The project uses `sbt-native-packager` so you can build other packages by doing:
-
+To build the multi-platform tarball:
 ```
-universal:packageBin
+sbt universal:packageZipTarball
+```
 
-universal:packageZipTarball
+To build a Debian package (`.deb`):
+```
+sbt debian:packageBin
+```
 
-debian:packageBin
+To build an RMP package (`.rmp`):
+```
+sbt rpm:packageBin
+```
 
-docker:publishLocal
+To build a Windows installer:
+```
+sbt windows:packageBin
+```
 
-rpm:packageBin
+To build a docker image:
+```
+sbt docker:publishLocal
 ```
 
 ### Contribute
 
-This project is `open source` so you can help make it better.
+This project is _open source_ so you can help make it better.
 
 If **you find issues** please [**file an issue** in here](https://github.com/mauriciojost/olympus-photosync/issues) or send me by mail the logs you got, that will really help me trying to understand what's wrong. 
 
 If **you own a OMD E-MX camera different than E-M10** and want it to be also supported, contact me by e-mail too. Taking only 20 minutes of your time you can help me adapt the application to your camera.
 
-If **you want to simply contribute** you can create a pull request in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as `deprecated` in the future.
+If **you want to simply contribute** you can create a pull request in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as _deprecated_ in the future.
 
 If **you need more information** about the project you can send me an e-mail to `mauriciojostx@gmail.com`.
 
