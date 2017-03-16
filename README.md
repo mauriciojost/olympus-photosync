@@ -130,7 +130,7 @@ To build a Debian package (_.deb_):
 sbt debian:packageBin
 ```
 
-To build an RMP package (_.rmp_):
+To build an RMP package (_.rmp_) (must have _rpm_ tool installed if in _Debian_ OS):
 ```
 sbt rpm:packageBin
 ```

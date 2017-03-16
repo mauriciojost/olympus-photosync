@@ -1,5 +1,13 @@
 enablePlugins(WindowsPlugin, UniversalPlugin, JavaAppPackaging)
 
+rpmRelease := "1"
+
+rpmVendor := "mauritania"
+
+rpmUrl := Some("https://github.com/mauriciojost/olympus-photosync")
+
+rpmLicense := Some("Apache License Version 2.0")
+
 name := "photosync"
 
 version := "0.7-SNAPSHOT"

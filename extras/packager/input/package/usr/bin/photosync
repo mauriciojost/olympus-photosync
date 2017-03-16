@@ -1,3 +1,0 @@
-#!/bin/bash
-/opt/mauritania/photosync/bin/photosync -Dconfig.file=/etc/photosync/application.conf -Dlog4j.configuration=file:///etc/photosync/log4j.properties $@
-
