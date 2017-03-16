@@ -16,7 +16,7 @@ First [**download** the application package from here](https://bitbucket.org/mau
 
 #### Using a _zip_ package
 
-Installing the application is not mandatory. You can simply download the latest version (packaged as _photosync-XX.zip_) and unzip it somewhere (for example in _/home/user/_ or _C:\_). Then the executables will be under the unzipped directory, on the _bin/_ subdirectory.
+Installing the application is not mandatory. You can simply download the latest version (packaged as _photosync-XX.zip_) and unzip it somewhere (for example in _/home/user/_). Then the executables will be under the unzipped directory, on the _bin/_ subdirectory.
 
 When requested to execute _photosync_ you will have to follow different steps depending on the OS you use: 
 
