@@ -1,10 +1,6 @@
 # README
 
-[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
-
-[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
-
-[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
+[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync) [![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
 
 [![DOWNLOAD](https://img.shields.io/badge/DOWNLOAD-HERE-88bbaa.svg)](https://bitbucket.org/mauriciojost/olympus-photosync/downloads)
 
@@ -97,22 +93,10 @@ To transfer media from your camera to your PC follow these steps:
 
 This application is written in _Scala_ and uses _SBT_. Find below some useful commands for basic actions.
 
-To compile the application do:
-
 ```
-sbt compile
-```
-
-To test the application:
-
-```
-sbt test
-```
-
-To launch the application:
-
-```
-sbt run
+sbt compile  # To compile the application
+sbt test     # To test it
+sbt run      # To launch it
 ```
 
 ### Build packages
