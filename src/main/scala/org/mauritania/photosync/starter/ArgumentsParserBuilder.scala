@@ -8,18 +8,18 @@ import org.mauritania.photosync.olympus.client.CameraClientConfig
 object ArgumentsParserBuilder {
 
   def loadConfigFile(): PhotosyncConfig = {
-    val c = ConfigFactory.load();
+    val configFile = ConfigFactory.load()
     PhotosyncConfig(
       client = CameraClientConfig(
-        serverProtocol = c.getString("server.protocol"),
-        serverName = c.getString("server.name"),
-        serverPort = c.getInt("server.port"),
-        serverBaseUrl = c.getString("server.base.url"),
-        serverFolderName = c.getString("server.folder.name"),
-        serverPingTimeout = c.getInt("server.ping.timeout"),
-        fileRegex = c.getString("file.regex")
+        serverProtocol = configFile.getString("server.protocol"),
+        serverName = configFile.getString("server.name"),
+        serverPort = configFile.getInt("server.port"),
+        serverBaseUrl = configFile.getString("server.base.url"),
+        serverFolderName = configFile.getString("server.folder.name"),
+        serverPingTimeout = configFile.getInt("server.ping.timeout"),
+        fileRegex = configFile.getString("file.regex")
       ),
-      outputDirectory = c.getString("output.directory")
+      outputDirectory = configFile.getString("output.directory")
     )
   }
 
