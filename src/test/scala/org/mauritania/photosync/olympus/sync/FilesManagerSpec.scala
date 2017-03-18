@@ -8,53 +8,46 @@ import org.mauritania.photosync.TestHelper
 
 class FilesManagerSpec extends Specification with Mockito {
 
+  val AnyDirectory = new File(".")
+
   "The files manager" should {
 
     "correctly tell if a file was correctly downloaded" in {
 
-      val (localFileSimulatingDownloaded: File, localFilenameSimulatingDownloaded: String, localDirectoryOfDownloads: File) =
-        simulateAlreadyDownloadedLocalFile
-
       // Simulate camera telling that such file exists and has the same length as the local file
       val cameraClientMock = mock[CameraClient]
-      val remoteFilesMock = List((localFilenameSimulatingDownloaded, localFileSimulatingDownloaded.length))
-      cameraClientMock.listFiles().returns(remoteFilesMock)
+      val localFiles = Map("photo.jpg" -> 10L)
+      val remoteFiles = Map("photo.jpg" -> 10L)
 
       // The manager should tell the file's already synchronized/downloaded
-      val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
-      fm.isDownloaded(localFilenameSimulatingDownloaded, remoteFilesMock) mustEqual true
+      val fm = new FilesManager(cameraClientMock, AnyDirectory)
+      fm.isDownloaded("photo.jpg", localFiles, remoteFiles) mustEqual true
 
     }
 
     "correctly tell if a file was incorrectly downloaded" in {
 
-      val (localFileSimulatingDownloaded: File, localFilenameSimulatingDownloaded: String, localDirectoryOfDownloads: File) =
-        simulateAlreadyDownloadedLocalFile
-
       // Simulate camera telling that such file exists but it has different length than the local file
       val cameraClientMock = mock[CameraClient]
-      val remoteFilesMock = List((localFilenameSimulatingDownloaded, localFileSimulatingDownloaded.length - 1))
-      cameraClientMock.listFiles().returns(remoteFilesMock)
+      val localFiles = Map("photo.jpg" -> 0L)
+      val remoteFiles = Map("photo.jpg" -> 10L)
 
       // The manager should tell the file's is bad and should be re-downloaded
-      val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
-      fm.isDownloaded(localFilenameSimulatingDownloaded, remoteFilesMock) mustEqual false
+      val fm = new FilesManager(cameraClientMock, AnyDirectory)
+      fm.isDownloaded("photo.jpg", localFiles, remoteFiles) mustEqual false
 
     }
 
     "correctly tell if a file was not downloaded" in {
 
-      // Simulate empty downloads local directory (no photos syncd)
-      val localDirectoryOfDownloads = TestHelper.createTmpDir("output")
-
       // Simulate camera telling there is one file to be downloaded
       val cameraClientMock = mock[CameraClient]
-      val remoteFilesMock = List(("photo.jpg", 100L))
-      cameraClientMock.listFiles().returns(remoteFilesMock)
+      val localFiles = Map.empty[String, Long]
+      val remoteFiles = Map("photo.jpg" -> 10L)
 
       // The manager should tell the file has not been donwloaded yet
-      val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
-      fm.isDownloaded("photo.jpg", remoteFilesMock) mustEqual false
+      val fm = new FilesManager(cameraClientMock, AnyDirectory)
+      fm.isDownloaded("photo.jpg", localFiles, remoteFiles) mustEqual false
 
     }
 
@@ -71,7 +64,9 @@ class FilesManagerSpec extends Specification with Mockito {
       // The manager should tell the file's is bad and should be re-downloaded
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
 
-      fm.listLocalFiles().sortBy(x => x._1) mustEqual List(("photo1.jpg", 0L), ("photo2.jpg", 0L)).sortBy(x => x._1)
+      fm.listLocalFiles() mustEqual Set(
+        FileInfo("photo1.jpg", 0L), FileInfo("photo2.jpg", 0L)
+      )
 
     }
 
@@ -87,14 +82,14 @@ class FilesManagerSpec extends Specification with Mockito {
 
       // Simulate camera telling that photo2.jpg is available
       val cameraClientMock = mock[CameraClient]
-      val remoteFilesMock = List(("photo2.jpg", 100L))
+      val remoteFilesMock = Set(FileInfo("photo2.jpg", 100L))
       cameraClientMock.listFiles().returns(remoteFilesMock)
       cameraClientMock.downloadFile("photo2.jpg", localDirectoryOfDownloads).
         returns(TestHelper.touchFile(localDirectoryOfDownloads, "photo2.jpg"))
 
       // The manager should download the file photo2.jpg
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
-      fm.sync() mustEqual (List(photo2))
+      fm.sync() mustEqual Set(photo2)
 
       // There should be downloaded photo2.jpg and old photo1.jpg in local directory
       photo1.exists() mustEqual true
@@ -103,9 +98,10 @@ class FilesManagerSpec extends Specification with Mockito {
 
     "correctly synchronize a remote file (in the camera) that had been already downloaded locally" in {
 
-      // Simulate downloads local directory and photo1.jpg
       // TODO use already existent commons or guava createTmpDir
       // TODO erase directory when done
+
+      // Simulate downloads local directory and photo1.jpg
       val localDirectoryOfDownloads = TestHelper.createTmpDir("output")
       val photo1 = TestHelper.touchFile(localDirectoryOfDownloads, "photo1.jpg")
 
@@ -113,21 +109,21 @@ class FilesManagerSpec extends Specification with Mockito {
 
       // Simulate camera telling that photo1.jpg is available
       val cameraClientMock = mock[CameraClient]
-      val remoteFilesMock = List(("photo1.jpg", 0L))
+      val remoteFilesMock = Set(FileInfo("photo1.jpg", 0L))
       cameraClientMock.listFiles().returns(remoteFilesMock)
       cameraClientMock.downloadFile("photo1.jpg", localDirectoryOfDownloads).
         returns(TestHelper.touchFile(localDirectoryOfDownloads, "photo1.jpg"))
 
       // The manager should skip downloading file photo1.jpg
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
-      fm.sync() mustEqual Nil
+      fm.sync().size mustEqual 0
     }
 
     "correctly list what are the remote files" in {
 
       // Simulate camera telling that photo1.jpg and photo2.jpg are available
       val cameraClientMock = mock[CameraClient]
-      val remoteFilesMock = List(("photo1.jpg", 100L), ("photo2.jpg", 100L))
+      val remoteFilesMock = Set(FileInfo("photo1.jpg", 100L), FileInfo("photo2.jpg", 100L))
       cameraClientMock.listFiles().returns(remoteFilesMock)
 
       // The manager should list both files

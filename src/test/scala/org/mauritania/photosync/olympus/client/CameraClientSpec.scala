@@ -2,6 +2,7 @@ package org.mauritania.photosync.olympus.client
 
 import java.net.URL
 
+import org.mauritania.photosync.olympus.sync.FileInfo
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import java.io.File
@@ -13,17 +14,15 @@ class CameraClientSpec extends Specification with Mockito {
 
     "correctly list remote files when empty from OMD E-M10" in {
       val cc = new CameraClient(
-        generateClientCameraConfig("org/mauritania/photosync/0000-em10-no-files.html"),
-        identity
+        generateClientCameraConfig("org/mauritania/photosync/0000-em10-no-files.html")
       )
-      cc.listFiles() mustEqual (Nil)
+      cc.listFiles() mustEqual Set.empty
     }
 
 
     "correctly list remote files when many remote files from OMD E-M10" in {
       val cc = new CameraClient(
-        generateClientCameraConfig("org/mauritania/photosync/0001-em10-many-files.html"),
-        identity
+        generateClientCameraConfig("org/mauritania/photosync/0001-em10-many-files.html")
       )
       cc.listFiles().size mustEqual 135
     }
@@ -34,7 +33,7 @@ class CameraClientSpec extends Specification with Mockito {
         generateClientCameraConfig("org/mauritania/photosync/0002-em10-downloadable-file.html"),
         specialMappingUrlTranslator // trick to test that a file is downloadable
       )
-      cc.listFiles() mustEqual List(("OR.ORF", 15441739L))
+      cc.listFiles() mustEqual Set(FileInfo("OR.ORF", 15441739L))
 
       val outputDirectory = TestHelper.createTmpDir("output")
       cc.downloadFile("OR.ORF", outputDirectory)

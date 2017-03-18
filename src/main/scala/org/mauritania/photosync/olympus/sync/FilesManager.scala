@@ -1,54 +1,67 @@
 package org.mauritania.photosync.olympus.sync
 
 import java.io.File
-import org.slf4j.LoggerFactory
+
 import org.mauritania.photosync.olympus.client.CameraClient
+import org.slf4j.LoggerFactory
+
+import scala.util.{Failure, Try}
 
 class FilesManager(
   api: CameraClient,
   outputDir: File
 ) {
 
-  type FileInfo = (String, Long)
-
   val logger = LoggerFactory.getLogger(this.getClass)
 
-  def isDownloaded(fileId: String, remoteFiles: List[FileInfo]): Boolean = {
-    val locals = listLocalFiles()
-    val localSize: Long = locals.toMap.get(fileId).getOrElse(0)
-    val remoteSize: Long = remoteFiles.toMap.get(fileId).getOrElse(0)
+  private[sync] def isDownloaded(fileId: String, localFiles: Map[String, Long], remoteFiles: Map[String, Long]): Boolean = {
+    val localSize = localFiles.get(fileId)
+    val remoteSize = remoteFiles.get(fileId)
     localSize == remoteSize
   }
 
-  def listLocalFiles(): List[FileInfo] = {
-    val files = outputDir.listFiles()
-    val filesAndSizes = files.map(file => (file.getName, file.length())).toList
+  def listLocalFiles(): Set[FileInfo] = {
+    val files = outputDir.listFiles().toSet
+    val filesAndSizes = files.map(file => FileInfo(file.getName, file.length()))
     filesAndSizes
   }
 
-  def listRemoteFiles(): List[FileInfo] = {
+  def listRemoteFiles(): Set[FileInfo] = {
     val filesAndSizes = api.listFiles()
     filesAndSizes
   }
 
-  def sync(): List[File] = {
-    val remoteFiles = api.listFiles()
-    val outputDirectory = outputDir
-    outputDirectory.mkdir()
+  def sync(): Set[File] = {
+    val remoteFiles = listRemoteFiles()
+    val localFiles = listLocalFiles()
 
+    outputDir.mkdir() // it may exist already
+
+    def toMap(s: Set[FileInfo]) = s.flatMap(FileInfo.unapply).toMap
     remoteFiles.flatMap {
-      fileIdAndSize => {
-        val downloaded = isDownloaded(fileIdAndSize._1, remoteFiles)
-        if (!downloaded) {
-          logger.debug("Downloading file {} with size {}", fileIdAndSize._1, fileIdAndSize._2)
-          val downloadedFile = api.downloadFile(fileIdAndSize._1, outputDirectory)
-          Some(downloadedFile)
-        } else {
-          logger.debug("Skipping file {} as it's been already downloaded", fileIdAndSize._1)
-          None
-        }
-      }
+      case fileInfo => handleFile(fileInfo, toMap(localFiles), toMap(remoteFiles))
     }
   }
 
+  private def handleFile(
+    fileInfo: FileInfo,
+    localFilesMap: Map[String, Long],
+    remoteFilesMap: Map[String, Long]
+  ): Option[File] = {
+    isDownloaded(fileInfo.name, localFilesMap, remoteFilesMap) match {
+      case false => {
+        logger.debug(s"Downloading file ${fileInfo}")
+        val downloadedFile = Try(api.downloadFile(fileInfo.name, outputDir))
+        downloadedFile.recoverWith {
+          case error: Throwable =>
+            logger.error(s"Exception downloading ${fileInfo}", error)
+            Failure(error)
+        }.toOption
+      }
+      case true => {
+        logger.debug("Skipping file {} as it's been already downloaded", fileInfo)
+        None
+      }
+    }
+  }
 }

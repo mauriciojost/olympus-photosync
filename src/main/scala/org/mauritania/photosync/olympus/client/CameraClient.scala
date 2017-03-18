@@ -3,6 +3,7 @@ package org.mauritania.photosync.olympus.client
 import java.io.{File, FileOutputStream}
 import java.net.URL
 import java.nio.channels.Channels
+import org.mauritania.photosync.olympus.sync.FileInfo
 import org.slf4j.LoggerFactory
 import scala.io.Source
 
@@ -13,9 +14,7 @@ class CameraClient(
 
   val logger = LoggerFactory.getLogger(this.getClass)
 
-  def listFiles(): List[(String, Long)] = {
-    logger.debug("listFiles")
-
+  def listFiles(): Set[FileInfo] = {
     val htmlLines = Source.fromURL(
       urlTranslator(
         new URL(
@@ -24,7 +23,7 @@ class CameraClient(
           configuration.serverPort,
           generateRelativeUrl)
       )
-    ).getLines().toList
+    ).getLines().toSet
 
     logger.info("DUMP>>>")
     htmlLines.foreach(logger.info)
@@ -34,7 +33,6 @@ class CameraClient(
   }
 
   def downloadFile(remoteFileId: String, localTargetDirectory: File): File = {
-    logger.debug("downloadFile")
     val urlSourceFile = urlTranslator(
       new URL(
         configuration.serverProtocol,
@@ -50,15 +48,15 @@ class CameraClient(
     destinationFile.getAbsoluteFile
   }
 
-  private def generateFilesListFromHtml(htmlLines: List[String]): List[(String, Long)] = {
+  private def generateFilesListFromHtml(htmlLines: Set[String]): Set[FileInfo] = {
     val fileRegex = configuration.fileRegex.r
     val fileIdsAndSize = htmlLines.flatMap(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
-          case fileRegex(fileId, fileSizeBytes) => Some((fileId, fileSizeBytes.toLong))
+          case fileRegex(fileId, fileSizeBytes) => Some(FileInfo(fileId, fileSizeBytes.toLong))
           case _ => None
         }
-    ).toList
+    )
 
     fileIdsAndSize
   }
