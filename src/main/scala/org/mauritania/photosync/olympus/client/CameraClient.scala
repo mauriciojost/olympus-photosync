@@ -8,7 +8,7 @@ import scala.io.Source
 
 class CameraClient(
   configuration: CameraClientConfig,
-  urlTranslator: URL => URL
+  urlTranslator: URL => URL = identity
 ) {
 
   val logger = LoggerFactory.getLogger(this.getClass)
