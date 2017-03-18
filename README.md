@@ -2,6 +2,8 @@
 
 [![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
 
+[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
+
 This application allows to wirelessly download media from Olympus OMD E-Mx cameras to your PC.
 
 Currently this application has only been tested with Olympus OMD E-M10 and Olympus TG-860. Other similar cameras (for example Olympus OMD E-M1 and E-M5) should work too. If you own one of these two cameras and want them to be supported, you can help by sending by mail the logs you get when trying to execute it. 
