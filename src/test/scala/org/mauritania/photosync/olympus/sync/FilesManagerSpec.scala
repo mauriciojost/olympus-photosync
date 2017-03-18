@@ -101,6 +101,27 @@ class FilesManagerSpec extends Specification with Mockito {
       photo2.exists() mustEqual true
     }
 
+    "correctly synchronize a remote file (in the camera) that had been already downloaded locally" in {
+
+      // Simulate downloads local directory and photo1.jpg
+      // TODO use already existent commons or guava createTmpDir
+      // TODO erase directory when done
+      val localDirectoryOfDownloads = TestHelper.createTmpDir("output")
+      val photo1 = TestHelper.touchFile(localDirectoryOfDownloads, "photo1.jpg")
+
+      photo1.exists() mustEqual true
+
+      // Simulate camera telling that photo1.jpg is available
+      val cameraClientMock = mock[CameraClient]
+      val remoteFilesMock = List(("photo1.jpg", 0L))
+      cameraClientMock.listFiles().returns(remoteFilesMock)
+      cameraClientMock.downloadFile("photo1.jpg", localDirectoryOfDownloads).
+        returns(TestHelper.touchFile(localDirectoryOfDownloads, "photo1.jpg"))
+
+      // The manager should skip downloading file photo1.jpg
+      val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
+      fm.sync() mustEqual Nil
+    }
 
     "correctly list what are the remote files" in {
 

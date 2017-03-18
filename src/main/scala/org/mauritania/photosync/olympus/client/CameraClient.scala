@@ -51,10 +51,11 @@ class CameraClient(
   }
 
   private def generateFilesListFromHtml(htmlLines: List[String]): List[(String, Long)] = {
+    val fileRegex = configuration.fileRegex.r
     val fileIdsAndSize = htmlLines.flatMap(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
-          case configuration.fileRegex(fileId, fileSizeBytes) => Some((fileId, fileSizeBytes.toLong))
+          case fileRegex(fileId, fileSizeBytes) => Some((fileId, fileSizeBytes.toLong))
           case _ => None
         }
     ).toList

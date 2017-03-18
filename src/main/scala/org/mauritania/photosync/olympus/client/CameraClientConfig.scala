@@ -1,7 +1,5 @@
 package org.mauritania.photosync.olympus.client
 
-import scala.util.matching.Regex
-
 case class CameraClientConfig(
 
   /**
@@ -38,7 +36,7 @@ case class CameraClientConfig(
    * Regex used to identify files from the server's response
    * Sample: wlansd[17]="/DCIM/100OLYMP,P7290009.JPG,278023,0,18173,42481";
    */
-  val fileRegex: Regex
+  val fileRegex: String
 
 )
 

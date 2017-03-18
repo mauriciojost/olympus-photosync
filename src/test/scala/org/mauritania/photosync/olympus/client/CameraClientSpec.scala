@@ -14,7 +14,7 @@ class CameraClientSpec extends Specification with Mockito {
     "correctly list remote files when empty from OMD E-M10" in {
       val cc = new CameraClient(
         generateClientCameraConfig("org/mauritania/photosync/0000-em10-no-files.html"),
-        identityUrlTranslator
+        identity
       )
       cc.listFiles() mustEqual (Nil)
     }
@@ -23,7 +23,7 @@ class CameraClientSpec extends Specification with Mockito {
     "correctly list remote files when many remote files from OMD E-M10" in {
       val cc = new CameraClient(
         generateClientCameraConfig("org/mauritania/photosync/0001-em10-many-files.html"),
-        identityUrlTranslator
+        identity
       )
       cc.listFiles().size mustEqual 135
     }
@@ -59,7 +59,7 @@ class CameraClientSpec extends Specification with Mockito {
       serverFolderName = file,
       serverPort = 0,
       serverPingTimeout = 0,
-      fileRegex = """.*=.*,(\w+\.\w+),(\d+),.*""".r
+      fileRegex = """.*=.*,(\w+\.\w+),(\d+),.*"""
     )
 
   }
@@ -74,7 +74,5 @@ class CameraClientSpec extends Specification with Mockito {
       case url => url
     }
   }
-
-  def identityUrlTranslator(url: URL): URL = url
 
 }

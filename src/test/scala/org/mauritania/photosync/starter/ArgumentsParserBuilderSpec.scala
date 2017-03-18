@@ -40,7 +40,21 @@ class ArgumentsParserBuilderSpec extends Specification {
       result.get.outputDirectory mustEqual ("myoutput")
     }
 
-    // TODO write missing tests
+    "parse configuration file" in {
+      ArgumentsParserBuilder.loadConfigFile() mustEqual PhotosyncConfig(
+        client = CameraClientConfig(
+          serverProtocol = "http",
+          serverName = "192.168.0.10",
+          serverPort = 80,
+          serverBaseUrl = "/DCIM",
+          serverFolderName = "100OLYMP",
+          serverPingTimeout = 2000,
+          fileRegex = ".*=.*,(\\w+\\.\\w+),(\\d+),.*"
+        ),
+        outputDirectory = "output"
+      )
+
+    }
 
   }
 
@@ -53,7 +67,7 @@ class ArgumentsParserBuilderSpec extends Specification {
         serverBaseUrl = "",
         serverFolderName = "",
         serverPingTimeout = 0,
-        fileRegex = "".r
+        fileRegex = ""
       ),
       outputDirectory = ""
     )

@@ -17,7 +17,7 @@ object ArgumentsParserBuilder {
         serverBaseUrl = c.getString("server.base.url"),
         serverFolderName = c.getString("server.folder.name"),
         serverPingTimeout = c.getInt("server.ping.timeout"),
-        fileRegex = c.getString("file.regex").r
+        fileRegex = c.getString("file.regex")
       ),
       outputDirectory = c.getString("output.directory")
     )
@@ -65,7 +65,7 @@ object ArgumentsParserBuilder {
       text("timeout to be used when trying to connect to the camera server, default is '2000'")
 
     opt[String]('r', "file-regex").valueName("<file-regex>").
-      action { (propx, c) => c.copy(client = c.client.copy(fileRegex = propx.r)) }.
+      action { (propx, c) => c.copy(client = c.client.copy(fileRegex = propx)) }.
       text("regular expression used to detect files from camera server response")
 
     opt[String]('o', "output-directory").valueName("<path>").
