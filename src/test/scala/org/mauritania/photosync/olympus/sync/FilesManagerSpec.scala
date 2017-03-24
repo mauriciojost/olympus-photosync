@@ -1,10 +1,11 @@
 package org.mauritania.photosync.olympus.sync
 
+import java.io.File
+
+import org.mauritania.photosync.TestHelper
+import org.mauritania.photosync.olympus.client.CameraClient
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
-import java.io.File
-import org.mauritania.photosync.olympus.client.CameraClient
-import org.mauritania.photosync.TestHelper
 
 class FilesManagerSpec extends Specification with Mockito {
 
@@ -117,6 +118,22 @@ class FilesManagerSpec extends Specification with Mockito {
       // The manager should skip downloading file photo1.jpg
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
       fm.sync().size mustEqual 0
+    }
+
+    "correctly handle a failure when synchronizing a file" in {
+
+      // Simulate downloads local directory (no photo1.jpg)
+      val localDirectoryOfDownloads = TestHelper.createTmpDir("output")
+
+      // Simulate camera telling that photo1.jpg is available
+      val cameraClientMock = mock[CameraClient]
+      val remoteFilesMock = Set(FileInfo("photo1.jpg", 100L))
+      cameraClientMock.listFiles().returns(remoteFilesMock)
+      cameraClientMock.downloadFile("photo1.jpg", localDirectoryOfDownloads).throws(new RuntimeException())
+
+      // The manager should download the file photo2.jpg
+      val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
+      fm.sync() mustEqual Set()
     }
 
     "correctly list what are the remote files" in {
