@@ -13,12 +13,6 @@ object Starter {
 
   def main(args: Array[String]): Unit = {
 
-    logger.debug("DEBUG")
-    logger.info("INFO")
-    logger.warn("WARN")
-    logger.error("ERROR")
-
-
     val fileConfiguration = loadConfigFile()
 
     logger.info("Loading file configuration ({})...", fileConfiguration)
