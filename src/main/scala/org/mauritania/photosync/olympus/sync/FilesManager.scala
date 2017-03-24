@@ -32,14 +32,16 @@ class FilesManager(
   }
 
   def sync(): Set[File] = {
+    def toMap(s: Set[FileInfo]) = s.flatMap(FileInfo.unapply).toMap
     val remoteFiles = listRemoteFiles()
     val localFiles = listLocalFiles()
+    val remoteFilesMap = toMap(remoteFiles)
+    val localFilesMap = toMap(localFiles)
 
     outputDir.mkdir() // it may exist already
 
-    def toMap(s: Set[FileInfo]) = s.flatMap(FileInfo.unapply).toMap
     remoteFiles.flatMap {
-      case fileInfo => handleFile(fileInfo, toMap(localFiles), toMap(remoteFiles))
+      case fileInfo => handleFile(fileInfo, localFilesMap, remoteFilesMap)
     }
   }
 
