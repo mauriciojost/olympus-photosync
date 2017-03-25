@@ -1,6 +1,9 @@
 # README
 
-[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync) [![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
+[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync) 
+[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master) 
+
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
 
 [![Download](https://img.shields.io/badge/download-here-88bbaa.svg)](https://bitbucket.org/mauriciojost/olympus-photosync/downloads)
 
