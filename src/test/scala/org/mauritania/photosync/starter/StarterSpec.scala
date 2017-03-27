@@ -45,16 +45,14 @@ class RootHandler extends HttpHandler {
 <script type="text/javascript">
 wlansd = new Array();
 wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
-wlansd[1]="/DCIM/100OLYMP/,OR2.ORF,15288519,0,18228,30168";
 ...
 """
-  val fileContentResponse = "<image>"
+  val fileContentResponse = "=== PHOTO SAMPLE ==="
 
   def handle(t: HttpExchange) {
     t.getRequestURI.toString match {
       case "/DCIM/100OLYMP/" => sendRootResponse(t, rootResponse)
       case "/DCIM/100OLYMP/OR.ORF" => sendRootResponse(t, fileContentResponse)
-      case "/DCIM/100OLYMP/OR2.ORF" => sendRootResponse(t, fileContentResponse)
     }
   }
 
