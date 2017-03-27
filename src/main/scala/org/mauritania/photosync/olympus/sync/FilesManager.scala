@@ -5,7 +5,7 @@ import java.io.File
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.slf4j.LoggerFactory
 
-import scala.util.{Failure, Try}
+import scala.util.Failure
 
 class FilesManager(
   api: CameraClient,
@@ -53,9 +53,9 @@ class FilesManager(
     isDownloaded(fileInfo.name, localFilesMap, remoteFilesMap) match {
       case false => {
         logger.debug(s"Downloading file ${fileInfo}")
-        val downloadedFile = Try(api.downloadFile(fileInfo.name, outputDir))
+        val downloadedFile = api.downloadFile(fileInfo.name, outputDir)
         downloadedFile.recoverWith {
-          case error: Throwable =>
+          case error =>
             logger.error(s"Exception downloading ${fileInfo}", error)
             Failure(error)
         }.toOption

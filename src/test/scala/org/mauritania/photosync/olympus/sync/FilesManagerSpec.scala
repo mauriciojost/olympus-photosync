@@ -7,6 +7,8 @@ import org.mauritania.photosync.olympus.client.CameraClient
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 
+import scala.util.{Failure, Success}
+
 class FilesManagerSpec extends Specification with Mockito {
 
   val AnyDirectory = new File(".")
@@ -86,7 +88,7 @@ class FilesManagerSpec extends Specification with Mockito {
       val remoteFilesMock = Set(FileInfo("photo2.jpg", 100L))
       cameraClientMock.listFiles().returns(remoteFilesMock)
       cameraClientMock.downloadFile("photo2.jpg", localDirectoryOfDownloads).
-        returns(TestHelper.touchFile(localDirectoryOfDownloads, "photo2.jpg"))
+        returns(Success(TestHelper.touchFile(localDirectoryOfDownloads, "photo2.jpg")))
 
       // The manager should download the file photo2.jpg
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
@@ -113,7 +115,7 @@ class FilesManagerSpec extends Specification with Mockito {
       val remoteFilesMock = Set(FileInfo("photo1.jpg", 0L))
       cameraClientMock.listFiles().returns(remoteFilesMock)
       cameraClientMock.downloadFile("photo1.jpg", localDirectoryOfDownloads).
-        returns(TestHelper.touchFile(localDirectoryOfDownloads, "photo1.jpg"))
+        returns(Success(TestHelper.touchFile(localDirectoryOfDownloads, "photo1.jpg")))
 
       // The manager should skip downloading file photo1.jpg
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
@@ -129,7 +131,8 @@ class FilesManagerSpec extends Specification with Mockito {
       val cameraClientMock = mock[CameraClient]
       val remoteFilesMock = Set(FileInfo("photo1.jpg", 100L))
       cameraClientMock.listFiles().returns(remoteFilesMock)
-      cameraClientMock.downloadFile("photo1.jpg", localDirectoryOfDownloads).throws(new RuntimeException())
+      cameraClientMock.downloadFile("photo1.jpg", localDirectoryOfDownloads).
+        returns(Failure(new RuntimeException()))
 
       // The manager should download the file photo2.jpg
       val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)

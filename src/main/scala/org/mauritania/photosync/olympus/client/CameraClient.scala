@@ -6,6 +6,7 @@ import java.nio.channels.Channels
 import org.mauritania.photosync.olympus.sync.FileInfo
 import org.slf4j.LoggerFactory
 import scala.io.Source
+import scala.util.Try
 
 class CameraClient(
   configuration: CameraClientConfig,
@@ -32,7 +33,7 @@ class CameraClient(
     generateFilesListFromHtml(htmlLines)
   }
 
-  def downloadFile(remoteFileId: String, localTargetDirectory: File): File = {
+  def downloadFile(remoteFileId: String, localTargetDirectory: File): Try[File] = {
     val urlSourceFile = urlTranslator(
       new URL(
         configuration.serverProtocol,
@@ -41,11 +42,13 @@ class CameraClient(
         generateRelativeUrl.concat(remoteFileId)
       )
     )
-    val rbc = Channels.newChannel(urlSourceFile.openStream());
-    val destinationFile = new File(localTargetDirectory, remoteFileId)
-    val fos = new FileOutputStream(destinationFile);
-    fos.getChannel().transferFrom(rbc, 0, Long.MaxValue);
-    destinationFile.getAbsoluteFile
+    Try {
+      val rbc = Channels.newChannel(urlSourceFile.openStream());
+      val destinationFile = new File(localTargetDirectory, remoteFileId)
+      val fos = new FileOutputStream(destinationFile);
+      fos.getChannel().transferFrom(rbc, 0, Long.MaxValue);
+      destinationFile.getAbsoluteFile
+    }
   }
 
   private def generateFilesListFromHtml(htmlLines: Set[String]): Set[FileInfo] = {
