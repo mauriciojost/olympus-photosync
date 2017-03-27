@@ -61,7 +61,7 @@ class FilesManager(
         }.toOption
       }
       case true => {
-        logger.debug("Skipping file {} as it's been already downloaded", fileInfo)
+        logger.debug(s"Skipping file ${fileInfo} as it's been already downloaded")
         None
       }
     }
