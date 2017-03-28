@@ -5,7 +5,7 @@ import java.io.File
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.slf4j.LoggerFactory
 
-import scala.util.Failure
+import scala.util.{Success, Failure}
 
 class FilesManager(
   api: CameraClient,
@@ -41,11 +41,11 @@ class FilesManager(
     outputDir.mkdir() // it may exist already
 
     remoteFiles.flatMap {
-      case fileInfo => handleFile(fileInfo, localFilesMap, remoteFilesMap)
+      case fileInfo => syncFile(fileInfo, localFilesMap, remoteFilesMap)
     }
   }
 
-  private def handleFile(
+  private def syncFile(
     fileInfo: FileInfo,
     localFilesMap: Map[String, Long],
     remoteFilesMap: Map[String, Long]
@@ -54,11 +54,13 @@ class FilesManager(
       case false => {
         logger.debug(s"Downloading file ${fileInfo}")
         val downloadedFile = api.downloadFile(fileInfo.name, outputDir)
-        downloadedFile.recoverWith {
-          case error =>
+        downloadedFile match {
+          case Success(file) =>
+            Some(file)
+          case Failure(error) =>
             logger.error(s"Exception downloading ${fileInfo}", error)
-            Failure(error)
-        }.toOption
+            None
+        }
       }
       case true => {
         logger.debug(s"Skipping file ${fileInfo} as it's been already downloaded")
