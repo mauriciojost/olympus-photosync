@@ -3,9 +3,7 @@
 [![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync) 
 [![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master) 
 
-[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
-
-[![Download](https://img.shields.io/badge/download-here-88bbaa.svg)](https://bitbucket.org/mauriciojost/olympus-photosync/downloads)
+[![Download](https://img.shields.io/badge/download-installer-aa3333.svg)](https://bitbucket.org/mauriciojost/olympus-photosync/downloads) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md) 
 
 This application allows to wirelessly download media from Olympus OMD E-Mx cameras to your PC.
 
