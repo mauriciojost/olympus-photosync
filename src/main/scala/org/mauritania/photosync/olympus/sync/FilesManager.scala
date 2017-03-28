@@ -40,8 +40,10 @@ class FilesManager(
 
     outputDir.mkdir() // it may exist already
 
-    remoteFiles.flatMap {
-      case fileInfo => syncFile(fileInfo, localFilesMap, remoteFilesMap)
+    remoteFiles.zipWithIndex.flatMap {
+      case (fileInfo, index) =>
+        logger.info(s"Downloading $index / ${remoteFiles.size}...")
+        syncFile(fileInfo, localFilesMap, remoteFilesMap)
     }
   }
 
