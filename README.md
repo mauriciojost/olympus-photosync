@@ -38,7 +38,7 @@ sudo apt-get install openjdk-7-jre
 sudo dpkg -i photosync_x.x_all.deb
 ```
 
-In the coming sections of this document, when requested to execute _photosync_ you will have simply execute _photosync_ as it will be already in the _PATH_ environment variable.
+In the coming sections of this document, when requested to execute _photosync_, simply execute _photosync_ from any current directory (as it will be already in the _PATH_ environment variable).
  
 ### Configure
 
