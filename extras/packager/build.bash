@@ -6,7 +6,7 @@ set -x
 INSTALLER_DIR=$(readlink -e `dirname $0`)
 ROOT_DIR=$INSTALLER_DIR/../../
 
-echo "### Building default zip package..."
+echo "### Building packages..."
 cd $ROOT_DIR
 
 sbt clean
@@ -19,7 +19,7 @@ sbt rpm:packageBin
 
 cd $INSTALLER_DIR
 
-echo "### Unzipping source package..."
+echo "### Locating packages..."
 find $ROOT_DIR/target -name *.zip
 find $ROOT_DIR/target -name *.tgz
 find $ROOT_DIR/target -name *.deb
