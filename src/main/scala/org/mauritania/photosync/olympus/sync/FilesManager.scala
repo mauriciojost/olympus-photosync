@@ -20,19 +20,19 @@ class FilesManager(
     localSize == remoteSize
   }
 
-  def listLocalFiles(): Set[FileInfo] = {
-    val files = outputDir.listFiles().toSet
+  def listLocalFiles(): Seq[FileInfo] = {
+    val files = outputDir.listFiles()
     val filesAndSizes = files.map(file => FileInfo(file.getName, file.length()))
     filesAndSizes
   }
 
-  def listRemoteFiles(): Set[FileInfo] = {
+  def listRemoteFiles(): Seq[FileInfo] = {
     val filesAndSizes = api.listFiles()
     filesAndSizes
   }
 
-  def sync(): Set[File] = {
-    def toMap(s: Set[FileInfo]) = s.flatMap(FileInfo.unapply).toMap
+  def sync(): Seq[File] = {
+    def toMap(s: Seq[FileInfo]) = s.flatMap(FileInfo.unapply).toMap
     val remoteFiles = listRemoteFiles()
     val localFiles = listLocalFiles()
     val remoteFilesMap = toMap(remoteFiles)

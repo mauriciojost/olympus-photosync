@@ -16,7 +16,7 @@ class CameraClientSpec extends Specification with Mockito {
       val cc = new CameraClient(
         generateClientCameraConfig("org/mauritania/photosync/0000-em10-no-files.html")
       )
-      cc.listFiles() mustEqual Set.empty
+      cc.listFiles() mustEqual Seq.empty[FileInfo]
     }
 
 
@@ -33,7 +33,7 @@ class CameraClientSpec extends Specification with Mockito {
         generateClientCameraConfig("org/mauritania/photosync/0002-em10-downloadable-file.html"),
         specialMappingUrlTranslator // trick to test that a file is downloadable
       )
-      cc.listFiles() mustEqual Set(FileInfo("OR.ORF", 15441739L))
+      cc.listFiles() mustEqual Seq(FileInfo("OR.ORF", 15441739L))
 
       val outputDirectory = TestHelper.createTmpDir("output")
       cc.downloadFile("OR.ORF", outputDirectory)

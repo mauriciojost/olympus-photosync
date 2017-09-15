@@ -15,16 +15,17 @@ class CameraClient(
 
   val logger = LoggerFactory.getLogger(this.getClass)
 
-  def listFiles(): Set[FileInfo] = {
+  def listFiles(): Seq[FileInfo] = {
     val htmlLines = Source.fromURL(
       urlTranslator(
         new URL(
           configuration.serverProtocol,
           configuration.serverName,
           configuration.serverPort,
-          generateRelativeUrl)
+          generateRelativeUrl
+        )
       )
-    ).getLines().toSet
+    ).getLines().toSeq
 
     logger.info("DUMP>>>")
     htmlLines.foreach(logger.info)
@@ -51,7 +52,7 @@ class CameraClient(
     }
   }
 
-  private def generateFilesListFromHtml(htmlLines: Set[String]): Set[FileInfo] = {
+  private def generateFilesListFromHtml(htmlLines: Seq[String]): Seq[FileInfo] = {
     val fileRegex = configuration.fileRegex.r
     val fileIdsAndSize = htmlLines.flatMap(
       htmlLineToBeParsed =>
@@ -61,7 +62,7 @@ class CameraClient(
         }
     )
 
-    fileIdsAndSize
+    fileIdsAndSize.distinct
   }
 
   private def generateRelativeUrl: String = {
