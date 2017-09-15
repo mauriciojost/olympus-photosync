@@ -38,7 +38,7 @@ class FilesManager(
     val remoteFilesMap = toMap(remoteFiles)
     val localFilesMap = toMap(localFiles)
 
-    outputDir.mkdir() // it may exist already
+    outputDir.mkdirs() // it may exist already
 
     remoteFiles.zipWithIndex.flatMap {
       case (fileInfo, index) =>
