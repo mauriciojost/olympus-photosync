@@ -23,11 +23,6 @@ case class CameraClientConfig(
   val serverBaseUrl: String,
 
   /**
-   * Remote folder to be synchronized.
-   */
-  val serverFolderName: String,
-
-  /**
    * Timeout (in ms) to be used when pinging the server.
    */
   val serverPingTimeout: Int,

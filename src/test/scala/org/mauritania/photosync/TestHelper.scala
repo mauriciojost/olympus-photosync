@@ -6,12 +6,11 @@ import java.nio.charset.StandardCharsets
 
 object TestHelper {
 
-  // Helpers
   def touchFile(parent: File, filename: String): File = {
     val file = new File(parent, filename)
+    file.getParentFile.mkdirs()
     file.createNewFile()
     file.deleteOnExit()
-
     file
   }
 
@@ -19,16 +18,13 @@ object TestHelper {
     val file = File.createTempFile(prefix, "tmp")
     file.deleteOnExit()
     Files.write(Paths.get(file.getAbsolutePath()), (" " * size.toInt).getBytes(StandardCharsets.UTF_8))
-
     file
   }
 
   def createTmpDir(prefix: String): File = {
-    val file = File.createTempFile("test", "tmp")
-    file.delete()
-    file.mkdir()
+    val path = Files.createTempDirectory("photosync-tmp")
+    val file = path.toFile
     file.deleteOnExit()
-
     file
   }
 

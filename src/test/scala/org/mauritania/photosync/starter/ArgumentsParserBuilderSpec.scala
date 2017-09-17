@@ -28,12 +28,6 @@ class ArgumentsParserBuilderSpec extends Specification {
       result.get.client.serverBaseUrl mustEqual ("mybase")
     }
 
-    "parse server folder name" in {
-      val commandLineArguments = Seq("--server-folder-name", "myfolder")
-      val result = parser.parse(commandLineArguments, getDefaultPhotosyncConfig())
-      result.get.client.serverFolderName mustEqual ("myfolder")
-    }
-
     "parse output directory" in {
       val commandLineArguments = Seq("--output-directory", "myoutput")
       val result = parser.parse(commandLineArguments, getDefaultPhotosyncConfig())
@@ -47,9 +41,8 @@ class ArgumentsParserBuilderSpec extends Specification {
           serverName = "192.168.0.10",
           serverPort = 80,
           serverBaseUrl = "/DCIM",
-          serverFolderName = "100OLYMP",
           serverPingTimeout = 2000,
-          fileRegex = ".*=.*,(\\w+\\.\\w+),(\\d+),.*"
+          fileRegex = "wlan.*=.*,(.*),(\\d+),.*,.*,.*"
         ),
         outputDirectory = "output"
       )
@@ -65,7 +58,6 @@ class ArgumentsParserBuilderSpec extends Specification {
         serverName = "",
         serverPort = 0,
         serverBaseUrl = "",
-        serverFolderName = "",
         serverPingTimeout = 0,
         fileRegex = ""
       ),

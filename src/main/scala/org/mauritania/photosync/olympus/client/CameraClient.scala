@@ -3,6 +3,7 @@ package org.mauritania.photosync.olympus.client
 import java.io.{File, FileOutputStream}
 import java.net.URL
 import java.nio.channels.Channels
+import org.mauritania.photosync.olympus.FilesHelper
 import org.mauritania.photosync.olympus.sync.FileInfo
 import org.slf4j.LoggerFactory
 import scala.io.Source
@@ -16,48 +17,74 @@ class CameraClient(
   val logger = LoggerFactory.getLogger(this.getClass)
 
   def listFiles(): Seq[FileInfo] = {
-    val htmlLines = Source.fromURL(
-      urlTranslator(
-        new URL(
-          configuration.serverProtocol,
-          configuration.serverName,
-          configuration.serverPort,
-          generateRelativeUrl
-        )
-      )
-    ).getLines().toSeq
+    val htmlLines = htmlQuery(generateRelativeUrl())
 
-    logger.info("DUMP>>>")
-    htmlLines.foreach(logger.info)
-    logger.info("<<<DUMP")
+    logger.debug("HTML ROOT BEGIN")
+    htmlLines.foreach(logger.debug)
+    logger.debug("HTML ROOT END")
 
-    generateFilesListFromHtml(htmlLines)
+    val folders = generateDirectoriesListFromHtml(htmlLines)
+
+    folders.foreach(folder => logger.info(s"Detected remote folder: $folder"))
+
+    val files = folders.flatMap { folder =>
+      val htmlLinesFolder = htmlQuery(generateRelativeUrl(Some(folder)))
+      logger.debug(s"HTML ROOT BEGIN ($folder)")
+      htmlLinesFolder.foreach(logger.debug)
+      logger.debug(s"HTML ROOT END ($folder)\n")
+      generateFilesListFromHtml(htmlLinesFolder, folder)
+    }
+
+    files.foreach(file => logger.info(s"Detected remote file: $file"))
+
+    files
+
   }
 
-  def downloadFile(remoteFileId: String, localTargetDirectory: File): Try[File] = {
-    val urlSourceFile = urlTranslator(
-      new URL(
-        configuration.serverProtocol,
-        configuration.serverName,
-        configuration.serverPort,
-        generateRelativeUrl.concat(remoteFileId)
-      )
+  private[client] def htmlQuery(relativeUrl: String): Seq[String] = {
+    val url = new URL(configuration.serverProtocol, configuration.serverName, configuration.serverPort, relativeUrl)
+    val newUrl = urlTranslator(url)
+    Source.fromURL(newUrl).getLines().toSeq
+  }
+
+  def downloadFile(folderName: String, remoteFileId: String, localTargetDirectory: File): Try[File] = {
+    val urlSourceFile = new URL(
+      configuration.serverProtocol,
+      configuration.serverName,
+      configuration.serverPort,
+      generateRelativeUrl(Some(folderName), Some(remoteFileId))
     )
+    val urlSourceFileTranslated = urlTranslator(urlSourceFile)
     Try {
-      val rbc = Channels.newChannel(urlSourceFile.openStream());
-      val destinationFile = new File(localTargetDirectory, remoteFileId)
+      val rbc = Channels.newChannel(urlSourceFileTranslated.openStream());
+      val directory = new File(localTargetDirectory, folderName)
+      FilesHelper.mkdirs(directory)
+      val destinationFile = new File(directory, remoteFileId)
       val fos = new FileOutputStream(destinationFile);
       fos.getChannel().transferFrom(rbc, 0, Long.MaxValue);
       destinationFile.getAbsoluteFile
     }
   }
 
-  private def generateFilesListFromHtml(htmlLines: Seq[String]): Seq[FileInfo] = {
+  private def generateDirectoriesListFromHtml(htmlLines: Seq[String]): Seq[String] = {
+    val fileRegex = configuration.fileRegex.r
+    val folderNames = htmlLines.flatMap(
+      htmlLineToBeParsed =>
+        htmlLineToBeParsed match {
+          case fileRegex(folderName, fileSizeBytes) => Some(folderName)
+          case _ => None
+        }
+    )
+
+    folderNames.distinct
+  }
+
+  private def generateFilesListFromHtml(htmlLines: Seq[String], folder: String): Seq[FileInfo] = {
     val fileRegex = configuration.fileRegex.r
     val fileIdsAndSize = htmlLines.flatMap(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
-          case fileRegex(fileId, fileSizeBytes) => Some(FileInfo(fileId, fileSizeBytes.toLong))
+          case fileRegex(fileId, fileSizeBytes) => Some(FileInfo(folder, fileId, fileSizeBytes.toLong))
           case _ => None
         }
     )
@@ -65,9 +92,15 @@ class CameraClient(
     fileIdsAndSize.distinct
   }
 
-  private def generateRelativeUrl: String = {
-    configuration.serverBaseUrl + "/" + configuration.serverFolderName + "/"
+  private def generateRelativeUrl(folder: Option[String] = None, file: Option[String] = None): String = {
+    val fileStr = file.map(CameraClient.FileSeparator + _).mkString
+    val folderAndFileStr = folder.map(CameraClient.FileSeparator + _ + fileStr).mkString
+    configuration.serverBaseUrl + folderAndFileStr
   }
 
+}
+
+object CameraClient {
+  val FileSeparator = "/"
 }
 

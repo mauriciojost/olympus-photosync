@@ -1,9 +1,10 @@
 package org.mauritania.photosync.starter
 
-import java.io.{InputStream, OutputStream}
+import java.io.{File, InputStream, OutputStream}
 import java.net.InetSocketAddress
 
 import com.sun.net.httpserver.{HttpExchange, HttpHandler, HttpServer}
+import org.mauritania.photosync.TestHelper
 import org.specs2.mutable.Specification
 
 
@@ -16,6 +17,11 @@ class StarterSpec extends Specification {
     }
 
     "works correctly under normal conditions" in {
+
+      val tmp = TestHelper.createTmpDir("photosync-tmp-starter")
+
+      val expectedDownloadedFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
+
       val server = HttpServer.create(new InetSocketAddress(8085), 0)
       server.createContext("/", new RootHandler())
       server.setExecutor(null)
@@ -25,11 +31,14 @@ class StarterSpec extends Specification {
         Array(
           "--server-name", "localhost",
           "--server-port", "8085",
-          "--output-directory", "src/test/resources/org/mauritania/photosync/photosample/"
+          "--output-directory", tmp.getAbsolutePath
         )
       )
 
       server.stop(0)
+
+      expectedDownloadedFile.exists() must beTrue
+
       done
     }
 
@@ -44,15 +53,25 @@ class RootHandler extends HttpHandler {
 </style>
 <script type="text/javascript">
 wlansd = new Array();
-wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
+wlansd[0]="/DCIM/,100OLYMP,0,0,0,0";
 ...
 """
+  val folderResponse = """
+...
+</style>
+<script type="text/javascript">
+wlansd = new Array();
+wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
+...
+                     """
   val fileContentResponse = "=== PHOTO SAMPLE ==="
 
   def handle(t: HttpExchange) {
     t.getRequestURI.toString match {
-      case "/DCIM/100OLYMP/" => sendRootResponse(t, rootResponse)
+      case "/DCIM" => sendRootResponse(t, rootResponse)
+      case "/DCIM/100OLYMP" => sendRootResponse(t, folderResponse)
       case "/DCIM/100OLYMP/OR.ORF" => sendRootResponse(t, fileContentResponse)
+      case uri => sendRootResponse(t, s"Unexpected url: $uri")
     }
   }
 

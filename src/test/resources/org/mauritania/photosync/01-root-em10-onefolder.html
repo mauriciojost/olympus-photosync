@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=shift_jis">
+<meta name="viewport" content="width=device-width" />
+<style TYPE="text/css">
+a{text-decoration:none}
+img{border-style:none;margin:0}
+.box{background-position:center;border:thin solid #2E2E2E;box-shadow:3px 3px 3px rgba(0,0,0,0.4); background-color:#000000; color:#929292;float:left;font-size:10px;margin:5px;padding:4px;}
+
+</style>
+<script type="text/javascript">
+wlansd = new Array();
+wlansd[0]="/DCIM,100OLYMP,0,16,19163,26163";
+wlansd.sort(cmptime);
+wlansd.sort(cmpdate);
+wlansd.reverse();
+function cmptime(a, b){var g = a.split(",");var f = b.split(",");return g[5] - f[5];}
+function cmpdate(a, b){var g = a.split(",");var f = b.split(",");return g[4] - f[4];}
+
+icon = new Array();
+for( i = 0 ; i < wlansd.length ; i ++ ){
+var b = wlansd[i].split(",");	
+var name = b[1];
+var ext = name.split(".");
+if( !(b[3] & 0x10) ){
+if(( ext[1] == "JPG" )||(ext[1] == "ORF")||(ext[1] == "MPO")||(ext[1] == "MOV")||(ext[1] == "AVI")){icon[i] = "/get_thumbnail.cgi?DIR="+b[0]+"/"+name;}
+else{icon[i] = "";}
+}
+else{
+icon[i] = "";
+}
+}
+
+function list(){
+for( i = 0 ; i < wlansd.length ; i ++ ){
+var b = wlansd[i].split(",");
+var path = b[0];
+var name = b[1];
+var href = path + "/" + name;
+document.write('<div style="display:block; text-align:center; width:300px; height:50px; padding: 20px 0px;margin-bottom: 10px;background: url(/WEB_PARTS/btn.gif) center no-repeat; background-size: 300px"><br><a href="'+href+'">'+'<font color="#929292">'+name+'</font>'+'</a><br></div>');
+}
+}
+</script>
+</head>
+<body background="/WEB_PARTS/bg_1px.gif">
+<center>
+<img src = "/WEB_PARTS/title.gif" width="300px" height="27px" alt="TITLE">
+<hr color="#2E2E2E">
+<div style="position: relative;">
+<div style="background-color: #2E2E2E; padding: 10px; margin-bottom: 10px; border: 1px solid #2E2E2E;">
+<div align="left">
+<font color="#929292">>DCIM</font><br>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+list();
+</script>
+</center>
+</body>
+</html>

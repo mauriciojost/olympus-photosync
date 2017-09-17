@@ -14,7 +14,8 @@ class CameraClientSpec extends Specification with Mockito {
 
     "correctly list remote files when empty from OMD E-M10" in {
       val cc = new CameraClient(
-        generateClientCameraConfig("org/mauritania/photosync/0000-em10-no-files.html")
+        generateClientCameraConfig("00-root-em10-nofolder.html"),
+        specialMappingUrlTranslator("00-root-em10-nofolder.html", "0000-em10-no-files.html")
       )
       cc.listFiles() mustEqual Seq.empty[FileInfo]
     }
@@ -22,7 +23,8 @@ class CameraClientSpec extends Specification with Mockito {
 
     "correctly list remote files when many remote files from OMD E-M10" in {
       val cc = new CameraClient(
-        generateClientCameraConfig("org/mauritania/photosync/0001-em10-many-files.html")
+        generateClientCameraConfig("01-root-em10-onefolder.html"),
+        specialMappingUrlTranslator("01-root-em10-onefolder.html", "0001-em10-many-files.html")
       )
       cc.listFiles().size mustEqual 135
     }
@@ -30,15 +32,15 @@ class CameraClientSpec extends Specification with Mockito {
 
     "correctly list remote files and download when having one remote file from OMD E-M10" in {
       val cc = new CameraClient(
-        generateClientCameraConfig("org/mauritania/photosync/0002-em10-downloadable-file.html"),
-        specialMappingUrlTranslator // trick to test that a file is downloadable
+        generateClientCameraConfig("01-root-em10-onefolder.html"),
+        specialMappingUrlTranslator("01-root-em10-onefolder.html", "0002-em10-downloadable-file.html")
       )
-      cc.listFiles() mustEqual Seq(FileInfo("OR.ORF", 15441739L))
+      cc.listFiles() mustEqual Seq(FileInfo("100OLYMP", "OR.ORF", 15441739L))
 
       val outputDirectory = TestHelper.createTmpDir("output")
-      cc.downloadFile("OR.ORF", outputDirectory)
+      cc.downloadFile("100OLYMP", "OR.ORF", outputDirectory)
 
-      val downloadedFileToCheck = new File(outputDirectory, "OR.ORF")
+      val downloadedFileToCheck = new File(new File(outputDirectory, "100OLYMP"), "OR.ORF")
 
       downloadedFileToCheck.exists mustEqual true
 
@@ -50,28 +52,28 @@ class CameraClientSpec extends Specification with Mockito {
 
   }
 
-  def generateClientCameraConfig(file: String): CameraClientConfig = {
+  def generateClientCameraConfig(rootHtmlName: String): CameraClientConfig = {
     CameraClientConfig(
       serverProtocol = "file",
       serverName = "localhost",
-      serverBaseUrl = "./src/test/resources/",
-      serverFolderName = file,
+      serverBaseUrl = "./src/test/resources/org/mauritania/photosync/" + rootHtmlName,
       serverPort = 0,
       serverPingTimeout = 0,
-      fileRegex = """.*=.*,(\w+\.\w+),(\d+),.*"""
+      fileRegex = """.*=.*,(.*),(\d+),.*,.*,.*"""
     )
 
   }
 
-  def specialMappingUrlTranslator(url: URL): URL = {
-    def transformFileUrl(file: String) = file.replace("0002-em10-downloadable-file.html", "photosample")
-
-    url match {
-      case url if url.getFile.endsWith("ORF") => {
-        new URL(url.getProtocol, url.getHost, url.getPort, transformFileUrl(url.getFile))
-      }
-      case url => url
+  def specialMappingUrlTranslator(rootHtmlName: String, folderHtmlName: String)(url: URL): URL = {
+    // Tricky translations to mock up responses of the camera
+    def transformRelativeUrl(file: String) = {
+      file
+        .replace(rootHtmlName + "/100OLYMP", "100OLYMP/" + folderHtmlName)
+        .replace(folderHtmlName + "/", "photosample/")
     }
+    val relativeUrl = url.getFile
+    val newRelativeUrl = transformRelativeUrl(relativeUrl)
+    new URL(url.getProtocol, url.getHost, url.getPort, newRelativeUrl)
   }
 
 }

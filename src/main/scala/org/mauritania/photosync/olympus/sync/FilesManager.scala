@@ -1,7 +1,8 @@
 package org.mauritania.photosync.olympus.sync
 
-import java.io.File
+import java.io.{FileFilter, File}
 
+import org.mauritania.photosync.olympus.FilesHelper
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.slf4j.LoggerFactory
 
@@ -14,16 +15,19 @@ class FilesManager(
 
   val logger = LoggerFactory.getLogger(this.getClass)
 
-  private[sync] def isDownloaded(fileId: String, localFiles: Map[String, Long], remoteFiles: Map[String, Long]): Boolean = {
-    val localSize = localFiles.get(fileId)
-    val remoteSize = remoteFiles.get(fileId)
+  private[sync] def isDownloaded(fileInfo: FileInfo, localFiles: Map[String, Long], remoteFiles: Map[String, Long]): Boolean = {
+    val localSize = localFiles.get(fileInfo.getFileId)
+    val remoteSize = remoteFiles.get(fileInfo.getFileId)
     localSize == remoteSize
   }
 
   def listLocalFiles(): Seq[FileInfo] = {
-    val files = outputDir.listFiles()
-    val filesAndSizes = files.map(file => FileInfo(file.getName, file.length()))
-    filesAndSizes
+    val directories = outputDir.listFiles(FilesManager.DirectoriesFilter)
+    directories.flatMap { directory =>
+      val files = directory.listFiles()
+      val filesAndSizes = files.map(file => FileInfo(directory.getName, file.getName, file.length()))
+      filesAndSizes
+    }
   }
 
   def listRemoteFiles(): Seq[FileInfo] = {
@@ -32,13 +36,13 @@ class FilesManager(
   }
 
   def sync(): Seq[File] = {
-    def toMap(s: Seq[FileInfo]) = s.flatMap(FileInfo.unapply).toMap
+    def toMap(s: Seq[FileInfo]) = s.map(i => (i.getFileId, i.size)).toMap
     val remoteFiles = listRemoteFiles()
     val localFiles = listLocalFiles()
     val remoteFilesMap = toMap(remoteFiles)
     val localFilesMap = toMap(localFiles)
 
-    outputDir.mkdirs() // it may exist already
+    FilesHelper.mkdirs(outputDir)
 
     remoteFiles.zipWithIndex.flatMap {
       case (fileInfo, index) =>
@@ -52,10 +56,10 @@ class FilesManager(
     localFilesMap: Map[String, Long],
     remoteFilesMap: Map[String, Long]
   ): Option[File] = {
-    isDownloaded(fileInfo.name, localFilesMap, remoteFilesMap) match {
+    isDownloaded(fileInfo, localFilesMap, remoteFilesMap) match {
       case false => {
         logger.debug(s"Downloading file ${fileInfo}")
-        val downloadedFile = api.downloadFile(fileInfo.name, outputDir)
+        val downloadedFile = api.downloadFile(fileInfo.folder, fileInfo.name, outputDir)
         downloadedFile match {
           case Success(file) =>
             Some(file)
@@ -69,5 +73,11 @@ class FilesManager(
         None
       }
     }
+  }
+}
+
+object FilesManager {
+  val DirectoriesFilter = new FileFilter {
+    override def accept(pathname: File): Boolean = pathname.isDirectory
   }
 }
