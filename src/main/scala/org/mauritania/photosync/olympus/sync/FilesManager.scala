@@ -49,7 +49,7 @@ class FilesManager(
 
     remoteFiles.zipWithIndex.flatMap {
       case (fileInfo, index) =>
-        logger.info(s"Downloading $index / ${remoteFiles.size}...")
+        logger.info(s"Downloading ${index + 1} / ${remoteFiles.size}...")
         syncFile(fileInfo, localFilesMap, remoteFilesMap)
     }
   }
