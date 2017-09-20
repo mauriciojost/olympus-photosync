@@ -93,14 +93,14 @@ class CameraClient(
   }
 
   private def generateRelativeUrl(folder: Option[String] = None, file: Option[String] = None): String = {
-    val fileStr = file.map(CameraClient.FileSeparator + _).mkString
-    val folderAndFileStr = folder.map(CameraClient.FileSeparator + _ + fileStr).mkString
+    val fileStr = file.map(CameraClient.UrlSeparator + _).mkString
+    val folderAndFileStr = folder.map(CameraClient.UrlSeparator + _ + fileStr).mkString
     configuration.serverBaseUrl + folderAndFileStr
   }
 
 }
 
 object CameraClient {
-  val FileSeparator = "/"
+  val UrlSeparator = "/"
 }
 
