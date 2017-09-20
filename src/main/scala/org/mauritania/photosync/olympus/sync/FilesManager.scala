@@ -22,6 +22,9 @@ class FilesManager(
   }
 
   def listLocalFiles(): Seq[FileInfo] = {
+    if (!outputDir.isDirectory) {
+      throw new IllegalArgumentException(s"$outputDir is not a directory")
+    }
     val directories = outputDir.listFiles(FilesManager.DirectoriesFilter)
     directories.flatMap { directory =>
       val files = directory.listFiles()
