@@ -42,7 +42,7 @@ class ArgumentsParserBuilderSpec extends Specification {
           serverPort = 80,
           serverBaseUrl = "/DCIM",
           serverPingTimeout = 2000,
-          fileRegex = "wlan.*=.*,(.*),(\\d+),.*,.*,.*"
+          fileRegex = "wlan.*=.*,(.*),(\\d+),(.*),(.*),(.*)"
         ),
         outputDirectory = "output"
       )
