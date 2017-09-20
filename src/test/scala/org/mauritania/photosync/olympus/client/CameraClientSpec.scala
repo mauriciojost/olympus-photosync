@@ -35,7 +35,7 @@ class CameraClientSpec extends Specification with Mockito {
         generateClientCameraConfig("01-root-em10-onefolder.html"),
         specialMappingUrlTranslator("01-root-em10-onefolder.html", "0002-em10-downloadable-file.html")
       )
-      cc.listFiles() mustEqual Seq(FileInfo("100OLYMP", "OR.ORF", 15441739L))
+      cc.listFiles() mustEqual Seq(FileInfo("100OLYMP", "OR.ORF", 15441739L, Some(18229), None))
 
       val outputDirectory = TestHelper.createTmpDir("output")
       cc.downloadFile("100OLYMP", "OR.ORF", outputDirectory)

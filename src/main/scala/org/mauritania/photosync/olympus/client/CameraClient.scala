@@ -43,6 +43,7 @@ class CameraClient(
 
   private[client] def htmlQuery(relativeUrl: String): Seq[String] = {
     val url = new URL(configuration.serverProtocol, configuration.serverName, configuration.serverPort, relativeUrl)
+    logger.info(s"Querying URL $url...")
     val newUrl = urlTranslator(url)
     Source.fromURL(newUrl).getLines().toList
   }
@@ -84,7 +85,7 @@ class CameraClient(
     val fileIdsAndSize = htmlLines.flatMap(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
-          case fileRegex(fileId, fileSizeBytes, x, y, z) => Some(FileInfo(folder, fileId, fileSizeBytes.toLong))
+          case fileRegex(fileId, fileSizeBytes, _, date, time) => Some(FileInfo(folder, fileId, fileSizeBytes.toLong, Try(date.toInt).toOption, Try(time.toInt).toOption))
           case _ => None
         }
     )
