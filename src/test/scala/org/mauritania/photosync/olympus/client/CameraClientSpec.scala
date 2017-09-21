@@ -35,7 +35,10 @@ class CameraClientSpec extends Specification with Mockito {
         generateClientCameraConfig("01-root-em10-onefolder.html"),
         specialMappingUrlTranslator("01-root-em10-onefolder.html", "0002-em10-downloadable-file.html")
       )
-      cc.listFiles() mustEqual Seq(FileInfo("100OLYMP", "OR.ORF", 15441739L, Some(18229), None))
+
+      // wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
+      cc.listFiles() mustEqual Seq(FileInfo("100OLYMP", "OR.ORF", 15441739L, Some(18229), Some(43541)))
+
 
       val outputDirectory = TestHelper.createTmpDir("output")
       cc.downloadFile("100OLYMP", "OR.ORF", outputDirectory)
@@ -59,7 +62,7 @@ class CameraClientSpec extends Specification with Mockito {
       serverBaseUrl = "./src/test/resources/org/mauritania/photosync/" + rootHtmlName,
       serverPort = 0,
       serverPingTimeout = 0,
-      fileRegex = """.*=.*,(.*),(\d+),(.*),(.*),(.*)"""
+      fileRegex = """wlan.*=.*,(.*),(\d+),(\d+),(\d+),(\d+).*"""
     )
 
   }

@@ -85,8 +85,10 @@ class CameraClient(
     val fileIdsAndSize = htmlLines.flatMap(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
-          case fileRegex(fileId, fileSizeBytes, _, date, time) => Some(FileInfo(folder, fileId, fileSizeBytes.toLong, Try(date.toInt).toOption, Try(time.toInt).toOption))
-          case _ => None
+          case fileRegex(fileId, fileSizeBytes, _, date, time) =>
+            Some(FileInfo(folder, fileId, fileSizeBytes.toLong, Try(date.toInt).toOption, Try(time.toInt).toOption))
+          case _ =>
+            None
         }
     )
 
