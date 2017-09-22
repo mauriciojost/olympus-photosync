@@ -1,16 +1,17 @@
 package org.mauritania.photosync.olympus.sync
 
-import java.io.{FileFilter, File}
+import java.io.{File, FileFilter}
 
 import org.mauritania.photosync.olympus.FilesHelper
 import org.mauritania.photosync.olympus.client.CameraClient
+import org.mauritania.photosync.olympus.sync.FilesManager.Config
 import org.slf4j.LoggerFactory
 
-import scala.util.{Success, Failure}
+import scala.util.{Failure, Success}
 
 class FilesManager(
   api: CameraClient,
-  outputDir: File
+  config: Config
 ) {
 
   val logger = LoggerFactory.getLogger(this.getClass)
@@ -22,10 +23,10 @@ class FilesManager(
   }
 
   def listLocalFiles(): Seq[FileInfo] = {
-    if (!outputDir.isDirectory) {
-      throw new IllegalArgumentException(s"$outputDir is not a directory")
+    if (!config.outputDir.isDirectory) {
+      throw new IllegalArgumentException(s"${config.outputDir} is not a directory")
     }
-    val directories = outputDir.listFiles(FilesManager.DirectoriesFilter)
+    val directories = config.outputDir.listFiles(FilesManager.DirectoriesFilter)
     directories.flatMap { directory =>
       val files = directory.listFiles()
       val filesAndSizes = files.map(file => FileInfo(directory.getName, file.getName, file.length()))
@@ -34,8 +35,9 @@ class FilesManager(
   }
 
   def listRemoteFiles(): Seq[FileInfo] = {
-    val filesAndSizes = api.listFiles()
-    filesAndSizes
+    val files = api.listFiles()
+    val filteredFiles = files.filterNot(FileInfoFilter.isFileDiscardable(_, config.mediaFilter))
+    filteredFiles
   }
 
   def sync(): Seq[File] = {
@@ -45,7 +47,7 @@ class FilesManager(
     val remoteFilesMap = toMap(remoteFiles)
     val localFilesMap = toMap(localFiles)
 
-    FilesHelper.mkdirs(outputDir)
+    FilesHelper.mkdirs(config.outputDir)
 
     remoteFiles.zipWithIndex.flatMap {
       case (fileInfo, index) =>
@@ -62,7 +64,7 @@ class FilesManager(
     isDownloaded(fileInfo, localFilesMap, remoteFilesMap) match {
       case false => {
         logger.debug(s"Downloading file ${fileInfo}")
-        val downloadedFile = api.downloadFile(fileInfo.folder, fileInfo.name, outputDir)
+        val downloadedFile = api.downloadFile(fileInfo.folder, fileInfo.name, config.outputDir)
         downloadedFile match {
           case Success(file) =>
             Some(file)
@@ -83,4 +85,9 @@ object FilesManager {
   val DirectoriesFilter = new FileFilter {
     override def accept(pathname: File): Boolean = pathname.isDirectory
   }
+
+  case class Config(
+    outputDir: File,
+    mediaFilter: FileInfoFilter.Criteria = FileInfoFilter.Criteria.Bypass
+  )
 }

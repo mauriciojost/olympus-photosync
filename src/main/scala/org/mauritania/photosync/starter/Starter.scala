@@ -28,7 +28,11 @@ object Starter {
 
     logger.info(s"Using configuration (${config})...")
     val cameraClient = new CameraClient(config.client)
-    val manager = new FilesManager(cameraClient, new File(config.outputDirectory))
+    val managerConfig = FilesManager.Config(
+      outputDir = new File(config.outputDirectory),
+      mediaFilter = config.mediaFilter
+    )
+    val manager = new FilesManager(cameraClient, managerConfig)
 
     logger.info("Synchronizing media from camera -> PC...")
     manager.sync()

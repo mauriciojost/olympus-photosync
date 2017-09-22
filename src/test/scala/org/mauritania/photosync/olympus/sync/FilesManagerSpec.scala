@@ -4,6 +4,7 @@ import java.io.File
 
 import org.mauritania.photosync.TestHelper
 import org.mauritania.photosync.olympus.client.CameraClient
+import org.mauritania.photosync.olympus.sync.FilesManager.Config
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 
@@ -25,7 +26,7 @@ class FilesManagerSpec extends Specification with Mockito {
       val remoteFiles = Map(FileInfo(OlympFolder, "photo.jpg", 10L).getFileId -> 10L)
 
       // The manager should tell the file's already synchronized/downloaded
-      val fm = new FilesManager(cameraClientMock, AnyDirectory)
+      val fm = new FilesManager(cameraClientMock, Config(AnyDirectory))
       fm.isDownloaded(FileInfo(OlympFolder, "photo.jpg", 10L), localFiles, remoteFiles) mustEqual true
 
     }
@@ -38,7 +39,7 @@ class FilesManagerSpec extends Specification with Mockito {
       val remoteFiles = Map(FileInfo(OlympFolder, "photo.jpg", 10L).getFileId -> 10L)
 
       // The manager should tell the file's is bad and should be re-downloaded
-      val fm = new FilesManager(cameraClientMock, AnyDirectory)
+      val fm = new FilesManager(cameraClientMock, Config(AnyDirectory))
       fm.isDownloaded(FileInfo(OlympFolder, "photo.jpg", 10L), localFiles, remoteFiles) mustEqual false
 
     }
@@ -51,7 +52,7 @@ class FilesManagerSpec extends Specification with Mockito {
       val remoteFiles = Map(FileInfo(OlympFolder, "photo.jpg", 10L).getFileId -> 10L)
 
       // The manager should tell the file has not been donwloaded yet
-      val fm = new FilesManager(cameraClientMock, AnyDirectory)
+      val fm = new FilesManager(cameraClientMock, Config(AnyDirectory))
       fm.isDownloaded(FileInfo(OlympFolder, "photo.jpg", 10L), localFiles, remoteFiles) mustEqual false
 
     }
@@ -67,7 +68,7 @@ class FilesManagerSpec extends Specification with Mockito {
       val cameraClientMock = mock[CameraClient]
 
       // The manager should tell the file's is bad and should be re-downloaded
-      val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
+      val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
 
       fm.listLocalFiles() mustEqual Seq(
         FileInfo(OlympFolder, "photo1.jpg", 0L), FileInfo(OlympFolder, "photo2.jpg", 0L)
@@ -83,8 +84,8 @@ class FilesManagerSpec extends Specification with Mockito {
       val photo1 = TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo1.jpg")
       val photo2 = new File(new File(localDirectoryOfDownloads, OlympFolder), "photo2.jpg") // not present (not touched)
 
-      photo1.exists() mustEqual true
-      photo2.exists() mustEqual false
+      photo1.exists() must beTrue
+      photo2.exists() must beFalse
 
       // Simulate camera reporting that photo2.jpg is available
       val cameraClientMock = mock[CameraClient]
@@ -94,12 +95,12 @@ class FilesManagerSpec extends Specification with Mockito {
         returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo2.jpg")))
 
       // The manager should download the file photo2.jpg
-      val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
+      val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
       fm.sync() mustEqual Seq(photo2)
 
       // There should be downloaded photo2.jpg and old photo1.jpg in local directory
-      photo1.exists() mustEqual true
-      photo2.exists() mustEqual true
+      photo1.exists() must beTrue
+      photo2.exists() must beTrue
     }
 
     "correctly synchronize a remote file (in the camera) that had been already downloaded locally" in {
@@ -110,7 +111,7 @@ class FilesManagerSpec extends Specification with Mockito {
       val localDirectoryOfDownloads = TestHelper.createTmpDir("output")
       val photo1 = TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo1.jpg")
 
-      photo1.exists() mustEqual true
+      photo1.exists() must beTrue
 
       // Simulate camera telling that photo1.jpg is available
       val cameraClientMock = mock[CameraClient]
@@ -120,7 +121,7 @@ class FilesManagerSpec extends Specification with Mockito {
         returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo1.jpg")))
 
       // The manager should skip downloading file photo1.jpg
-      val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
+      val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
       fm.sync().size mustEqual 0
     }
 
@@ -137,7 +138,7 @@ class FilesManagerSpec extends Specification with Mockito {
         returns(Failure(new RuntimeException()))
 
       // The manager should download the file photo2.jpg
-      val fm = new FilesManager(cameraClientMock, localDirectoryOfDownloads)
+      val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
       fm.sync() mustEqual Seq.empty[FileInfo]
     }
 
@@ -149,8 +150,8 @@ class FilesManagerSpec extends Specification with Mockito {
       cameraClientMock.listFiles().returns(remoteFilesMock)
 
       // The manager should list both files
-      val fm = new FilesManager(cameraClientMock, new File("output"))
-      fm.listRemoteFiles() mustEqual (remoteFilesMock)
+      val fm = new FilesManager(cameraClientMock, Config(new File("output")))
+      fm.listRemoteFiles() mustEqual remoteFilesMock
 
     }
 

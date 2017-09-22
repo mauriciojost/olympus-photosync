@@ -1,9 +1,14 @@
 package org.mauritania.photosync.starter
 
+import java.time.LocalDate
+
 import com.typesafe.config.ConfigFactory
 import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClientConfig
+import org.mauritania.photosync.olympus.sync.FileInfoFilter
+
+import scala.util.Try
 
 object ArgumentsParserBuilder {
 
@@ -17,6 +22,10 @@ object ArgumentsParserBuilder {
         serverBaseUrl = configFile.getString("server.base.url"),
         serverPingTimeout = configFile.getInt("server.ping.timeout"),
         fileRegex = configFile.getString("file.regex")
+      ),
+      mediaFilter = FileInfoFilter.Criteria(
+        discardAfter = Try(configFile.getString("output.discardafter")).toOption.map(LocalDate.parse(_)),
+        discardBefore = Try(configFile.getString("output.discardbefore")).toOption.map(LocalDate.parse(_))
       ),
       outputDirectory = configFile.getString("output.directory")
     )
@@ -66,6 +75,14 @@ object ArgumentsParserBuilder {
     opt[String]('o', "output-directory").valueName("<path>").
       action { (propx, c) => c.copy(outputDirectory = propx) }.
       text("local directory where media will be stored, default is 'output'")
+
+    opt[String]('B', "discard-before").valueName("<DD-MM-YYYY>").
+      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(discardBefore = Some(LocalDate.parse(propx)))) }.
+      text("discard media created strictly before the provided date")
+
+    opt[String]('A', "discard-after").valueName("<DD-MM-YYYY>").
+      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(discardAfter = Some(LocalDate.parse(propx)))) }.
+      text("discard media created strictly after the provided date")
 
   }
 

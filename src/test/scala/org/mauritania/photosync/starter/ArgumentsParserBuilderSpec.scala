@@ -2,6 +2,7 @@ package org.mauritania.photosync.starter
 
 import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClientConfig
+import org.mauritania.photosync.olympus.sync.FileInfoFilter
 import org.specs2.mutable.Specification
 
 class ArgumentsParserBuilderSpec extends Specification {
@@ -44,6 +45,7 @@ class ArgumentsParserBuilderSpec extends Specification {
           serverPingTimeout = 2000,
           fileRegex = "wlan.*=.*,(.*),(\\d+),(\\d+),(\\d+),(\\d+).*"
         ),
+        mediaFilter = FileInfoFilter.Criteria.Bypass,
         outputDirectory = "output"
       )
 
@@ -61,6 +63,7 @@ class ArgumentsParserBuilderSpec extends Specification {
         serverPingTimeout = 0,
         fileRegex = ""
       ),
+      mediaFilter = FileInfoFilter.Criteria.Bypass,
       outputDirectory = ""
     )
 

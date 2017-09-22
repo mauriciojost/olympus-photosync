@@ -6,7 +6,7 @@ case class FileInfo(
   folder: String,
   name: String,
   size: Long,
-  date: Option[Int] = None
+  date: Int = FileInfo.DefaultDate
 ) {
 
   import FileInfo._
@@ -17,13 +17,11 @@ case class FileInfo(
 
   private def maskAndShift(i: Int, mask: Int, shift: Int): Int = (i & mask) >>> shift
 
-  def getHumanDate(): Option[LocalDate] = {
-    date.map { machineDays =>
-      val days = maskAndShift(machineDays, MaskDays, 0)
-      val months = maskAndShift(machineDays, MaskMont, 5)
-      val years = maskAndShift(machineDays, MaskYear, 9) + 1980
-      LocalDate.of(years, months, days)
-    }
+  def getHumanDate(): LocalDate = {
+    val days = maskAndShift(date, MaskDays, 0)
+    val months = maskAndShift(date, MaskMont, 5)
+    val years = maskAndShift(date, MaskYear, 9) + 1980
+    LocalDate.of(years, months, days)
   }
 
 }
@@ -36,6 +34,8 @@ object FileInfo {
 
   val MaxMachineDayticks = 61343
   val MinMachineDayticks = 10273
+
+  val DefaultDate = MinMachineDayticks
 
   val MaxDate = LocalDate.of(2099, 12, 31)
   val MinDate = LocalDate.of(2000, 1, 1)

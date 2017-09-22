@@ -35,7 +35,7 @@ class CameraClient(
       generateFilesListFromHtml(htmlLinesFolder, folder)
     }
 
-    files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.getHumanDate()}"))
+    files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.getHumanDate()})"))
 
     files
 
@@ -86,7 +86,7 @@ class CameraClient(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
           case fileRegex(fileId, fileSizeBytes, _, date, time) =>
-            Some(FileInfo(folder, fileId, fileSizeBytes.toLong, Try(date.toInt).toOption))
+            Some(FileInfo(folder, fileId, fileSizeBytes.toLong, date.toInt))
           case _ =>
             None
         }
