@@ -37,7 +37,7 @@ class CameraClientSpec extends Specification with Mockito {
       )
 
       // wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
-      cc.listFiles() mustEqual Seq(FileInfo("100OLYMP", "OR.ORF", 15441739L, Some(18229), Some(43541)))
+      cc.listFiles() mustEqual Seq(FileInfo("100OLYMP", "OR.ORF", 15441739L, Some(18229)))
 
 
       val outputDirectory = TestHelper.createTmpDir("output")
