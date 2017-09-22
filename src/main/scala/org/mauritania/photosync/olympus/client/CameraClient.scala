@@ -35,7 +35,7 @@ class CameraClient(
       generateFilesListFromHtml(htmlLinesFolder, folder)
     }
 
-    files.foreach(file => logger.info(s"Detected remote file: $file"))
+    files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.getHumanDate()}"))
 
     files
 
