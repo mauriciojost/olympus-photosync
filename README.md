@@ -7,7 +7,13 @@
 
 This application allows to wirelessly download media from Olympus OMD E-Mx cameras to your PC.
 
-It has been tested on _Olympus OMD E-M10_ and _Olympus TG-860_. It should work _out-of-the-box_ with other similar cameras (like _Olympus OMD E-M1_ and _E-M5_).
+It has been tested on the following cameras: 
+
+- _Olympus TG-860_(thanks Lee!)
+- _Olympus TG-5_ (thanks Jim!)
+- _Olympus OMD E-M10_ (thanks to myself!)
+
+It should work _out-of-the-box_ with other similar cameras (like _Olympus OMD E-M1_ and _E-M5_).
 
 This application has been tested on _Linux_, _Windows_ and should correctly run on _Mac OS_. Contact me if you have an issue.
 
