@@ -9,7 +9,7 @@ This application allows to wirelessly download media from Olympus OMD E-Mx camer
 
 It has been tested on the following cameras: 
 
-- _Olympus TG-860_(thanks Lee!)
+- _Olympus TG-860_ (thanks Lee!)
 - _Olympus TG-5_ (thanks Jim!)
 - _Olympus OMD E-M10_ (thanks to myself!)
 
