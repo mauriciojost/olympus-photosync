@@ -10,8 +10,6 @@ rpmLicense := Some("Apache License Version 2.0")
 
 name := "photosync"
 
-version := "0.8-SNAPSHOT"
-
 scalaVersion := "2.11.8"
 
 mainClass in Compile := Some("org.mauritania.photosync.starter.Starter")
