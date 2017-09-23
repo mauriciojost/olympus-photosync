@@ -10,7 +10,7 @@ import org.specs2.mutable.Specification
 
 import scala.util.{Failure, Success}
 
-class FilesManagerSpec extends Specification with Mockito {
+class FilesManagerSpec extends Specification with Mockito with TempDir {
 
   val AnyDirectory = new File(".")
   val Separator = "/"
@@ -77,30 +77,30 @@ class FilesManagerSpec extends Specification with Mockito {
     }
 
     "correctly synchronize a remote file (in the camera) that was not yet downloaded locally" in {
+      withTmpDir { localDirectoryOfDownloads =>
 
+        // Simulate local download directory and photo1.jpg (but not photo2.jpg)
+        val photo1 = TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo1.jpg")
+        val photo2 = new File(new File(localDirectoryOfDownloads, OlympFolder), "photo2.jpg") // not present (not touched)
 
-      // Simulate local download directory and photo1.jpg (but not photo2.jpg)
-      val localDirectoryOfDownloads = TestHelper.createTmpDir("output")
-      val photo1 = TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo1.jpg")
-      val photo2 = new File(new File(localDirectoryOfDownloads, OlympFolder), "photo2.jpg") // not present (not touched)
+        photo1.exists() must beTrue
+        photo2.exists() must beFalse
 
-      photo1.exists() must beTrue
-      photo2.exists() must beFalse
+        // Simulate camera reporting that photo2.jpg is available
+        val cameraClientMock = mock[CameraClient]
+        val remoteFilesMock = Seq(FileInfo(OlympFolder, "photo2.jpg", 100L))
+        cameraClientMock.listFiles().returns(remoteFilesMock)
+        cameraClientMock.downloadFile(OlympFolder, "photo2.jpg", localDirectoryOfDownloads).
+          returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo2.jpg")))
 
-      // Simulate camera reporting that photo2.jpg is available
-      val cameraClientMock = mock[CameraClient]
-      val remoteFilesMock = Seq(FileInfo(OlympFolder, "photo2.jpg", 100L))
-      cameraClientMock.listFiles().returns(remoteFilesMock)
-      cameraClientMock.downloadFile(OlympFolder, "photo2.jpg", localDirectoryOfDownloads).
-        returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo2.jpg")))
+        // The manager should download the file photo2.jpg
+        val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
+        fm.sync() mustEqual Seq(photo2)
 
-      // The manager should download the file photo2.jpg
-      val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
-      fm.sync() mustEqual Seq(photo2)
-
-      // There should be downloaded photo2.jpg and old photo1.jpg in local directory
-      photo1.exists() must beTrue
-      photo2.exists() must beTrue
+        // There should be downloaded photo2.jpg and old photo1.jpg in local directory
+        photo1.exists() must beTrue
+        photo2.exists() must beTrue
+      }
     }
 
     "correctly synchronize a remote file (in the camera) that had been already downloaded locally" in {
