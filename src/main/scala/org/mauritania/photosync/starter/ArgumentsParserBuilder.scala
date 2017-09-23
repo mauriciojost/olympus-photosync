@@ -24,8 +24,8 @@ object ArgumentsParserBuilder {
         fileRegex = configFile.getString("file.regex")
       ),
       mediaFilter = FileInfoFilter.Criteria(
-        discardAfter = Try(configFile.getString("output.discardafter")).toOption.map(LocalDate.parse(_)),
-        discardBefore = Try(configFile.getString("output.discardbefore")).toOption.map(LocalDate.parse(_))
+        fromDate = Try(configFile.getString("output.discardafter")).toOption.map(LocalDate.parse(_)),
+        untilDate = Try(configFile.getString("output.discardbefore")).toOption.map(LocalDate.parse(_))
       ),
       outputDirectory = configFile.getString("output.directory")
     )
@@ -76,13 +76,13 @@ object ArgumentsParserBuilder {
       action { (propx, c) => c.copy(outputDirectory = propx) }.
       text("local directory where media will be stored, default is 'output'")
 
-    opt[String]('B', "discard-before").valueName("<DD-MM-YYYY>").
-      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(discardBefore = Some(LocalDate.parse(propx)))) }.
-      text("discard media created strictly before the provided date")
+    opt[String]('B', "until").valueName("<DD-MM-YYYY>").
+      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(untilDate = Some(LocalDate.parse(propx)))) }.
+      text("discard media created after the provided date")
 
-    opt[String]('A', "discard-after").valueName("<DD-MM-YYYY>").
-      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(discardAfter = Some(LocalDate.parse(propx)))) }.
-      text("discard media created strictly after the provided date")
+    opt[String]('A', "from").valueName("<DD-MM-YYYY>").
+      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(fromDate = Some(LocalDate.parse(propx)))) }.
+      text("discard media created before the provided date")
 
   }
 

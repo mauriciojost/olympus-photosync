@@ -3,8 +3,7 @@ package org.mauritania.photosync.olympus.client
 import java.io.{File, FileOutputStream}
 import java.net.URL
 import java.nio.channels.Channels
-import org.mauritania.photosync.olympus.FilesHelper
-import org.mauritania.photosync.olympus.sync.FileInfo
+import org.mauritania.photosync.olympus.sync.{FilesHelper, FileInfo}
 import org.slf4j.LoggerFactory
 import scala.io.Source
 import scala.util.Try

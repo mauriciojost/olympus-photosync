@@ -1,6 +1,6 @@
-package org.mauritania.photosync.olympus
+package org.mauritania.photosync.olympus.sync
 
-import java.io.{FileNotFoundException, File}
+import java.io.{File, FileNotFoundException}
 
 object FilesHelper {
 

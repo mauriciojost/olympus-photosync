@@ -2,7 +2,6 @@ package org.mauritania.photosync.olympus.sync
 
 import java.io.{File, FileFilter}
 
-import org.mauritania.photosync.olympus.FilesHelper
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.mauritania.photosync.olympus.sync.FilesManager.Config
 import org.slf4j.LoggerFactory
@@ -36,7 +35,7 @@ class FilesManager(
 
   def listRemoteFiles(): Seq[FileInfo] = {
     val files = api.listFiles()
-    val filteredFiles = files.filterNot(FileInfoFilter.isFileDiscardable(_, config.mediaFilter))
+    val filteredFiles = files.filter(FileInfoFilter.isFileEligible(_, config.mediaFilter))
     filteredFiles
   }
 

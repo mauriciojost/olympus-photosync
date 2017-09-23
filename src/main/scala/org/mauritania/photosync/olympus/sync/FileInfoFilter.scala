@@ -4,16 +4,16 @@ import java.time.LocalDate
 
 object FileInfoFilter {
 
-  def isFileDiscardable(f: FileInfo, c: Criteria): Boolean = {
+  def isFileEligible(f: FileInfo, c: Criteria): Boolean = {
     val date = f.getHumanDate()
-    val toDiscardBecauseAfter = c.discardAfter.map(date.isAfter(_)).getOrElse(false)
-    val toDiscardBecauseBefore = c.discardBefore.map(date.isBefore(_)).getOrElse(false)
-    toDiscardBecauseAfter || toDiscardBecauseBefore
+    val fromRespected = c.fromDate.map(date.isAfter(_)).getOrElse(true)
+    val untilRespected = c.untilDate.map(date.isBefore(_)).getOrElse(true)
+    fromRespected && untilRespected
   }
 
   case class Criteria(
-    discardAfter: Option[LocalDate],
-    discardBefore: Option[LocalDate]
+    fromDate: Option[LocalDate],
+    untilDate: Option[LocalDate]
   )
 
   object Criteria {
