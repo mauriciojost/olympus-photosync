@@ -12,7 +12,7 @@ trait TempDir {
     try {
       f(tmpDir)
     } finally {
-      FileUtils.deleteDirectory(tmpDir);
+      FileUtils.deleteDirectory(tmpDir)
     }
   }
 

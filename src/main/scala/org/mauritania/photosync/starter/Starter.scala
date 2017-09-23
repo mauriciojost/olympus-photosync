@@ -13,11 +13,11 @@ object Starter {
 
   def main(args: Array[String]): Unit = {
 
-    val fileConfiguration = loadConfigFile()
+    val fileConfiguration = loadConfigFile
 
     logger.info("Loading file configuration ({})...", fileConfiguration)
 
-    buildParser().parse(args, fileConfiguration) match {
+    buildParser.parse(args, fileConfiguration) match {
       case Some(config) => startSynchronization(config)
       case None =>  throw new IllegalArgumentException("Bad command line arguments!")
     }
@@ -26,7 +26,7 @@ object Starter {
 
   def startSynchronization(config: PhotosyncConfig): Unit = {
 
-    logger.info(s"Using configuration (${config})...")
+    logger.info(s"Using configuration ($config)...")
     val cameraClient = new CameraClient(config.client)
     val managerConfig = FilesManager.Config(
       outputDir = new File(config.outputDirectory),

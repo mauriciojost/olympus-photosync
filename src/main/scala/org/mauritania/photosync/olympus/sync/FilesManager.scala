@@ -13,7 +13,7 @@ class FilesManager(
   config: Config
 ) {
 
-  val logger = LoggerFactory.getLogger(this.getClass)
+  private val logger = LoggerFactory.getLogger(this.getClass)
 
   private[sync] def isDownloaded(fileInfo: FileInfo, localFiles: Map[String, Long], remoteFiles: Map[String, Long]): Boolean = {
     val localSize = localFiles.get(fileInfo.getFileId)
@@ -41,6 +41,7 @@ class FilesManager(
 
   def sync(): Seq[File] = {
     def toMap(s: Seq[FileInfo]) = s.map(i => (i.getFileId, i.size)).toMap
+
     val remoteFiles = listRemoteFiles()
     val localFiles = listLocalFiles()
     val remoteFilesMap = toMap(remoteFiles)
@@ -60,21 +61,18 @@ class FilesManager(
     localFilesMap: Map[String, Long],
     remoteFilesMap: Map[String, Long]
   ): Option[File] = {
-    isDownloaded(fileInfo, localFilesMap, remoteFilesMap) match {
-      case false => {
-        logger.debug(s"Downloading file ${fileInfo}")
-        val downloadedFile = api.downloadFile(fileInfo.folder, fileInfo.name, config.outputDir)
-        downloadedFile match {
-          case Success(file) =>
-            Some(file)
-          case Failure(error) =>
-            logger.error(s"Exception downloading ${fileInfo}", error)
-            None
-        }
-      }
-      case true => {
-        logger.debug(s"Skipping file ${fileInfo} as it's been already downloaded")
-        None
+    if (isDownloaded(fileInfo, localFilesMap, remoteFilesMap)) {
+      logger.debug(s"Skipping file $fileInfo as it's been already downloaded")
+      None
+    } else {
+      logger.debug(s"Downloading file $fileInfo")
+      val downloadedFile = api.downloadFile(fileInfo.folder, fileInfo.name, config.outputDir)
+      downloadedFile match {
+        case Success(file) =>
+          Some(file)
+        case Failure(error) =>
+          logger.error(s"Exception downloading $fileInfo", error)
+          None
       }
     }
   }
@@ -89,4 +87,5 @@ object FilesManager {
     outputDir: File,
     mediaFilter: FileInfoFilter.Criteria = FileInfoFilter.Criteria.Bypass
   )
+
 }

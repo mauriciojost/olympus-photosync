@@ -12,7 +12,7 @@ import scala.util.Try
 
 object ArgumentsParserBuilder {
 
-  def loadConfigFile(): PhotosyncConfig = {
+  def loadConfigFile: PhotosyncConfig = {
     val configFile = ConfigFactory.load()
     PhotosyncConfig(
       client = CameraClientConfig(
@@ -46,7 +46,7 @@ object ArgumentsParserBuilder {
         |Feel free to contribute!
         |""".stripMargin.replace("VERSION", Constants.Version))
 
-    help("help") text ("show this message")
+    help("help") text "show this message"
 
     opt[String]('n', "server-name").valueName("<server-name>").
       action { (propx, c) => c.copy(client = c.client.copy(serverName = propx)) }.

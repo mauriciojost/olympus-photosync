@@ -5,9 +5,9 @@ import java.time.LocalDate
 object FileInfoFilter {
 
   def isFileEligible(f: FileInfo, c: Criteria): Boolean = {
-    val date = f.getHumanDate()
-    val fromRespected = c.fromDate.map(date.isAfter(_)).getOrElse(true)
-    val untilRespected = c.untilDate.map(date.isBefore(_)).getOrElse(true)
+    val date = f.getHumanDate
+    val fromRespected = c.fromDate.forall(date.isAfter(_))
+    val untilRespected = c.untilDate.forall(date.isBefore(_))
     fromRespected && untilRespected
   }
 

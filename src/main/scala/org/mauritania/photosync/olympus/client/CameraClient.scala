@@ -34,7 +34,7 @@ class CameraClient(
       generateFilesListFromHtml(htmlLinesFolder, folder)
     }
 
-    files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.getHumanDate()})"))
+    files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.getHumanDate})"))
 
     files
 
@@ -56,12 +56,12 @@ class CameraClient(
     )
     val urlSourceFileTranslated = urlTranslator(urlSourceFile)
     Try {
-      val rbc = Channels.newChannel(urlSourceFileTranslated.openStream());
+      val rbc = Channels.newChannel(urlSourceFileTranslated.openStream())
       val directory = new File(localTargetDirectory, folderName)
       FilesHelper.mkdirs(directory)
       val destinationFile = new File(directory, remoteFileId)
-      val fos = new FileOutputStream(destinationFile);
-      fos.getChannel().transferFrom(rbc, 0, Long.MaxValue);
+      val fos = new FileOutputStream(destinationFile)
+      fos.getChannel.transferFrom(rbc, 0, Long.MaxValue)
       destinationFile.getAbsoluteFile
     }
   }

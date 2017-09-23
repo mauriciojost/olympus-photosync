@@ -17,7 +17,7 @@ case class FileInfo(
 
   private def maskAndShift(i: Int, mask: Int, shift: Int): Int = (i & mask) >>> shift
 
-  def getHumanDate(): LocalDate = {
+  def getHumanDate: LocalDate = {
     val days = maskAndShift(date, MaskDays, 0)
     val months = maskAndShift(date, MaskMont, 5)
     val years = maskAndShift(date, MaskYear, 9) + 1980

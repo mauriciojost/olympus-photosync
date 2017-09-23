@@ -17,7 +17,7 @@ object TestHelper {
   def createTmpFile(prefix: String, size: Long): File = {
     val file = File.createTempFile(prefix, "tmp")
     file.deleteOnExit()
-    Files.write(Paths.get(file.getAbsolutePath()), (" " * size.toInt).getBytes(StandardCharsets.UTF_8))
+    Files.write(Paths.get(file.getAbsolutePath), (" " * size.toInt).getBytes(StandardCharsets.UTF_8))
     file
   }
 

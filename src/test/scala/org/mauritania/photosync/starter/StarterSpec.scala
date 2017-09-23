@@ -1,6 +1,6 @@
 package org.mauritania.photosync.starter
 
-import java.io.{File, InputStream, OutputStream}
+import java.io.File
 import java.net.InetSocketAddress
 
 import com.sun.net.httpserver.{HttpExchange, HttpHandler, HttpServer}
@@ -73,13 +73,6 @@ wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
       case "/DCIM/100OLYMP/OR.ORF" => sendRootResponse(t, fileContentResponse)
       case uri => sendRootResponse(t, s"Unexpected url: $uri")
     }
-  }
-
-  private def copyStream(in: InputStream, out: OutputStream) {
-    Iterator
-      .continually(in.read)
-      .takeWhile(-1 !=)
-      .foreach(out.write)
   }
 
   private def sendRootResponse(t: HttpExchange, response: String) {
