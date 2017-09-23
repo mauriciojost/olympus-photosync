@@ -24,8 +24,8 @@ object ArgumentsParserBuilder {
         fileRegex = configFile.getString("file.regex")
       ),
       mediaFilter = FileInfoFilter.Criteria(
-        fromDate = Try(configFile.getString("output.discardafter")).toOption.map(LocalDate.parse(_)),
-        untilDate = Try(configFile.getString("output.discardbefore")).toOption.map(LocalDate.parse(_))
+        fromDate = Try(configFile.getString("output.fromdate")).toOption.map(LocalDate.parse(_)),
+        untilDate = Try(configFile.getString("output.untildate")).toOption.map(LocalDate.parse(_))
       ),
       outputDirectory = configFile.getString("output.directory")
     )
