@@ -78,11 +78,11 @@ object ArgumentsParserBuilder {
 
     opt[String]('B', "until").valueName("<DD-MM-YYYY>").
       action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(untilDate = Some(LocalDate.parse(propx)))) }.
-      text("discard media created after the provided date")
+      text("synchronize only files created strictly before a given date")
 
     opt[String]('A', "from").valueName("<DD-MM-YYYY>").
       action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(fromDate = Some(LocalDate.parse(propx)))) }.
-      text("discard media created before the provided date")
+      text("synchronize only files created strictly after a given date")
 
   }
 
