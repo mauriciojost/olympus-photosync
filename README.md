@@ -43,7 +43,7 @@ In the coming sections of this document, when requested to execute _photosync_ y
  
  - (if under Windows) navigate to the folder _<PHOTOSYNC>\bin_ and execute _photosync.bat_.
 
-#### Using Linux packages (_deb_ and _rpm_ files)
+#### Using Linux packages (_.deb_ and _.rpm_ files)
 
 Packages _.deb_ and _.rpm_ are available for Linux distributions. You can install them using _dpkg_ and _rpm_ tools.
 
@@ -121,10 +121,10 @@ sbt run      # To launch it
 The project uses _sbt-native-packager_ so you can build packages for many operating systems / distributions.
 
 ```
-sbt universal:packageBin         # To build the multi-platform _zip_ package
+sbt universal:packageBin         # To build the multi-platform .zip package
 sbt universal:packageZipTarball  # To build the multi-platform tarball
-sbt debian:packageBin            # To build a Debian package (_.deb_)
-sbt rpm:packageBin               # To build an RPM package (_.rpm_) (must have _rpm_ tool installed if in _Debian_ OS)
+sbt debian:packageBin            # To build a Debian package (.deb)
+sbt rpm:packageBin               # To build an RPM package (.rpm) (must have rpm tool installed if in Debian OS)
 sbt windows:packageBin           # To build a Windows installer (from Windows)
 sbt docker:publishLocal          # To build a docker image
 ```
