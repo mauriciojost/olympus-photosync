@@ -33,7 +33,7 @@ If you use a **Linux** distribution I strongly suggest to download the _.deb_ pa
 
 If you use **Windows** or **Mac OS** I strongly suggest to download the _.zip_ package.
 
-#### Using generic packages (_zip_ or _tgz_, suggested for Windows & Mac OS)
+#### Using generic packages (_.zip_ or _.tgz_, suggested for Windows & Mac OS)
 
 These packages are provided so that the application can be used without installation. Download the latest version (for instance _photosync-XX.zip_) and decompress it somewhere (for example in _/home/user/_). Then the executables will be under the unzipped directory, on the _<PHOTOSYNC>/bin/_ subdirectory.
 
