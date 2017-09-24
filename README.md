@@ -5,25 +5,35 @@
 
 [![Download](https://img.shields.io/badge/download-installer-aa3333.svg)](https://bitbucket.org/mauriciojost/olympus-photosync/downloads) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md) 
 
-This application allows to wirelessly download media from Olympus OMD E-Mx cameras to your PC.
+This application allows to wirelessly download media from Olympus cameras to your PC.
 
-It has been tested on the following cameras: 
+It has been successfully tested on the following cameras: 
 
 - _Olympus TG-860_ (thanks Lee!)
 - _Olympus TG-5_ (thanks Jim!)
-- _Olympus OMD E-M10_ (thanks to myself!)
+- _Olympus OMD E-M10_
 
-It should work _out-of-the-box_ with other similar cameras (like _Olympus OMD E-M1_ and _E-M5_).
+Also it should work _out-of-the-box_ with other similar cameras (like _Olympus OMD E-M1_ and _E-M5_).
 
-This application has been tested on _Linux_, _Windows_ and should correctly run on _Mac OS_. Contact me if you have an issue.
+This application has been successfully tested on the following operating systems:
+
+- _Linux_
+- _Windows_ 
+- _Mac OS_ (thanks Ola!)
+
+Contact me if you have any issue.
 
 ## Get started
 
 ### Install/unzip the application 
 
-First [**download** the application package from here](https://bitbucket.org/mauriciojost/olympus-photosync/downloads). If you use a Linux distribution I strongly suggest to download the _.deb_ package for Debian/Ubuntu or the _.rpm_ one for _Red Hat_ like distributions.
+First [**download** the application package from here](https://bitbucket.org/mauriciojost/olympus-photosync/downloads). 
 
-#### Using a _zip_ or _tgz_ package
+If you use a **Linux** distribution I strongly suggest to download the _.deb_ package for Debian/Ubuntu or the _.rpm_ one for _Red Hat_ like distributions.
+
+If you use **Windows** or **Mac OS** I strongly suggest to download the _.zip_ package.
+
+#### Using generic packages (_zip_ or _tgz_, suggested for Windows & Mac OS)
 
 These packages are provided so that the application can be used without installation. Download the latest version (for instance _photosync-XX.zip_) and decompress it somewhere (for example in _/home/user/_). Then the executables will be under the unzipped directory, on the _<PHOTOSYNC>/bin/_ subdirectory.
 
@@ -33,7 +43,7 @@ In the coming sections of this document, when requested to execute _photosync_ y
  
  - (if under Windows) navigate to the folder _<PHOTOSYNC>\bin_ and execute _photosync.bat_.
 
-#### Using the Linux packages (_deb_ and _rpm_ files)
+#### Using Linux packages (_deb_ and _rpm_ files)
 
 Packages _.deb_ and _.rpm_ are available for Linux distributions. You can install them using _dpkg_ and _rpm_ tools.
 
