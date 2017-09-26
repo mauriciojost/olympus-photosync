@@ -7,6 +7,7 @@ import org.mauritania.photosync.olympus.sync.{FilesHelper, FileInfo}
 import org.slf4j.LoggerFactory
 import scala.io.Source
 import scala.util.Try
+import scala.collection.immutable.Seq
 
 class CameraClient(
   configuration: CameraClientConfig,

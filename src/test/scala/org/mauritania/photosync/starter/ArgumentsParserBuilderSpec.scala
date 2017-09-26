@@ -4,6 +4,7 @@ import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClientConfig
 import org.mauritania.photosync.olympus.sync.FileInfoFilter
 import org.specs2.mutable.Specification
+import scala.collection.immutable.Seq
 
 class ArgumentsParserBuilderSpec extends Specification {
 

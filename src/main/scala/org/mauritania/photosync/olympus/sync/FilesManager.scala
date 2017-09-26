@@ -5,6 +5,7 @@ import java.io.{File, FileFilter}
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.mauritania.photosync.olympus.sync.FilesManager.Config
 import org.slf4j.LoggerFactory
+import scala.collection.immutable.Seq
 
 import scala.util.{Failure, Success}
 
@@ -25,7 +26,7 @@ class FilesManager(
     if (!config.outputDir.isDirectory) {
       throw new IllegalArgumentException(s"${config.outputDir} is not a directory")
     }
-    val directories = config.outputDir.listFiles(FilesManager.DirectoriesFilter)
+    val directories = Seq.empty[File] ++ config.outputDir.listFiles(FilesManager.DirectoriesFilter)
     directories.flatMap { directory =>
       val files = directory.listFiles()
       val filesAndSizes = files.map(file => FileInfo(directory.getName, file.getName, file.length()))

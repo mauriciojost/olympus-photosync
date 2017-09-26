@@ -7,6 +7,7 @@ import org.mauritania.photosync.olympus.client.CameraClient
 import org.mauritania.photosync.olympus.sync.FilesManager.Config
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
+import scala.collection.immutable.Seq
 
 import scala.util.{Failure, Success}
 
