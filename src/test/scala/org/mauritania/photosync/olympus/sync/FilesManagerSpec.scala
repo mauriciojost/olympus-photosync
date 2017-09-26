@@ -71,7 +71,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
       // The manager should tell the file's is bad and should be re-downloaded
       val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
 
-      fm.listLocalFiles() mustEqual Seq(
+      fm.listLocalFiles().toArray mustEqual Array(
         FileInfo(OlympFolder, "photo1.jpg", 0L), FileInfo(OlympFolder, "photo2.jpg", 0L)
       )
 
@@ -96,7 +96,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
 
         // The manager should download the file photo2.jpg
         val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
-        fm.sync() mustEqual Seq(photo2)
+        fm.sync().toArray mustEqual Array(photo2)
 
         // There should be downloaded photo2.jpg and old photo1.jpg in local directory
         photo1.exists() must beTrue
