@@ -4,11 +4,11 @@ import java.io.File
 import java.net.InetSocketAddress
 
 import com.sun.net.httpserver.{HttpExchange, HttpHandler, HttpServer}
-import org.mauritania.photosync.TestHelper
+import org.mauritania.photosync.olympus.sync.TempDir
 import org.specs2.mutable.Specification
 
 
-class StarterSpec extends Specification {
+class StarterSpec extends Specification with TempDir {
 
   "The starter" should {
 
@@ -17,29 +17,26 @@ class StarterSpec extends Specification {
     }
 
     "works correctly under normal conditions" in {
+      withTmpDir { tmp =>
+        val expectedDownloadedFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
 
-      val tmp = TestHelper.createTmpDir("photosync-tmp-starter")
+        val server = HttpServer.create(new InetSocketAddress(8085), 0)
+        server.createContext("/", new RootHandler())
+        server.setExecutor(null)
+        server.start()
 
-      val expectedDownloadedFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
-
-      val server = HttpServer.create(new InetSocketAddress(8085), 0)
-      server.createContext("/", new RootHandler())
-      server.setExecutor(null)
-      server.start()
-
-      Starter.main(
-        Array(
-          "--server-name", "localhost",
-          "--server-port", "8085",
-          "--output-directory", tmp.getAbsolutePath
+        Starter.main(
+          Array(
+            "--server-name", "localhost",
+            "--server-port", "8085",
+            "--output-directory", tmp.getAbsolutePath
+          )
         )
-      )
 
-      server.stop(0)
+        server.stop(0)
 
-      expectedDownloadedFile.exists() must beTrue
-
-      done
+        expectedDownloadedFile.exists() must beTrue
+      }
     }
 
   }
