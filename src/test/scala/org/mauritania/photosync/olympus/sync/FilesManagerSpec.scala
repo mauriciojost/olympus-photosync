@@ -69,7 +69,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
 
         val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
 
-        fm.listLocalFiles().toArray mustEqual Array(
+        fm.listLocalFiles().toSet mustEqual Set(
           FileInfo(OlympFolder, "photo1.jpg", 0L), FileInfo(OlympFolder, "photo2.jpg", 0L)
         )
       }
