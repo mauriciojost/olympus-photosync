@@ -3,11 +3,11 @@
 set -e
 set -x
 
-INSTALLER_DIR=$(readlink -e `dirname $0`)
-ROOT_DIR=$INSTALLER_DIR/../../
+installer_dir=$(readlink -e `dirname $0`)
+root_dir=$installer_dir/../../
 
 echo "### Building packages..."
-cd $ROOT_DIR
+cd $root_dir
 
 sbt clean
 sbt test
@@ -17,13 +17,18 @@ sbt debian:packageBin
 sbt rpm:packageBin
 #sbt windows:packageBin
 
-cd $INSTALLER_DIR
+cd $installer_dir
+
+rm -f $root_dir/packages.log
+rm -f $root_dir/packages.md5sum
 
 echo "### Locating packages..."
-find $ROOT_DIR/target -name *.zip
-find $ROOT_DIR/target -name *.tgz
-find $ROOT_DIR/target -name *.deb
-find $ROOT_DIR/target -name *.rpm
-#find $ROOT_DIR/target -name *.exe
+find $root_dir/target -name *.zip >> $root_dir/packages.log
+find $root_dir/target -name *.tgz >> $root_dir/packages.log
+find $root_dir/target -name *.deb >> $root_dir/packages.log
+find $root_dir/target -name *.rpm >> $root_dir/packages.log
+#find $root_dir/target -name *.exe >> $root_dir/packages.log
+
+cat $root_dir/packages.log | xargs -I% md5sum % >> $root_dir/packages.md5sum
 
 echo "### Done."
