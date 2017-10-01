@@ -2,6 +2,7 @@ package org.mauritania.photosync.starter
 
 import java.io.File
 
+import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.mauritania.photosync.olympus.sync.FilesManager
@@ -12,10 +13,22 @@ object Starter {
   val logger = LoggerFactory.getLogger(this.getClass)
 
   def main(args: Array[String]): Unit = {
+    try {
+      startApp(args)
+    } catch {
+      case e: Exception =>
+        logger.error("Application failed", e)
+        throw e
+    }
+  }
+
+  def startApp(args: Array[String]): Unit = {
+
+    logger.info(s"Version: ${Constants.Version}")
 
     val fileConfiguration = loadConfigFile
 
-    logger.info("Loading file configuration ({})...", fileConfiguration)
+    logger.info(s"Loading file configuration: $fileConfiguration")
 
     buildParser.parse(args, fileConfiguration) match {
       case Some(config) => startSynchronization(config)
