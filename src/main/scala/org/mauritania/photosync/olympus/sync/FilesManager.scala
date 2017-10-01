@@ -14,7 +14,7 @@ class FilesManager(
   config: Config
 ) {
 
-  private val logger = LoggerFactory.getLogger(this.getClass)
+  import FilesManager._
 
   private[sync] def isDownloaded(fileInfo: FileInfo, localFiles: Map[String, Long], remoteFiles: Map[String, Long]): Boolean = {
     val localSize = localFiles.get(fileInfo.getFileId)
@@ -43,12 +43,12 @@ class FilesManager(
   def sync(): Seq[File] = {
     def toMap(s: Seq[FileInfo]) = s.map(i => (i.getFileId, i.size)).toMap
 
+    FilesHelper.mkdirs(config.outputDir)
+
     val remoteFiles = listRemoteFiles()
     val localFiles = listLocalFiles()
     val remoteFilesMap = toMap(remoteFiles)
     val localFilesMap = toMap(localFiles)
-
-    FilesHelper.mkdirs(config.outputDir)
 
     remoteFiles.zipWithIndex.flatMap {
       case (fileInfo, index) =>
@@ -80,6 +80,9 @@ class FilesManager(
 }
 
 object FilesManager {
+
+  private val logger = LoggerFactory.getLogger(this.getClass)
+
   val DirectoriesFilter = new FileFilter {
     override def accept(pathname: File): Boolean = pathname.isDirectory
   }
