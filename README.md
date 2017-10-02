@@ -15,7 +15,7 @@ It has been successfully tested on the following cameras:
 - _Olympus OMD E-M5 Mark II_ (thanks David!)
 - _Olympus OMD E-M10_
 
-Also it should work _out-of-the-box_ with other similar cameras (like _Olympus OMD E-M1_).
+Also it should work _out-of-the-box_ with other similar Olympus cameras.
 
 This application has been successfully tested on the following operating systems:
 
