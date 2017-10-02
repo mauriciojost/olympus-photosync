@@ -11,6 +11,7 @@ It has been successfully tested on the following cameras:
 
 - _Olympus TG-860_ (thanks Lee!)
 - _Olympus TG-5_ (thanks Jim!)
+- _Olympus OMD E-M1_ (thanks Jean Pierre!)
 - _Olympus OMD E-M5 Mark II_ (thanks David!)
 - _Olympus OMD E-M10_
 
