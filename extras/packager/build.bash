@@ -5,6 +5,15 @@ set -x
 
 installer_dir=$(readlink -e `dirname $0`)
 root_dir=$installer_dir/../../
+src_dir=$root_dir/src
+
+echo "### Notifying about versions match..."
+version_constants=`find $src_dir | grep Constants.scala | xargs cat | grep Version`
+version_sbt=`find $root_dir | grep version.sbt | xargs cat`
+echo ""
+echo "Versions are: $version_constants and $version_sbt"
+echo ""
+sleep 4
 
 echo "### Building packages..."
 cd $root_dir
