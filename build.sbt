@@ -1,4 +1,10 @@
-enablePlugins(WindowsPlugin, UniversalPlugin, JavaAppPackaging)
+import com.banno.plantuml.PlantUMLPlugin
+
+enablePlugins(WindowsPlugin, UniversalPlugin, JavaAppPackaging, PlantUMLPlugin)
+
+sequenceDiagramExtension := ".plantuml"
+sequenceDiagramsLocation := file("src/main/resources/doc/")
+sequenceDiagramsOutput := file("src/main/resources/doc/")
 
 rpmRelease := "1"
 

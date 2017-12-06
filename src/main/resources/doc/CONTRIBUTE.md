@@ -1,0 +1,3 @@
+# CONTRIBUTE
+
+![Architecture](architecture.png)
