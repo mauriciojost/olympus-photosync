@@ -6,6 +6,7 @@ sequenceDiagramExtension := ".plantuml"
 sequenceDiagramsLocation := file("src/docs/")
 sequenceDiagramsOutput := file("src/docs/")
 
+LaikaPlugin.defaults
 
 rpmRelease := "1"
 
