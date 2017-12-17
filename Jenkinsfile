@@ -8,13 +8,25 @@ pipeline {
     stage('Build') {
       steps {
 	echo "My branch is: ${env.BRANCH_NAME}"
-        sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean test'
+        sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean compile'
       }
     }
     stage('Test') {
       steps {
 	echo "My branch is: ${env.BRANCH_NAME}"
-        archiveArtifacts artifacts: 'src/main/resources/doc/**', fingerprint: true
+        sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 test'
+      }
+    }
+    stage('Document') {
+      steps {
+	echo "My branch is: ${env.BRANCH_NAME}"
+        sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 laika:site'
+      }
+    }
+    stage('Archive') {
+      steps {
+	echo "My branch is: ${env.BRANCH_NAME}"
+        archiveArtifacts artifacts: 'target/docs/site/**', fingerprint: true
       }
     }
   }
