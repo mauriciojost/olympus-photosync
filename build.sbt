@@ -3,8 +3,9 @@ import com.banno.plantuml.PlantUMLPlugin
 enablePlugins(WindowsPlugin, UniversalPlugin, JavaAppPackaging, PlantUMLPlugin)
 
 sequenceDiagramExtension := ".plantuml"
-sequenceDiagramsLocation := file("src/main/resources/doc/")
-sequenceDiagramsOutput := file("src/main/resources/doc/")
+sequenceDiagramsLocation := file("src/docs/")
+sequenceDiagramsOutput := file("src/docs/")
+
 
 rpmRelease := "1"
 
