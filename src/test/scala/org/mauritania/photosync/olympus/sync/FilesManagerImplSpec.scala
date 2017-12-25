@@ -4,14 +4,14 @@ import java.io.File
 
 import org.mauritania.photosync.TestHelper
 import org.mauritania.photosync.olympus.client.CameraClient
-import org.mauritania.photosync.olympus.sync.FilesManager.Config
+import org.mauritania.photosync.olympus.sync.FilesManagerImpl.Config
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import scala.collection.immutable.Seq
 
 import scala.util.{Failure, Success}
 
-class FilesManagerSpec extends Specification with Mockito with TempDir {
+class FilesManagerImplSpec extends Specification with Mockito with TempDir {
 
   val AnyDirectory = new File(".")
   val Separator = "/"
@@ -28,7 +28,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
       val remoteFiles = Map(fi.getFileId -> fi)
 
       // The manager should tell the file's already synchronized/downloaded
-      val fm = new FilesManager(cameraClientMock, Config(AnyDirectory))
+      val fm = new FilesManagerImpl(cameraClientMock, Config(AnyDirectory))
       fm.isDownloaded(fi, localFiles, remoteFiles) mustEqual true
 
     }
@@ -43,7 +43,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
       val remoteFiles = Map(fi10.getFileId -> fi10)
 
       // The manager should tell the file's is bad and should be re-downloaded
-      val fm = new FilesManager(cameraClientMock, Config(AnyDirectory))
+      val fm = new FilesManagerImpl(cameraClientMock, Config(AnyDirectory))
       fm.isDownloaded(fi10, localFiles, remoteFiles) mustEqual false
 
     }
@@ -57,7 +57,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
       val remoteFiles = Map(fi.getFileId -> fi)
 
       // The manager should tell the file has not been donwloaded yet
-      val fm = new FilesManager(cameraClientMock, Config(AnyDirectory))
+      val fm = new FilesManagerImpl(cameraClientMock, Config(AnyDirectory))
       fm.isDownloaded(fi, localFiles, remoteFiles) mustEqual false
 
     }
@@ -71,7 +71,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
         // Simulate camera
         val cameraClientMock = mock[CameraClient]
 
-        val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
+        val fm = new FilesManagerImpl(cameraClientMock, Config(localDirectoryOfDownloads))
 
         fm.listLocalFiles().toSet mustEqual Set(
           FileInfo(OlympFolder, "photo1.jpg", 0L), FileInfo(OlympFolder, "photo2.jpg", 0L)
@@ -97,7 +97,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
           returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo2.jpg")))
 
         // The manager should download the file photo2.jpg
-        val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
+        val fm = new FilesManagerImpl(cameraClientMock, Config(localDirectoryOfDownloads))
         fm.sync().toArray mustEqual Array(photo2)
 
         // There should be downloaded photo2.jpg and old photo1.jpg in local directory
@@ -122,7 +122,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
           returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo1.jpg")))
 
         // The manager should skip downloading file photo1.jpg
-        val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
+        val fm = new FilesManagerImpl(cameraClientMock, Config(localDirectoryOfDownloads))
         fm.sync().size mustEqual 0
       }
     }
@@ -138,7 +138,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
           returns(Failure(new RuntimeException()))
 
         // The manager should download the file photo2.jpg
-        val fm = new FilesManager(cameraClientMock, Config(localDirectoryOfDownloads))
+        val fm = new FilesManagerImpl(cameraClientMock, Config(localDirectoryOfDownloads))
         fm.sync() mustEqual Seq.empty[FileInfo]
       }
     }
@@ -151,7 +151,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
       cameraClientMock.listFiles().returns(remoteFilesMock)
 
       // The manager should list both files
-      val fm = new FilesManager(cameraClientMock, Config(new File("output")))
+      val fm = new FilesManagerImpl(cameraClientMock, Config(new File("output")))
       fm.listRemoteFiles() mustEqual remoteFilesMock
 
     }

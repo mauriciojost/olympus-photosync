@@ -68,7 +68,6 @@ class CameraClientSpec extends Specification with Mockito {
       serverName = "localhost",
       serverBaseUrl = "./src/test/resources/org/mauritania/photosync/" + rootHtmlName,
       serverPort = 0,
-      serverPingTimeout = 0,
       fileRegex = """wlan.*=.*,(.*),(\d+),(\d+),(\d+),(\d+).*""",
       urlTranslator = Some(mapping)
     )

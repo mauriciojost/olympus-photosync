@@ -28,7 +28,7 @@ packageSummary := "Synchronize media from Olympus cameras to your PC wirelessly.
 
 coverageMinimum := 85
 coverageFailOnMinimum := true
-coverageExcludedPackages := "<empty>;.*GuiStarter" // GUI in beta
+coverageExcludedPackages := "<empty>;GuiStarter.*" // GUI in beta
 
 resolvers ++= Seq(
   "Bintray repository" at "https://dl.bintray.com/scalaz-releases/"
@@ -39,7 +39,8 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-log4j12" % "1.7.5",
   "com.typesafe" % "config" % "1.2.1",
   "com.github.scopt" %% "scopt" % "3.3.0",
-  "org.scalafx" %% "scalafx" % "8.0.144-R12"
+  "org.scalafx" %% "scalafx" % "8.0.144-R12",
+  "com.lihaoyi" %% "scalarx" % "0.3.2"
 )
 
 libraryDependencies ++= Seq(

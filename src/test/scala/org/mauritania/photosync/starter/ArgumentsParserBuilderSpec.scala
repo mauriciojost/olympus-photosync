@@ -43,7 +43,6 @@ class ArgumentsParserBuilderSpec extends Specification {
           serverName = "192.168.0.10",
           serverPort = 80,
           serverBaseUrl = "/DCIM",
-          serverPingTimeout = 2000,
           fileRegex = "wlan.*=.*,(.*),(\\d+),(\\d+),(\\d+),(\\d+).*",
           urlTranslator = None
         ),
@@ -63,7 +62,6 @@ class ArgumentsParserBuilderSpec extends Specification {
         serverName = "",
         serverPort = 0,
         serverBaseUrl = "",
-        serverPingTimeout = 0,
         fileRegex = "",
         urlTranslator = None
       ),

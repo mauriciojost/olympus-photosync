@@ -2,11 +2,12 @@ package org.mauritania.photosync.olympus.sync
 
 import java.io.{File, FileFilter}
 
+import org.mauritania.photosync.olympus.FilesManager
 import org.mauritania.photosync.olympus.client.CameraClient
-import org.mauritania.photosync.olympus.sync.FilesManager.Config
+import org.mauritania.photosync.olympus.sync.FilesManagerImpl.Config
 import org.slf4j.LoggerFactory
-import scala.collection.immutable.Seq
 
+import scala.collection.immutable.Seq
 import scala.util.{Failure, Success}
 
 /**
@@ -14,12 +15,12 @@ import scala.util.{Failure, Success}
   * @param api instance of [[CameraClient]] to be used to contact the camera
   * @param config
   */
-class FilesManager(
+class FilesManagerImpl(
   api: CameraClient,
   config: Config
-) {
+) extends FilesManager {
 
-  import FilesManager._
+  import FilesManagerImpl._
 
   private[sync] def isDownloaded(fileInfo: FileInfo, localFiles: Map[String, FileInfo], remoteFiles: Map[String, FileInfo]): Boolean = {
     val localSize = localFiles.get(fileInfo.getFileId).map(_.size)
@@ -27,15 +28,11 @@ class FilesManager(
     localSize == remoteSize
   }
 
-  /**
-    * List files that are in the local filesystem.
-    * @return a list of [[FileInfo]]
-    */
-  def listLocalFiles(): Seq[FileInfo] = {
+  override def listLocalFiles(): Seq[FileInfo] = {
     if (!config.outputDir.isDirectory) {
       throw new IllegalArgumentException(s"${config.outputDir} is not a directory")
     }
-    val directories = Seq.empty[File] ++ config.outputDir.listFiles(FilesManager.DirectoriesFilter)
+    val directories = Seq.empty[File] ++ config.outputDir.listFiles(FilesManagerImpl.DirectoriesFilter)
     directories.flatMap { directory =>
       val files = directory.listFiles()
       val filesAndSizes = files.map(file => FileInfo(directory.getName, file.getName, file.length()))
@@ -43,22 +40,13 @@ class FilesManager(
     }
   }
 
-  /**
-    * List files that are in the remote filesystem (camera).
-    * @return a list of [[FileInfo]]
-    */
-  def listRemoteFiles(): Seq[FileInfo] = {
+  override def listRemoteFiles(): Seq[FileInfo] = {
     val files = api.listFiles()
     val filteredFiles = files.filter(FileInfoFilter.isFileEligible(_, config.mediaFilter))
     filteredFiles
   }
 
-  /**
-    * Prepare a plan to synchronize remote files with local files.
-    *
-    * @return sequence of [[SyncPlanItem]] to proceed with the synchronization
-    */
-  def syncPlan(): Seq[SyncPlanItem] = {
+  override def syncPlan(): Seq[SyncPlanItem] = {
     def toMap(s: Seq[FileInfo]) = s.map(i => (i.getFileId, i)).toMap
 
     val remoteFiles = listRemoteFiles()
@@ -71,13 +59,7 @@ class FilesManager(
     }
   }
 
-  /**
-    * Synchronize remote files with local files.
-    * Synchronization is one-way (remote to local).
-    *
-    * @return list of local [[File]] that were successfully synchronized
-    */
-  def sync(): Seq[File] = {
+  override def sync(): Seq[File] = {
     Directories.mkdirs(config.outputDir)
     val syncPlanItems = syncPlan()
     syncPlanItems.flatMap {
@@ -87,14 +69,8 @@ class FilesManager(
     }
   }
 
-  /**
-    * Synchronize a single file based on its info, local and remote state.
-    * @param fileInfo
-    * @param localFilesMap
-    * @param remoteFilesMap
-    * @return
-    */
-  def syncFile(
+  // TODO does not need to know about the local&remoteFilesMap... the [[SyncPlanItem]] should contain all such info
+  override def syncFile(
     fileInfo: FileInfo,
     localFilesMap: Map[String, FileInfo],
     remoteFilesMap: Map[String, FileInfo]
@@ -116,7 +92,7 @@ class FilesManager(
   }
 }
 
-object FilesManager {
+object FilesManagerImpl {
 
   private val logger = LoggerFactory.getLogger(this.getClass)
 
@@ -129,6 +105,7 @@ object FilesManager {
     mediaFilter: FileInfoFilter.Criteria = FileInfoFilter.Criteria.Bypass
   )
 
-  case class SyncPlanItem(f: FileInfo, i: Int, local: Map[String, FileInfo], remote: Map[String, FileInfo])
+  // TODO: to replace local & remote attributes by syncplan resolutions: tobesyncd, alreadysyncd
+  case class SyncPlanItem(fileInfo: FileInfo, index: Int, local: Map[String, FileInfo], remote: Map[String, FileInfo])
 
 }

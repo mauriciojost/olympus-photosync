@@ -22,7 +22,6 @@ object ArgumentsParserBuilder {
         serverName = configFile.getString("server.name"),
         serverPort = configFile.getInt("server.port"),
         serverBaseUrl = configFile.getString("server.base.url"),
-        serverPingTimeout = configFile.getInt("server.ping.timeout"),
         fileRegex = configFile.getString("file.regex"),
         urlTranslator = None
       ),
@@ -68,10 +67,6 @@ object ArgumentsParserBuilder {
     opt[String]('b', "server-base-url").valueName("<server-base-url>").
       action { (propx, c) => c.copy(client = c.client.copy(serverBaseUrl = propx)) }.
       text("base url under which the camera server exposes media, default is '/DCIM'")
-
-    opt[String]('t', "server-ping-timeout").valueName("<server-ping-timeout>").
-      action { (propx, c) => c.copy(client = c.client.copy(serverPingTimeout = propx.toInt)) }.
-      text("timeout to be used when trying to connect to the camera server, default is '2000'")
 
     opt[String]('r', "file-regex").valueName("<file-regex>").
       action { (propx, c) => c.copy(client = c.client.copy(fileRegex = propx)) }.
