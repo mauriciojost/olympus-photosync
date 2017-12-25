@@ -48,7 +48,8 @@ class ArgumentsParserBuilderSpec extends Specification {
           urlTranslator = None
         ),
         mediaFilter = FileInfoFilter.Criteria.Bypass,
-        outputDirectory = "output"
+        outputDirectory = "output",
+        gui = false
       )
 
     }
@@ -67,7 +68,8 @@ class ArgumentsParserBuilderSpec extends Specification {
         urlTranslator = None
       ),
       mediaFilter = FileInfoFilter.Criteria.Bypass,
-      outputDirectory = ""
+      outputDirectory = "",
+      gui = false
     )
 
   }

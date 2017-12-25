@@ -31,7 +31,8 @@ object ArgumentsParserBuilder {
         untilDateCondition = Try(configFile.getString("output.untildate")).toOption.map(LocalDate.parse(_)),
         fileNameConditions = Try(configFile.getString("output.patterns")).toOption.map(_.split(SeqSeparator))
       ),
-      outputDirectory = configFile.getString("output.directory")
+      outputDirectory = configFile.getString("output.directory"),
+      gui = configFile.getBoolean("gui")
     )
   }
 
@@ -91,6 +92,10 @@ object ArgumentsParserBuilder {
     opt[String]('P', "file-patterns").valueName(s"<pattern1>$SeqSeparator<pattern2>$SeqSeparator...").
       action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(fileNameConditions = Some(propx.split(SeqSeparator)))) }.
       text("synchronize only files that match one of the provided glob patterns, for instance *.avi for AVI files (matching is case sensitive, so '*.AVI' is not equivalent to '*.avi')")
+
+    opt[Boolean]('g', "gui").
+      action { (propx, c) => c.copy(gui = propx)}.
+      text("launch GUI")
 
   }
 

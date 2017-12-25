@@ -31,7 +31,8 @@ object Starter {
     logger.info(s"Loading file configuration: $fileConfiguration")
 
     buildParser.parse(args, fileConfiguration) match {
-      case Some(config) => startSynchronization(config)
+      case Some(config) if !config.gui => startSynchronization(config)
+      case Some(config) if config.gui => GuiStarter.main(args)
       case None =>  throw new IllegalArgumentException("Bad command line arguments!")
     }
 

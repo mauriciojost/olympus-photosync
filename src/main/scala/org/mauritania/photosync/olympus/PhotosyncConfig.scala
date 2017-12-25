@@ -18,6 +18,12 @@ case class PhotosyncConfig(
   /**
     * If present, media that was created strictly after or before the provided date will not be downloaded.
     */
-  mediaFilter: FileInfoFilter.Criteria
+  mediaFilter: FileInfoFilter.Criteria,
+
+  /**
+    * If true, start the GUI.
+    */
+  gui: Boolean
+
 
 )
