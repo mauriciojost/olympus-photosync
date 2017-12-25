@@ -144,6 +144,8 @@ This project is _open source_ so you can help make it better.
 
 **Need more information?** Send me an e-mail to _mauriciojostx@gmail.com_.
 
-**Liked the project?** Then please star it! 
+**Liked the project?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
+
+**Want it to be maintained?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
 
 
