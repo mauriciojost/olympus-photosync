@@ -33,9 +33,17 @@ case class CameraClientConfig(
    * Regex used to identify files from the server's response
    * Sample: wlansd[17]="/DCIM/100OLYMP,P7290009.JPG,278023,0,18173,42481";
    */
-  fileRegex: String
+  fileRegex: String,
+
+  /**
+    * URL translator, used only for testing purposes
+    */
+  urlTranslator: Option[URL => URL] = None
 
 ) {
-  def fileUrl(relativeUrl: String) = new URL(serverProtocol, serverName, serverPort, relativeUrl)
+  def fileUrl(relativeUrl: String) = {
+    val r = new URL(serverProtocol, serverName, serverPort, relativeUrl)
+    urlTranslator.getOrElse((i: URL) => i)(r)
+  }
 }
 

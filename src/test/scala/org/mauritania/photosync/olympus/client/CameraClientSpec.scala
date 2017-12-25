@@ -15,8 +15,10 @@ class CameraClientSpec extends Specification with Mockito {
 
     "correctly list remote files when empty from OMD E-M10" in {
       val cc = new CameraClient(
-        generateClientCameraConfig("00-root-em10-nofolder.html"),
-        specialMappingUrlTranslator("00-root-em10-nofolder.html", "0000-em10-no-files.html")
+        generateClientCameraConfig(
+          "00-root-em10-nofolder.html",
+          specialMappingUrlTranslator("00-root-em10-nofolder.html", "0000-em10-no-files.html")
+        )
       )
       cc.listFiles() mustEqual Seq.empty[FileInfo]
     }
@@ -24,8 +26,10 @@ class CameraClientSpec extends Specification with Mockito {
 
     "correctly list remote files when many remote files from OMD E-M10" in {
       val cc = new CameraClient(
-        generateClientCameraConfig("01-root-em10-onefolder.html"),
-        specialMappingUrlTranslator("01-root-em10-onefolder.html", "0001-em10-many-files.html")
+        generateClientCameraConfig(
+          "01-root-em10-onefolder.html",
+          specialMappingUrlTranslator("01-root-em10-onefolder.html", "0001-em10-many-files.html")
+        )
       )
       cc.listFiles().size mustEqual 135
     }
@@ -33,8 +37,10 @@ class CameraClientSpec extends Specification with Mockito {
 
     "correctly list remote files and download when having one remote file from OMD E-M10" in {
       val cc = new CameraClient(
-        generateClientCameraConfig("01-root-em10-onefolder.html"),
-        specialMappingUrlTranslator("01-root-em10-onefolder.html", "0002-em10-downloadable-file.html")
+        generateClientCameraConfig(
+          "01-root-em10-onefolder.html",
+          specialMappingUrlTranslator("01-root-em10-onefolder.html", "0002-em10-downloadable-file.html")
+        )
       )
 
       // wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
@@ -56,14 +62,15 @@ class CameraClientSpec extends Specification with Mockito {
 
   }
 
-  def generateClientCameraConfig(rootHtmlName: String): CameraClientConfig = {
+  def generateClientCameraConfig(rootHtmlName: String, mapping: URL => URL): CameraClientConfig = {
     CameraClientConfig(
       serverProtocol = "file",
       serverName = "localhost",
       serverBaseUrl = "./src/test/resources/org/mauritania/photosync/" + rootHtmlName,
       serverPort = 0,
       serverPingTimeout = 0,
-      fileRegex = """wlan.*=.*,(.*),(\d+),(\d+),(\d+),(\d+).*"""
+      fileRegex = """wlan.*=.*,(.*),(\d+),(\d+),(\d+),(\d+).*""",
+      urlTranslator = Some(mapping)
     )
 
   }

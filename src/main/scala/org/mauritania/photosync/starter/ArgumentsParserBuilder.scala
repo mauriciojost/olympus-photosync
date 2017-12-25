@@ -23,7 +23,8 @@ object ArgumentsParserBuilder {
         serverPort = configFile.getInt("server.port"),
         serverBaseUrl = configFile.getString("server.base.url"),
         serverPingTimeout = configFile.getInt("server.ping.timeout"),
-        fileRegex = configFile.getString("file.regex")
+        fileRegex = configFile.getString("file.regex"),
+        urlTranslator = None
       ),
       mediaFilter = FileInfoFilter.Criteria(
         fromDateCondition = Try(configFile.getString("output.fromdate")).toOption.map(LocalDate.parse(_)),

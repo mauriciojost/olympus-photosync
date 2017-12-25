@@ -9,9 +9,15 @@ import scala.io.Source
 import scala.util.Try
 import scala.collection.immutable.Seq
 
+/**
+  * Camera client.
+  * Provides primitives to interact with the camera server: list files, download, etc.
+  * Connects using HTTP protocol.
+  *
+  * @param configuration [[CameraClientConfig]] instance containing server parameters
+  */
 class CameraClient(
-  configuration: CameraClientConfig,
-  urlTranslator: URL => URL = identity
+  configuration: CameraClientConfig
 ) {
 
   val logger = LoggerFactory.getLogger(this.getClass)
@@ -42,27 +48,25 @@ class CameraClient(
   }
 
   private[client] def htmlQuery(relativeUrl: String): Seq[String] = {
-    val url = new URL(configuration.serverProtocol, configuration.serverName, configuration.serverPort, relativeUrl)
+    val url = configuration.fileUrl(relativeUrl)
     logger.info(s"Querying URL $url...")
-    val newUrl = urlTranslator(url)
-    Source.fromURL(newUrl).getLines().toList
+    Source.fromURL(url).getLines().toList
   }
 
   def downloadFile(folderName: String, remoteFileId: String, localTargetDirectory: File): Try[File] = {
     val urlSourceFile = configuration.fileUrl(generateRelativeUrl(Some(folderName), Some(remoteFileId)))
-    val urlSourceFileTranslated = urlTranslator(urlSourceFile)
     Try {
-      val is = urlSourceFileTranslated.openStream()
+      val inputStream = urlSourceFile.openStream()
       try {
-        val rbc = Channels.newChannel(is)
+        val channel = Channels.newChannel(inputStream)
         val directory = new File(localTargetDirectory, folderName)
         Directories.mkdirs(directory)
         val destinationFile = new File(directory, remoteFileId)
-        val fos = new FileOutputStream(destinationFile)
-        fos.getChannel.transferFrom(rbc, 0, Long.MaxValue)
+        val outputStream = new FileOutputStream(destinationFile)
+        outputStream.getChannel.transferFrom(channel, 0, Long.MaxValue)
         destinationFile.getAbsoluteFile
       } finally {
-        is.close()
+        inputStream.close()
       }
     }
   }

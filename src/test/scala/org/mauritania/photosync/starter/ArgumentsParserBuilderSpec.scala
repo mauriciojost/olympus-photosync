@@ -44,7 +44,8 @@ class ArgumentsParserBuilderSpec extends Specification {
           serverPort = 80,
           serverBaseUrl = "/DCIM",
           serverPingTimeout = 2000,
-          fileRegex = "wlan.*=.*,(.*),(\\d+),(\\d+),(\\d+),(\\d+).*"
+          fileRegex = "wlan.*=.*,(.*),(\\d+),(\\d+),(\\d+),(\\d+).*",
+          urlTranslator = None
         ),
         mediaFilter = FileInfoFilter.Criteria.Bypass,
         outputDirectory = "output"
@@ -62,7 +63,8 @@ class ArgumentsParserBuilderSpec extends Specification {
         serverPort = 0,
         serverBaseUrl = "",
         serverPingTimeout = 0,
-        fileRegex = ""
+        fileRegex = "",
+        urlTranslator = None
       ),
       mediaFilter = FileInfoFilter.Criteria.Bypass,
       outputDirectory = ""
