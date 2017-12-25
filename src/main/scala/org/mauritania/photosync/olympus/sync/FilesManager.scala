@@ -43,7 +43,7 @@ class FilesManager(
   def sync(): Seq[File] = {
     def toMap(s: Seq[FileInfo]) = s.map(i => (i.getFileId, i.size)).toMap
 
-    FilesHelper.mkdirs(config.outputDir)
+    Directories.mkdirs(config.outputDir)
 
     val remoteFiles = listRemoteFiles()
     val localFiles = listLocalFiles()
