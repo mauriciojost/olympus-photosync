@@ -9,6 +9,11 @@ import scala.collection.immutable.Seq
 
 import scala.util.{Failure, Success}
 
+/**
+  * Manages the file synchronization between camera and local filesystem.
+  * @param api instance of [[CameraClient]] to be used to contact the camera
+  * @param config
+  */
 class FilesManager(
   api: CameraClient,
   config: Config
@@ -22,6 +27,10 @@ class FilesManager(
     localSize == remoteSize
   }
 
+  /**
+    * List files that are in the local filesystem.
+    * @return a list of [[FileInfo]]
+    */
   def listLocalFiles(): Seq[FileInfo] = {
     if (!config.outputDir.isDirectory) {
       throw new IllegalArgumentException(s"${config.outputDir} is not a directory")
@@ -34,12 +43,22 @@ class FilesManager(
     }
   }
 
+  /**
+    * List files that are in the remote filesystem (camera).
+    * @return a list of [[FileInfo]]
+    */
   def listRemoteFiles(): Seq[FileInfo] = {
     val files = api.listFiles()
     val filteredFiles = files.filter(FileInfoFilter.isFileEligible(_, config.mediaFilter))
     filteredFiles
   }
 
+  /**
+    * Synchronize remote files with local files.
+    * Synchronization is one-way (remote to local).
+    *
+    * @return list of local [[File]] that were successfully synchronized
+    */
   def sync(): Seq[File] = {
     def toMap(s: Seq[FileInfo]) = s.map(i => (i.getFileId, i.size)).toMap
 
