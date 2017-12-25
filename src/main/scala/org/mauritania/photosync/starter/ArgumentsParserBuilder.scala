@@ -12,6 +12,8 @@ import scala.util.Try
 
 object ArgumentsParserBuilder {
 
+  val SeqSeparator = ','
+
   def loadConfigFile: PhotosyncConfig = {
     val configFile = ConfigFactory.load()
     PhotosyncConfig(
@@ -24,8 +26,9 @@ object ArgumentsParserBuilder {
         fileRegex = configFile.getString("file.regex")
       ),
       mediaFilter = FileInfoFilter.Criteria(
-        fromDate = Try(configFile.getString("output.fromdate")).toOption.map(LocalDate.parse(_)),
-        untilDate = Try(configFile.getString("output.untildate")).toOption.map(LocalDate.parse(_))
+        fromDateCondition = Try(configFile.getString("output.fromdate")).toOption.map(LocalDate.parse(_)),
+        untilDateCondition = Try(configFile.getString("output.untildate")).toOption.map(LocalDate.parse(_)),
+        fileNameConditions = Try(configFile.getString("output.patterns")).toOption.map(_.split(SeqSeparator))
       ),
       outputDirectory = configFile.getString("output.directory")
     )
@@ -77,12 +80,16 @@ object ArgumentsParserBuilder {
       text("local directory where media will be stored, default is 'output'")
 
     opt[String]('B', "until").valueName("<DD-MM-YYYY>").
-      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(untilDate = Some(LocalDate.parse(propx)))) }.
-      text("synchronize only files created strictly before a given date")
+      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(untilDateCondition = Some(LocalDate.parse(propx)))) }.
+      text("synchronize only files created strictly before or on a given date")
 
     opt[String]('A', "from").valueName("<DD-MM-YYYY>").
-      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(fromDate = Some(LocalDate.parse(propx)))) }.
-      text("synchronize only files created strictly after a given date")
+      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(fromDateCondition = Some(LocalDate.parse(propx)))) }.
+      text("synchronize only files created after or on a given date")
+
+    opt[String]('P', "file-patterns").valueName(s"<pattern1>$SeqSeparator<pattern2>$SeqSeparator...").
+      action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(fileNameConditions = Some(propx.split(SeqSeparator)))) }.
+      text("synchronize only files that match one of the provided glob patterns, for instance *.avi for AVI files (matching is case sensitive, so '*.AVI' is not equivalent to '*.avi')")
 
   }
 

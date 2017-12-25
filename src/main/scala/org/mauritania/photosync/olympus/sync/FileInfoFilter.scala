@@ -1,23 +1,35 @@
 package org.mauritania.photosync.olympus.sync
 
 import java.time.LocalDate
+import java.nio.file.{FileSystems, Paths}
 
 object FileInfoFilter {
 
+  val PatternPrefix = "glob:"
+
   def isFileEligible(f: FileInfo, c: Criteria): Boolean = {
-    val date = f.getHumanDate
-    val fromRespected = c.fromDate.forall(date.isAfter(_))
-    val untilRespected = c.untilDate.forall(date.isBefore(_))
-    fromRespected && untilRespected
+    val fileDate = f.getHumanDate
+    val fileName = f.name
+    val fromRespected = c.fromDateCondition.forall(d => fileDate.isAfter(d) || fileDate.isEqual(d))
+    val untilRespected = c.untilDateCondition.forall(d => fileDate.isBefore(d) || fileDate.isEqual(d))
+    val nameRespected = c.fileNameConditions.forall(patterns => fileNameConforms(fileName, patterns))
+    fromRespected && untilRespected && nameRespected
+  }
+
+  private def fileNameConforms(fileName: String, patterns: Seq[String]): Boolean = {
+    val f = Paths.get(fileName)
+    val matchers = patterns.map(p => FileSystems.getDefault.getPathMatcher(PatternPrefix + p))
+    matchers.exists(matcher => matcher.matches(f))
   }
 
   case class Criteria(
-    fromDate: Option[LocalDate],
-    untilDate: Option[LocalDate]
+    fromDateCondition: Option[LocalDate],
+    untilDateCondition: Option[LocalDate],
+    fileNameConditions: Option[Seq[String]]
   )
 
   object Criteria {
-    val Bypass = Criteria(None, None)
+    val Bypass = Criteria(None, None, None)
   }
 
 }

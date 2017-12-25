@@ -3,7 +3,7 @@ package org.mauritania.photosync.olympus.client
 import java.io.{File, FileOutputStream}
 import java.net.URL
 import java.nio.channels.Channels
-import org.mauritania.photosync.olympus.sync.{FilesHelper, FileInfo}
+import org.mauritania.photosync.olympus.sync.{Directories, FileInfo}
 import org.slf4j.LoggerFactory
 import scala.io.Source
 import scala.util.Try
@@ -49,21 +49,21 @@ class CameraClient(
   }
 
   def downloadFile(folderName: String, remoteFileId: String, localTargetDirectory: File): Try[File] = {
-    val urlSourceFile = new URL(
-      configuration.serverProtocol,
-      configuration.serverName,
-      configuration.serverPort,
-      generateRelativeUrl(Some(folderName), Some(remoteFileId))
-    )
+    val urlSourceFile = configuration.fileUrl(generateRelativeUrl(Some(folderName), Some(remoteFileId)))
     val urlSourceFileTranslated = urlTranslator(urlSourceFile)
     Try {
-      val rbc = Channels.newChannel(urlSourceFileTranslated.openStream())
-      val directory = new File(localTargetDirectory, folderName)
-      FilesHelper.mkdirs(directory)
-      val destinationFile = new File(directory, remoteFileId)
-      val fos = new FileOutputStream(destinationFile)
-      fos.getChannel.transferFrom(rbc, 0, Long.MaxValue)
-      destinationFile.getAbsoluteFile
+      val is = urlSourceFileTranslated.openStream()
+      try {
+        val rbc = Channels.newChannel(is)
+        val directory = new File(localTargetDirectory, folderName)
+        Directories.mkdirs(directory)
+        val destinationFile = new File(directory, remoteFileId)
+        val fos = new FileOutputStream(destinationFile)
+        fos.getChannel.transferFrom(rbc, 0, Long.MaxValue)
+        destinationFile.getAbsoluteFile
+      } finally {
+        is.close()
+      }
     }
   }
 

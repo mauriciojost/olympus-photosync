@@ -1,5 +1,7 @@
 package org.mauritania.photosync.olympus.client
 
+import java.net.URL
+
 case class CameraClientConfig(
 
   /**
@@ -33,5 +35,7 @@ case class CameraClientConfig(
    */
   fileRegex: String
 
-)
+) {
+  def fileUrl(relativeUrl: String) = new URL(serverProtocol, serverName, serverPort, relativeUrl)
+}
 
