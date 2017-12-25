@@ -1,13 +1,13 @@
 # README
 
-[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync) 
-[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master) 
+[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
+[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
 
-[![Download](https://img.shields.io/badge/download-installer-aa3333.svg)](https://bitbucket.org/mauriciojost/olympus-photosync/downloads) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md) 
+[![Download](https://img.shields.io/badge/download-installer-aa3333.svg)](https://bitbucket.org/mauriciojost/olympus-photosync/downloads) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
 
 This application allows to wirelessly download media from Olympus cameras to your PC.
 
-It has been successfully tested on the following cameras: 
+It has been successfully tested on the following cameras:
 
 - _Olympus TG-860_ (thanks Lee!)
 - _Olympus TG-5_ (thanks Jim!)
@@ -21,16 +21,16 @@ Also it should work _out-of-the-box_ with other similar Olympus cameras.
 This application has been successfully tested on the following operating systems:
 
 - _Linux_
-- _Windows_ 
+- _Windows_
 - _Mac OS_ (thanks Ola!)
 
 Contact me if you have any issue.
 
 ## Get started
 
-### Install/unzip the application 
+### Install/unzip the application
 
-First [**download** the application package from here](https://bitbucket.org/mauriciojost/olympus-photosync/downloads). 
+First [**download** the application package from here](https://bitbucket.org/mauriciojost/olympus-photosync/downloads).
 
 If you use a **Linux** distribution I strongly suggest to download the _.deb_ package for Debian/Ubuntu or the _.rpm_ one for _Red Hat_ like distributions.
 
@@ -40,17 +40,17 @@ If you use **Windows** or **Mac OS** I strongly suggest to download the _.zip_ p
 
 These packages are provided so that the application can be used without installation. Download the latest version (for instance _photosync-XX.zip_) and decompress it somewhere (for example in _/home/user/_). Then the executables will be under the unzipped directory, on the _<PHOTOSYNC>/bin/_ subdirectory.
 
-In the coming sections of this document, when requested to execute _photosync_ you will have to: 
+In the coming sections of this document, when requested to execute _photosync_ you will have to:
 
- - (if under Linux) execute _<PHOTOSYNC>/bin/photosync_ (you might need to set the file _<PHOTOSYNC>/bin/photosync_ as _executable_, doing `chmod +x bin/photosync`). 
- 
+ - (if under Linux) execute _<PHOTOSYNC>/bin/photosync_ (you might need to set the file _<PHOTOSYNC>/bin/photosync_ as _executable_, doing `chmod +x bin/photosync`).
+
  - (if under Windows) navigate to the folder _<PHOTOSYNC>\bin_ and execute _photosync.bat_.
 
 #### Using Linux packages (_.deb_ and _.rpm_ files)
 
 Packages _.deb_ and _.rpm_ are available for Linux distributions. You can install them using _dpkg_ and _rpm_ tools.
 
-For instance the _.deb_ package can be installed in _Ubuntu_ typing: 
+For instance the _.deb_ package can be installed in _Ubuntu_ typing:
 
 ```
 sudo apt-get install openjdk-7-jre
@@ -58,7 +58,7 @@ sudo dpkg -i photosync_x.x_all.deb
 ```
 
 In the coming sections of this document, when requested to execute _photosync_, simply execute _photosync_ from any current directory (as it will be already in the _PATH_ environment variable).
- 
+
 ### Configure
 
 The application should work _out-of-the-box_ for the cameras listed above. However you may want to customize its execution, for instance to download photos to a non-default directory.
@@ -67,39 +67,58 @@ For such cases, the application uses several parameters that can be set either t
 
 #### Command line arguments
 
-There are several parameters to be set. To list these parameters you can execute: 
+There are several parameters to be set. To list these parameters you can execute:
 
 ```
 photosync --help
 ```
 
-For instance you can set the server name that is used by executing: 
+For instance you can set the server name that is used by executing:
 
 ```
 photosync --server-name 192.168.0.10
 ```
 
+To synchronize files and download them to local directory `/home/john/output` do:
+
+```
+photosync --output-directory /home/john/output
+```
+
+To synchronize files of SEP2017 do:
+
+```
+photosync --from 01-09-2017
+```
+
+To synchronize only `AVI` or `ORF` files:
+
+```
+photosync --file-patterns *.AVI,*.ORF
+```
+
+
 #### Configuration file
 
 This project uses the _typesafehub/config_ library to cope with configuration files, Find here a [valid **configuration file**](src/main/resources/application.conf).
 
-Just copy its content somewhere, modify it as wished, and launch the application as follows: 
+Just copy its content somewhere, modify it as wished, and launch the application as follows:
 
 ```
-photosync -Dconfig.file=/path/to/application.conf 
+photosync -Dconfig.file=/path/to/application.conf
 ```
 
 ### Run the application
 
 To transfer media from your camera to your PC follow these steps:
 
-1. Turn on the WIFI service of your camera using _Private_ mode in _Wi-Fi Connect Settings_. 
+1. Turn on the WIFI service of your camera using _Private_ mode in _Wi-Fi Connect Settings_.
 
     This step is **very important**, if not set up correctly the camera won't let this application download media files! To change to _Private_ mode go to the menu of your camera, and set _Wi-Fi Connect Settings_ to _Private_ as shown in the following image.
 
     ![Camera in private mode](doc/images/camera-in-wifi-connect-settings-private-mode.jpg)
 
-2. Connect your PC to the WIFI provided by the camera. 
+2. Connect your PC to the WIFI provided by the camera.
 
     The SSID of the WIFI network should be something like "E-M10-V5PG53223". Your PC should be connected to the camera WIFI. To verify such, you can open a web browser (like Explorer, Chrome, Firefox, etc.) and set as URL either _http://oishare/_ or _http://192.168.0.10/_. If browsing any of these URLs results in a nice dark web page that mentions Olympus somewhere as follows, then you can proceed:
 
@@ -136,7 +155,7 @@ sbt docker:publishLocal          # To build a docker image
 
 This project is _open source_ so you can help make it better.
 
-**Found issues?** Then please [**file an issue** in here](https://github.com/mauriciojost/olympus-photosync/issues) or send me by mail the logs you got, that will really help me trying to understand what's wrong. 
+**Found issues?** Then please [**file an issue** in here](https://github.com/mauriciojost/olympus-photosync/issues) or send me by mail the logs you got, that will really help me trying to understand what's wrong.
 
 **Own a OMD E-MX camera not supported?** Then please contact me by e-mail too. Taking only 20 minutes of your time you can help me adapt the application to your camera.
 
