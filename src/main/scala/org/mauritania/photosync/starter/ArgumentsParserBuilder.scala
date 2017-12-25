@@ -53,7 +53,7 @@ object ArgumentsParserBuilder {
 
     opt[String]('n', "server-name").valueName("<server-name>").
       action { (propx, c) => c.copy(client = c.client.copy(serverName = propx)) }.
-      text("hostname or IP address of the camera server, default is 'oishare'")
+      text("hostname or IP address of the camera server, default is '192.168.0.10'")
 
     opt[String]('y', "server-protocol").valueName("<server-protocol>").
       action { (propx, c) => c.copy(client = c.client.copy(serverProtocol = propx)) }.
@@ -73,7 +73,7 @@ object ArgumentsParserBuilder {
 
     opt[String]('r', "file-regex").valueName("<file-regex>").
       action { (propx, c) => c.copy(client = c.client.copy(fileRegex = propx)) }.
-      text("regular expression used to detect files from camera server response")
+      text("internal, regular expression used to detect files from camera server response")
 
     opt[String]('o', "output-directory").valueName("<path>").
       action { (propx, c) => c.copy(outputDirectory = propx) }.
