@@ -88,7 +88,7 @@ photosync --output-directory /home/john/output
 To synchronize files of SEP2017 do:
 
 ```
-photosync --from 01-09-2017
+photosync --from 01-09-2017 --until 30-09-2017
 ```
 
 To synchronize only `AVI` or `ORF` files:
