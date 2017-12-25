@@ -19,6 +19,7 @@ class StarterSpec extends Specification with TempDir {
     "works correctly under normal conditions" in {
       withTmpDir { tmp =>
         val expectedDownloadedFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
+        val notExpectedDownloadedFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath)
 
         val server = HttpServer.create(new InetSocketAddress(8085), 0)
         server.createContext("/", new RootHandler())
@@ -29,6 +30,7 @@ class StarterSpec extends Specification with TempDir {
           Array(
             "--server-name", "localhost",
             "--server-port", "8085",
+            "--file-patterns", "*.ORF",
             "--output-directory", tmp.getAbsolutePath
           )
         )
@@ -36,6 +38,7 @@ class StarterSpec extends Specification with TempDir {
         server.stop(0)
 
         expectedDownloadedFile.exists() must beTrue
+        notExpectedDownloadedFile.exists() must beFalse
       }
     }
 
@@ -59,6 +62,7 @@ wlansd[0]="/DCIM/,100OLYMP,0,0,0,0";
 <script type="text/javascript">
 wlansd = new Array();
 wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
+wlansd[0]="/DCIM/100OLYMP/,VI.AVI,95441739,0,18229,43541";
 ...
                      """
   val fileContentResponse = "=== PHOTO SAMPLE ==="
