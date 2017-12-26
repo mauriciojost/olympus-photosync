@@ -16,7 +16,7 @@ rpmUrl := Some("https://github.com/mauriciojost/olympus-photosync")
 
 rpmLicense := Some("Apache License Version 2.0")
 
-name := "photosync"
+name := "olympus-photosync"
 
 scalaVersion := "2.11.8"
 
@@ -24,7 +24,11 @@ mainClass in Compile := Some("org.mauritania.photosync.starter.Starter")
 
 maintainer := "Mauricio Jost <mauriciojostx@gmail.com>"
 
-packageSummary := "Custom startscript parameters"
+packageSummary := "Synchronize media from Olympus cameras to your PC wirelessly."
+
+coverageMinimum := 85
+coverageFailOnMinimum := true
+coverageExcludedPackages := "<empty>;GuiStarter.*" // GUI in beta
 
 resolvers ++= Seq(
   "Bintray repository" at "https://dl.bintray.com/scalaz-releases/"
@@ -43,7 +47,6 @@ libraryDependencies ++= Seq(
   "org.specs2" %% "specs2-core" % "3.8.9" % "test",
   "org.specs2" %% "specs2-mock" % "3.8.9" % "test",
   "commons-io" % "commons-io" % "2.5" % "test"
-
 )
 
 

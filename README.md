@@ -97,7 +97,7 @@ To synchronize only `AVI` or `ORF` files:
 photosync --file-patterns *.AVI,*.ORF
 ```
 
-To launch the GUI (beta) (requires Java 1.8.40 or higher):
+To launch the **GUI (in beta)** (requires Java 1.8.40 or higher):
 
 ```
 photosync --gui
