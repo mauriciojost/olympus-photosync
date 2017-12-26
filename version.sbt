@@ -1,1 +1,1 @@
-version := "0.10-BETA-GUI"
+version := "0.10.BETA.GUI"
