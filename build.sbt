@@ -28,7 +28,7 @@ packageSummary := "Synchronize media from Olympus cameras to your PC wirelessly.
 
 coverageMinimum := 85
 coverageFailOnMinimum := true
-coverageExcludedPackages := "<empty>;GuiStarter.*" // GUI in beta
+coverageExcludedPackages := "<empty>;*.GuiStarter" // GUI in beta
 
 resolvers ++= Seq(
   "Bintray repository" at "https://dl.bintray.com/scalaz-releases/"
