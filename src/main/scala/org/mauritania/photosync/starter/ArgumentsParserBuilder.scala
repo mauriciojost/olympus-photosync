@@ -36,7 +36,7 @@ object ArgumentsParserBuilder {
     )
   }
 
-  def buildParser() = new scopt.OptionParser[PhotosyncConfig]("photosync") {
+  val Parser = new scopt.OptionParser[PhotosyncConfig]("photosync") {
 
     head("photosync", Constants.Version)
 
@@ -93,9 +93,9 @@ object ArgumentsParserBuilder {
       action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(fileNameConditions = Some(propx.split(SeqSeparator)))) }.
       text("synchronize only files that match one of the provided glob patterns, for instance *.avi for AVI files (matching is case sensitive, so '*.AVI' is not equivalent to '*.avi')")
 
-    opt[Boolean]('g', "gui").
-      action { (propx, c) => c.copy(gui = propx)}.
-      text("launch GUI")
+    opt[Unit]('g', "gui").
+      action { (propx, c) => c.copy(gui = true)}.
+      text("launch GUI (beta)")
 
   }
 

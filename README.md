@@ -97,6 +97,13 @@ To synchronize only `AVI` or `ORF` files:
 photosync --file-patterns *.AVI,*.ORF
 ```
 
+To launch the GUI (beta):
+
+```
+photosync --gui
+```
+
+
 
 #### Configuration file
 

@@ -6,7 +6,6 @@ import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.mauritania.photosync.olympus.sync.FilesManager
-import org.mauritania.photosync.starter.ArgumentsParserBuilder._
 import org.slf4j.LoggerFactory
 
 object Starter {
@@ -26,12 +25,12 @@ object Starter {
 
     logger.info(s"Version: ${Constants.Version}")
 
-    val fileConfiguration = loadConfigFile
+    val fileConfiguration = ArgumentsParserBuilder.loadConfigFile
 
     logger.info(s"Loading file configuration: $fileConfiguration")
 
-    buildParser.parse(args, fileConfiguration) match {
-      case Some(config) if !config.gui => startSynchronization(config)
+    ArgumentsParserBuilder.Parser.parse(args, fileConfiguration) match {
+      case Some(config) if !config.gui => Starter.startSynchronization(config)
       case Some(config) if config.gui => GuiStarter.main(args)
       case None =>  throw new IllegalArgumentException("Bad command line arguments!")
     }

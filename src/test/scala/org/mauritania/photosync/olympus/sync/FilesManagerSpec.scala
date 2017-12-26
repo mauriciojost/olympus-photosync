@@ -23,12 +23,13 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
 
       // Simulate camera telling that such file exists and has the same length as the local file
       val cameraClientMock = mock[CameraClient]
-      val localFiles = Map(FileInfo(OlympFolder, "photo.jpg", 10L).getFileId -> 10L)
-      val remoteFiles = Map(FileInfo(OlympFolder, "photo.jpg", 10L).getFileId -> 10L)
+      val fi = FileInfo(OlympFolder, "photo.jpg", 10L)
+      val localFiles = Map(fi.getFileId -> fi)
+      val remoteFiles = Map(fi.getFileId -> fi)
 
       // The manager should tell the file's already synchronized/downloaded
       val fm = new FilesManager(cameraClientMock, Config(AnyDirectory))
-      fm.isDownloaded(FileInfo(OlympFolder, "photo.jpg", 10L), localFiles, remoteFiles) mustEqual true
+      fm.isDownloaded(fi, localFiles, remoteFiles) mustEqual true
 
     }
 
@@ -36,12 +37,14 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
 
       // Simulate camera telling that such file exists but it has different length than the local file
       val cameraClientMock = mock[CameraClient]
-      val localFiles = Map(FileInfo(OlympFolder, "photo.jpg", 0L).getFileId -> 0L)
-      val remoteFiles = Map(FileInfo(OlympFolder, "photo.jpg", 10L).getFileId -> 10L)
+      val fi0 = FileInfo(OlympFolder, "photo.jpg", 0L)
+      val fi10 = FileInfo(OlympFolder, "photo.jpg", 10L)
+      val localFiles = Map(fi0.getFileId -> fi0)
+      val remoteFiles = Map(fi10.getFileId -> fi10)
 
       // The manager should tell the file's is bad and should be re-downloaded
       val fm = new FilesManager(cameraClientMock, Config(AnyDirectory))
-      fm.isDownloaded(FileInfo(OlympFolder, "photo.jpg", 10L), localFiles, remoteFiles) mustEqual false
+      fm.isDownloaded(fi10, localFiles, remoteFiles) mustEqual false
 
     }
 
@@ -49,12 +52,13 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
 
       // Simulate camera telling there is one file to be downloaded
       val cameraClientMock = mock[CameraClient]
-      val localFiles = Map.empty[String, Long]
-      val remoteFiles = Map(FileInfo(OlympFolder, "photo.jpg", 10L).getFileId -> 10L)
+      val localFiles = Map.empty[String, FileInfo]
+      val fi = FileInfo(OlympFolder, "photo.jpg", 10L)
+      val remoteFiles = Map(fi.getFileId -> fi)
 
       // The manager should tell the file has not been donwloaded yet
       val fm = new FilesManager(cameraClientMock, Config(AnyDirectory))
-      fm.isDownloaded(FileInfo(OlympFolder, "photo.jpg", 10L), localFiles, remoteFiles) mustEqual false
+      fm.isDownloaded(fi, localFiles, remoteFiles) mustEqual false
 
     }
 

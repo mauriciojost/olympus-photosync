@@ -8,7 +8,7 @@ import scala.collection.immutable.Seq
 
 class ArgumentsParserBuilderSpec extends Specification {
 
-  val parser = ArgumentsParserBuilder.buildParser
+  val parser = ArgumentsParserBuilder.Parser
 
   "The command line arguments parser" should {
 
