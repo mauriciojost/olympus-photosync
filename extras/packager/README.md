@@ -7,7 +7,7 @@ This sub project packages the project into `.deb` and `.rpm` files.
 Simply launch: 
 
 ```
-bash build.bash
+bash build.sh
 ```
 
 Packages will be generated in the `output` directory.

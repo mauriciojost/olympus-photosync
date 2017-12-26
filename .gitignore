@@ -10,3 +10,7 @@
 /target/
 extras/packager/output/
 extras/packager/tmp/
+/src/docs/architecture.png
+/packages.md5sum
+/packages.log
+/extras/packager/logs/default.log
