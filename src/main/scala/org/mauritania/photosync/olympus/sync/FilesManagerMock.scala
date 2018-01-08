@@ -6,13 +6,15 @@ import org.mauritania.photosync.olympus.FilesManager
 import org.mauritania.photosync.olympus.sync.FilesManagerImpl.SyncPlanItem
 import scala.collection.immutable.Seq
 
-class FilesManagerMock(val config: FilesManagerImpl.Config) extends FilesManager {
+case class FilesManagerMock(val config: FilesManagerImpl.Config) extends FilesManager {
+  val Day20100101 = FileInfo.MinMachineDayticks
+  val Day20100103 = FileInfo.MinMachineDayticks + 2
 
   val FileInfos = Seq(
-    FileInfo("DSC", "XXX100.ORF", 10L),
-    FileInfo("DSC", "XXX101.ORF", 11L),
-    FileInfo("DSC", "XXX103.AVI", 15L),
-    FileInfo("DSC", "YYX101.MP4", 20L)
+    FileInfo("DSC", "XXX100.ORF", 10L, Day20100101),
+    FileInfo("DSC", "XXX101.ORF", 11L, Day20100101),
+    FileInfo("DSC", "XXX103.AVI", 15L, Day20100103),
+    FileInfo("DSC", "YYX101.MP4", 20L, Day20100103)
   )
 
   override def listLocalFiles(): Seq[FileInfo] = {

@@ -1,6 +1,7 @@
 package org.mauritania.photosync.starter
 
 import java.io.File
+import java.time.LocalDate
 import java.util.concurrent.Executors
 
 import org.mauritania.photosync.Constants
@@ -29,19 +30,30 @@ object GuiStarter extends JFXApp {
 
   private val logger = LoggerFactory.getLogger(this.getClass)
 
+  val NoneText = ""
+  val SeqSeparator = ','
   val StatusTextIdle = "Idle"
-  val GlobDefaultText = "*"
   val TitleStyle = "-fx-font: normal bold 15pt sans-serif"
   val StatusStyle = "-fx-font: normal italic 10pt sans-serif"
 
   val baseConfigVar = Var[Option[PhotosyncConfig]](None)
-  val globVar = Var(GlobDefaultText)
+  val globVar = Var(NoneText)
+  val fromDateVar = Var(NoneText)
+  val untilDateVar = Var(NoneText)
 
   val managerRx = Rx {
-    val baseConfigVal = baseConfigVar()
-    val globVal = globVar()
-    logger.debug(s"Manager recalculated: $baseConfigVal & $globVal")
-    baseConfigVal.map(c => filesManager(resolvedConfig(c, globVal)))
+    val newMan = baseConfigVar().map{ config =>
+      filesManager(
+        resolvedConfig(
+          config,
+          globVar(),
+          fromDateVar(),
+          untilDateVar()
+        )
+      )
+    }
+    logger.debug(s"Manager recalculated: ${newMan}")
+    newMan
   }
 
   val syncableFilesRx = Rx {
@@ -50,12 +62,37 @@ object GuiStarter extends JFXApp {
   }
 
   val GlobText = new TextField {
-    text = GlobDefaultText
+    text = NoneText
     style = StatusStyle
+    promptText = "Glob: *.*"
     onKeyPressed = (event: KeyEvent) => {
       if (event.code == KeyCode.Enter) {
         StatusText.text = "Refreshing..."
         globVar.update(text())
+      }
+    }
+  }
+
+  val FromText = new TextField {
+    text = NoneText
+    style = StatusStyle
+    promptText = "From: 2017-01-01"
+    onKeyPressed = (event: KeyEvent) => {
+      if (event.code == KeyCode.Enter) {
+        StatusText.text = "Refreshing..."
+        fromDateVar.update(text())
+      }
+    }
+  }
+
+  val UntilText = new TextField {
+    text = NoneText
+    style = StatusStyle
+    promptText = "Until: 2017-01-01"
+    onKeyPressed = (event: KeyEvent) => {
+      if (event.code == KeyCode.Enter) {
+        StatusText.text = "Refreshing..."
+        untilDateVar.update(text())
       }
     }
   }
@@ -70,13 +107,6 @@ object GuiStarter extends JFXApp {
   }
 
   val MediaList = new ListView[String] {}
-
-  val RefreshButton = new Button("Refresh") {
-    onMouseClicked = handle {
-      StatusText.text = "Refreshing..."
-      managerRx.now.map(refreshSyncableFiles)
-    }
-  }
 
   val SyncButton = new Button("Sync") {
     onMouseClicked = handle {
@@ -97,7 +127,7 @@ object GuiStarter extends JFXApp {
     val fileConfiguration = ArgumentsParserBuilder.loadConfigFile
     val parsedArgs = ArgumentsParserBuilder.Parser.parse(args, fileConfiguration)
     val parsedConfig = parsedArgs match {
-      case conf @ Some(c) => conf
+      case conf@Some(c) => conf
       case invalid => throw new IllegalArgumentException(s"Bad command line arguments: $invalid")
     }
     baseConfigVar() = parsedConfig
@@ -131,9 +161,11 @@ object GuiStarter extends JFXApp {
               new HBox {
                 alignment = Pos.Center
                 spacing = 50
-                children = Seq(RefreshButton, SyncButton, CloseButton)
+                children = Seq(SyncButton, CloseButton)
               },
               GlobText,
+              FromText,
+              UntilText,
               MediaList,
               Separator,
               StatusText
@@ -182,14 +214,8 @@ object GuiStarter extends JFXApp {
 
     private val AsyncExecutionContext = new ExecutionContext {
       val ThreadPool = Executors.newFixedThreadPool(4);
-
-      def execute(runnable: Runnable) {
-        ThreadPool.submit(runnable)
-      }
-
-      def reportFailure(t: Throwable): Unit = {
-        logger.error("Error", t)
-      }
+      override def execute(runnable: Runnable) = ThreadPool.submit(runnable)
+      override def reportFailure(t: Throwable): Unit = logger.error("Error", t)
     }
 
 
@@ -216,12 +242,24 @@ object GuiStarter extends JFXApp {
 
   }
 
-  def resolvedConfig(baseConfig: PhotosyncConfig, glob: String) = {
-    baseConfig.copy(
-      mediaFilter = baseConfig.mediaFilter.copy(fileNameConditions = Some(Seq(glob)))
+  def resolvedConfig(
+    baseConfig: PhotosyncConfig,
+    glob: String,
+    from: String,
+    until: String
+  ) = {
+    val oldMediaFilter = baseConfig.mediaFilter
+    val newMediaFilter = oldMediaFilter.copy(
+      fileNameConditions = parseSeq(glob),
+      fromDateCondition = parseLocalDate(from),
+      untilDateCondition =  parseLocalDate(until)
     )
+
+    baseConfig.copy(mediaFilter = newMediaFilter)
   }
 
+  private def parseLocalDate(d: String) = Some(d).filterNot(_ == NoneText).map(LocalDate.parse)
+  private def parseSeq(s: String) = Some(s).filterNot(_ == NoneText).map(_.split(SeqSeparator).toSeq)
 
 }
 
