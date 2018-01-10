@@ -5,8 +5,7 @@ import java.time.LocalDate
 import java.util.concurrent.Executors
 
 import org.mauritania.photosync.Constants
-import org.mauritania.photosync.olympus.sync.FilesManagerImpl.SyncPlanItem
-import org.mauritania.photosync.olympus.sync.{FilesManagerImpl, FilesManagerMock}
+import org.mauritania.photosync.olympus.sync.{FilesManagerImpl, FilesManagerMock, SyncPlanItem}
 import org.mauritania.photosync.olympus.{FilesManager, PhotosyncConfig}
 import org.slf4j.LoggerFactory
 import rx._
@@ -76,7 +75,7 @@ object GuiStarter extends JFXApp {
   val FromText = new TextField {
     text = NoneText
     style = StatusStyle
-    promptText = "From: 2017-01-01"
+    promptText = "From: 2000-01-01"
     onKeyPressed = (event: KeyEvent) => {
       if (event.code == KeyCode.Enter) {
         StatusText.text = "Refreshing..."
@@ -88,7 +87,7 @@ object GuiStarter extends JFXApp {
   val UntilText = new TextField {
     text = NoneText
     style = StatusStyle
-    promptText = "Until: 2017-01-01"
+    promptText = "Until: 2000-01-01"
     onKeyPressed = (event: KeyEvent) => {
       if (event.code == KeyCode.Enter) {
         StatusText.text = "Refreshing..."
@@ -206,7 +205,7 @@ object GuiStarter extends JFXApp {
 
   def syncFile(manager: FilesManager, syncPlanItem: SyncPlanItem) = {
     Async.updateStatus(s"Synchronizing ${syncPlanItem.fileInfo.name} (${syncPlanItem.index})")
-    manager.syncFile(syncPlanItem.fileInfo, syncPlanItem.local, syncPlanItem.remote)
+    manager.syncFile(syncPlanItem)
   }
 
 
@@ -242,7 +241,7 @@ object GuiStarter extends JFXApp {
 
   }
 
-  def resolvedConfig(
+  private def resolvedConfig(
     baseConfig: PhotosyncConfig,
     glob: String,
     from: String,

@@ -8,7 +8,7 @@ import org.mauritania.photosync.olympus.sync.FilesManagerImpl.Config
 import org.slf4j.LoggerFactory
 
 import scala.collection.immutable.Seq
-import scala.util.{Failure, Success}
+import scala.util.{Failure, Success, Try}
 
 /**
   * Manages the file synchronization between camera and local filesystem.
@@ -22,17 +22,12 @@ class FilesManagerImpl(
 
   import FilesManagerImpl._
 
-  private[sync] def isDownloaded(fileInfo: FileInfo, localFiles: Map[String, FileInfo], remoteFiles: Map[String, FileInfo]): Boolean = {
-    val localSize = localFiles.get(fileInfo.getFileId).map(_.size)
-    val remoteSize = remoteFiles.get(fileInfo.getFileId).map(_.size)
-    localSize == remoteSize
-  }
-
   override def listLocalFiles(): Seq[FileInfo] = {
-    if (!config.outputDir.isDirectory) {
-      throw new IllegalArgumentException(s"${config.outputDir} is not a directory")
-    }
-    val directories = Seq.empty[File] ++ config.outputDir.listFiles(FilesManagerImpl.DirectoriesFilter)
+    val directories = if (!config.outputDir.isDirectory)
+      Seq.empty[File]
+    else
+      Seq.empty[File] ++ config.outputDir.listFiles(FilesManagerImpl.DirectoriesFilter)
+
     directories.flatMap { directory =>
       val files = directory.listFiles()
       val filesAndSizes = files.map(file => FileInfo(directory.getName, file.getName, file.length()))
@@ -55,39 +50,28 @@ class FilesManagerImpl(
     val localFilesMap = toMap(localFiles)
 
     remoteFiles.zipWithIndex.map {
-      case (fileInfo, index) => SyncPlanItem(fileInfo, index, localFilesMap, remoteFilesMap)
+      case (fileInfo, index) => SyncPlanItem(fileInfo, SyncPlanItem.Index(index, remoteFiles.length), localFilesMap, remoteFilesMap)
     }
   }
 
-  override def sync(): Seq[File] = {
-    Directories.mkdirs(config.outputDir)
+  override def sync(): Seq[Try[File]] = {
     val syncPlanItems = syncPlan()
-    syncPlanItems.flatMap {
-      case SyncPlanItem(fileInfo, index, localFilesMap, remoteFilesMap) =>
-        logger.info(s"Downloading ${index + 1} / ${remoteFilesMap.size}...")
-        syncFile(fileInfo, localFilesMap, remoteFilesMap)
+    syncPlanItems.map {
+      case syncPlanItem @ SyncPlanItem(fileInfo, SyncPlanItem.Index(index, total), status) =>
+        logger.info(s"Downloading ${index + 1} / ${total}...")
+        syncFile(syncPlanItem)
     }
   }
 
-  // TODO does not need to know about the local&remoteFilesMap... the [[SyncPlanItem]] should contain all such info
   override def syncFile(
-    fileInfo: FileInfo,
-    localFilesMap: Map[String, FileInfo],
-    remoteFilesMap: Map[String, FileInfo]
-  ): Option[File] = {
-    if (isDownloaded(fileInfo, localFilesMap, remoteFilesMap)) {
-      logger.debug(s"Skipping file $fileInfo as it's been already downloaded")
-      None
+    syncPlanItem: SyncPlanItem
+  ): Try[File] = {
+    if (syncPlanItem.isDownloaded) {
+      logger.debug(s"Skipping file ${syncPlanItem.fileInfo} as it's been already downloaded")
+      Failure(new AlreadyDownloadedException(syncPlanItem.fileInfo.name))
     } else {
-      logger.debug(s"Downloading file $fileInfo")
-      val downloadedFile = api.downloadFile(fileInfo.folder, fileInfo.name, config.outputDir)
-      downloadedFile match {
-        case Success(file) =>
-          Some(file)
-        case Failure(error) =>
-          logger.error(s"Exception downloading $fileInfo", error)
-          None
-      }
+      logger.debug(s"Downloading file ${syncPlanItem.fileInfo}")
+      api.downloadFile(syncPlanItem.fileInfo.folder, syncPlanItem.fileInfo.name, config.outputDir)
     }
   }
 }
@@ -104,8 +88,5 @@ object FilesManagerImpl {
     outputDir: File,
     mediaFilter: FileInfoFilter.Criteria = FileInfoFilter.Criteria.Bypass
   )
-
-  // TODO: to replace local & remote attributes by syncplan resolutions: tobesyncd, alreadysyncd
-  case class SyncPlanItem(fileInfo: FileInfo, index: Int, local: Map[String, FileInfo], remote: Map[String, FileInfo])
 
 }

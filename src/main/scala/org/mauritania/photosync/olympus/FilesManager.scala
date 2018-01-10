@@ -2,9 +2,10 @@ package org.mauritania.photosync.olympus
 
 import java.io.File
 
-import org.mauritania.photosync.olympus.sync.FileInfo
-import org.mauritania.photosync.olympus.sync.FilesManagerImpl.SyncPlanItem
+import org.mauritania.photosync.olympus.sync.{FileInfo, SyncPlanItem}
+
 import scala.collection.immutable.Seq
+import scala.util.Try
 
 trait FilesManager {
   /**
@@ -32,17 +33,16 @@ trait FilesManager {
     * Synchronize remote files with local files.
     * Synchronization is one-way (remote to local).
     *
-    * @return list of local [[File]] that were successfully synchronized
+    * @return result of the synchronization
     */
-  def sync(): Seq[File]
+  def sync(): Seq[Try[File]]
 
   /**
-    * Synchronize a single file based on its info, local and remote state.
+    * Synchronize a single file based on the synchronization plan item of
+    * it (local status, remote status, file info, etc.).
     *
-    * @param fileInfo
-    * @param localFilesMap
-    * @param remoteFilesMap
-    * @return
+    * @param syncPlanItem item in the synchronization plan
+    * @return the local result of the synchronization
     */
-  def syncFile(fileInfo: FileInfo, localFilesMap: Map[String, FileInfo], remoteFilesMap: Map[String, FileInfo]): Option[File]
+  def syncFile(syncPlanItem: SyncPlanItem): Try[File]
 }
