@@ -225,6 +225,9 @@ object GuiStarter extends JFXApp {
     /**
       * Execute sync(async()).
       *
+      * Motivation: update of UI elements has to be done using UI thread, which
+      * if used for querying slow APIs, would impact user experience.
+      *
       * @param async function returning [[T]] (will asynchronously execute)
       * @param sync  function using [[T]] (will execute synchronously in UI thread)
       * @tparam T type of exchange
