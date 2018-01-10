@@ -3,6 +3,7 @@ package org.mauritania.photosync.olympus.sync
 import java.io.File
 
 import org.mauritania.photosync.olympus.FilesManager
+import org.mauritania.photosync.olympus.sync.SyncPlanItem.Downloaded
 
 import scala.collection.immutable.Seq
 import scala.util.{Success, Try}
@@ -28,7 +29,7 @@ case class FilesManagerMock(val config: FilesManagerImpl.Config) extends FilesMa
   }
 
   override def syncPlan() = {
-    def tof(f: FileInfo, i: Int) = SyncPlanItem(f, SyncPlanItem.Index(i, 10), true)
+    def tof(f: FileInfo, i: Int) = SyncPlanItem(f, SyncPlanItem.Index(i, 10), Downloaded)
     val fis = listRemoteFiles.filter(FileInfoFilter.isFileEligible(_, config.mediaFilter))
     fis.zipWithIndex.map { case (f, i) => tof(f, i) }
   }
