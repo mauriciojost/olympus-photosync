@@ -1,3 +1,5 @@
+/.ivy2/
+/.sbt/
 /project/.ivy/.sbt.ivy.lock
 /project/.boot/update.log
 /project/.boot/sbt.boot.lock

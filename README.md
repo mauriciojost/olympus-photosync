@@ -26,6 +26,14 @@ This application has been successfully tested on the following operating systems
 
 Contact me if you have any issue.
 
+## NEW: GUI!!!
+
+Still in beta, but open to feedback!
+
+![GUI](doc/images/gui-sample-v0.12.png)
+
+Feel free to create issues to give your opinion!
+
 ## Get started
 
 ### Install/unzip the application

@@ -1,13 +1,12 @@
 package org.mauritania.photosync.olympus.client
 
 import java.io.{File, FileOutputStream}
-import java.net.URL
 import java.nio.channels.Channels
 import org.mauritania.photosync.olympus.sync.{Directories, FileInfo}
 import org.slf4j.LoggerFactory
-import scala.io.Source
 import scala.util.Try
 import scala.collection.immutable.Seq
+import org.mauritania.photosync.olympus.client.CameraClient.ConnectTimeoutMs
 
 /**
   * Camera client.
@@ -50,7 +49,12 @@ class CameraClient(
   private[client] def htmlQuery(relativeUrl: String): Seq[String] = {
     val url = configuration.fileUrl(relativeUrl)
     logger.info(s"Querying URL $url...")
-    Source.fromURL(url).getLines().toList
+    val connection = url.openConnection
+    connection.setConnectTimeout(ConnectTimeoutMs)
+    val inputStream = connection.getInputStream
+    val responseLines = io.Source.fromInputStream(inputStream).getLines().toList
+    if (inputStream != null) inputStream.close
+    responseLines
   }
 
   def downloadFile(folderName: String, remoteFileId: String, localTargetDirectory: File): Try[File] = {
@@ -109,5 +113,6 @@ class CameraClient(
 
 object CameraClient {
   val UrlSeparator = "/"
+  val ConnectTimeoutMs = 5000
 }
 

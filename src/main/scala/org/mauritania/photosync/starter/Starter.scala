@@ -6,6 +6,7 @@ import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.mauritania.photosync.olympus.sync.FilesManagerImpl
+import org.mauritania.photosync.starter.gui.GuiStarter
 import org.slf4j.LoggerFactory
 
 object Starter {
