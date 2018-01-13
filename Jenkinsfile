@@ -20,13 +20,13 @@ pipeline {
     stage('Document') {
       steps {
 	echo "My branch is: ${env.BRANCH_NAME}"
-        sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 laika:site'
+        sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 paradox'
       }
     }
     stage('Archive') {
       steps {
 	echo "My branch is: ${env.BRANCH_NAME}"
-        archiveArtifacts artifacts: 'target/docs/site/**', fingerprint: true
+        archiveArtifacts artifacts: 'target/paradox/site/main/**', fingerprint: true
       }
     }
   }
