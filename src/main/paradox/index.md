@@ -1,3 +1,3 @@
-# CONTRIBUTE
+# INDEX
 
 ![Architecture](architecture.png)

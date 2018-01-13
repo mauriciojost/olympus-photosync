@@ -1,4 +1,5 @@
 @startuml
+
 rectangle CAMERA {
   rectangle SERVER
 }
