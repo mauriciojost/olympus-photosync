@@ -2,7 +2,7 @@
 // Scripted pipeline (not declarative)
 pipeline {
   agent {
-    docker { image 'mauriciojost/scala:latest' }
+    docker { image 'mauriciojost/scala-olympus-photosync:latest' }
   }
   stages {
     stage('Build') {

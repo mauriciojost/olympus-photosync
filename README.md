@@ -185,6 +185,10 @@ sbt test     # To test it
 sbt run      # To launch it
 ```
 
+If building with `openjdk`, you will need to install the Linux package `openjfx`.
+
+You can also use the provided docker image to use `Jenkinsfile`.
+
 ### Build packages
 
 The project uses _sbt-native-packager_ so you can build packages for many operating systems / distributions.
