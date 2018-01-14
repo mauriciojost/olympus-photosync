@@ -8,19 +8,19 @@ pipeline {
     stage('Build') {
       steps {
 	echo "My branch is: ${env.BRANCH_NAME}"
-        sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean compile'
+        sh 'sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean compile'
       }
     }
     stage('Test') {
       steps {
 	echo "My branch is: ${env.BRANCH_NAME}"
-        sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 test'
+        sh 'sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 test'
       }
     }
     stage('Document') {
       steps {
 	echo "My branch is: ${env.BRANCH_NAME}"
-        sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 paradox'
+        sh 'sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 paradox'
       }
     }
     stage('Archive') {
