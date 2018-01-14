@@ -29,5 +29,16 @@ pipeline {
         archiveArtifacts artifacts: 'target/paradox/site/main/**', fingerprint: true
       }
     }
+    stage('Release') {
+      when {
+        expression { env.BRANCH_NAME.matches("v(\\d+)\\.(\\d+)") } // is a version
+      }
+      steps {
+	echo "My branch is: ${env.BRANCH_NAME}"
+	// Should check if already published though
+        sh 'bash extras/packager/build.sh'
+        // archiveArtifacts artifacts: 'target/paradox/site/main/**', fingerprint: true
+      }
+    }
   }
 }
