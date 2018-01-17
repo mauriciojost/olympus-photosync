@@ -14,12 +14,17 @@ import scalafx.scene.input.{MouseButton, MouseEvent, PickResult}
 
 class GuiStarterSpec extends Specification with TempDir {
 
+  val DefaultPickResult = new PickResult(GuiStarter.stage, 0, 0)
+  val MouseClick = new MouseEvent(
+    MouseEvent.MouseClicked, 0, 0, 0, 0, MouseButton.Primary, 1, true, true, true, true, true, true, true, true, true, true, DefaultPickResult)
+  val WaitMs = 2000
+
   "The GUI starter" should {
 
     "works correctly under normal conditions" in {
       withTmpDir { tmp =>
-        val expectedDownloadedFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
-        val notExpectedDownloadedFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath)
+        val expectedDownloadedOrfFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
+        val expectedDownloadedAviFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath)
 
         val server = HttpServer.create(new InetSocketAddress(8085), 0)
         server.createContext("/", new HttpCameraMock())
@@ -33,7 +38,6 @@ class GuiStarterSpec extends Specification with TempDir {
                 "--gui",
                 "--server-name", "localhost",
                 "--server-port", "8085",
-                "--file-patterns", "*.ORF",
                 "--output-directory", tmp.getAbsolutePath
               )
             )
@@ -42,19 +46,16 @@ class GuiStarterSpec extends Specification with TempDir {
         }
         new Thread(r).start()
 
-        Thread.sleep(3000) // Let thread initialize GUI
+        Thread.sleep(WaitMs) // Let thread initialize GUI
 
-        val pu = new PickResult(GuiStarter.stage, 0, 0)
-        val ev = new MouseEvent(MouseEvent.MouseClicked, 0, 0, 0, 0, MouseButton.Primary, 1, true, true, true, true, true, true, true, true, true, true, pu)
+        Event.fireEvent(GuiStarter.SyncButton, MouseClick)
 
-        Event.fireEvent(GuiStarter.SyncButton, ev)
-
-        Thread.sleep(1000)
+        Thread.sleep(WaitMs)
 
         server.stop(0)
 
-        expectedDownloadedFile.exists() must beTrue
-        notExpectedDownloadedFile.exists() must beFalse
+        expectedDownloadedOrfFile.exists() must beTrue
+        expectedDownloadedAviFile.exists() must beTrue
       }
     }
 
