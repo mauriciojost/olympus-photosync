@@ -8,7 +8,17 @@ import org.mauritania.photosync.olympus.sync.SyncPlanItem.Downloaded
 import scala.collection.immutable.Seq
 import scala.util.{Success, Try}
 
+/**
+  * Mock class.
+  *
+  * Currently using it only for UX reasons.
+  * Will be integrated soon as part of the unit testing for the UI.
+  */
 case class FilesManagerMock(val config: FilesManagerImpl.Config) extends FilesManager {
+
+  val ListRemoteOpDelayMs = 3000
+  val DownloadOpDelayMs = 1000
+
   val Day20100101 = FileInfo.MinMachineDayticks
   val Day20100103 = FileInfo.MinMachineDayticks + 2
 
@@ -24,7 +34,7 @@ case class FilesManagerMock(val config: FilesManagerImpl.Config) extends FilesMa
   }
 
   override def listRemoteFiles(): Seq[FileInfo] = {
-    Thread.sleep(3000)
+    Thread.sleep(ListRemoteOpDelayMs)
     FileInfos
   }
 
@@ -39,7 +49,7 @@ case class FilesManagerMock(val config: FilesManagerImpl.Config) extends FilesMa
   }
 
   override def syncFile(syncPlanItem: SyncPlanItem): Try[File] = {
-    Thread.sleep(1000)
+    Thread.sleep(DownloadOpDelayMs)
     Success(new File(syncPlanItem.fileInfo.name))
   }
 }
