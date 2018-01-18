@@ -26,8 +26,10 @@ maintainer := "Mauricio Jost <mauriciojostx@gmail.com>"
 
 packageSummary := "Synchronize media from Olympus cameras to your PC wirelessly."
 
-coverageMinimum := 95
+coverageMinimum := 90
 coverageFailOnMinimum := true
+
+parallelExecution in Test := false
 
 resolvers ++= Seq(
   "Bintray repository" at "https://dl.bintray.com/scalaz-releases/"
