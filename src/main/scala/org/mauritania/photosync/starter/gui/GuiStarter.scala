@@ -112,7 +112,7 @@ object GuiStarter extends JFXApp {
 
   val RefreshButton = new Button("Refresh") {
     onMouseClicked = handle {
-      updateControls
+      Platform.runLater(runnable(updateControls))
     }
   }
 
@@ -124,7 +124,7 @@ object GuiStarter extends JFXApp {
 
   val CloseButton = new Button("Quit") {
     onMouseClicked = handle {
-      stage.close()
+      Platform.runLater(runnable(stage.close()))
     }
   }
 

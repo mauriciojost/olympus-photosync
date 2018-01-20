@@ -1,65 +1,77 @@
 package org.mauritania.photosync.starter
 
 import java.io.File
-import java.net.InetSocketAddress
-
-import com.sun.net.httpserver.HttpServer
-import org.mauritania.photosync.olympus.sync.TempDir
+import org.mauritania.photosync.olympus.sync.{CameraMock, TempDir}
 import org.mauritania.photosync.starter.gui.GuiStarter
 import org.specs2.mutable.Specification
 
 import scalafx.event.Event
 import scalafx.scene.input.{MouseButton, MouseEvent, PickResult}
+import javafx.{event => jfxe}
 
 
-class GuiStarterSpec extends Specification with TempDir {
+class GuiStarterSpec extends Specification with TempDir with CameraMock {
 
   val DefaultPickResult = new PickResult(GuiStarter.stage, 0, 0)
   val MouseClick = new MouseEvent(
     MouseEvent.MouseClicked, 0, 0, 0, 0, MouseButton.Primary, 1, true, true, true, true, true, true, true, true, true, true, DefaultPickResult)
-  val WaitMs = 2000
+
+  val HttpHost = "localhost"
+  val HttpPort = 8085
+
+  val GuiWaitMs = 8085
+
+  def mockedGuiArgs(tmpDir: File) = Array(
+    "--gui",
+    "--server-name", HttpHost,
+    "--server-port", HttpPort.toString,
+    "--output-directory", tmpDir.getAbsolutePath
+  )
 
   "The GUI starter" should {
 
-    "work correctly under normal conditions" in {
+    "work correctly under normal conditions and close correctly" in {
       withTmpDir { tmp =>
-        val expectedDownloadedOrfFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
-        val expectedDownloadedAviFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath)
+        withCameraMock(HttpPort){
+          val expectedDownloadedOrfFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
+          val expectedDownloadedAviFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath)
 
-        val server = HttpServer.create(new InetSocketAddress(8085), 0)
-        server.createContext("/", new HttpCameraMock())
-        server.setExecutor(null)
-        server.start()
+          val guiThread = launchGuiStarterAsync(mockedGuiArgs(tmp))
 
-        val r = new Runnable() {
-          override def run() = {
-            Starter.main(
-              Array(
-                "--gui",
-                "--server-name", "localhost",
-                "--server-port", "8085",
-                "--output-directory", tmp.getAbsolutePath
-              )
-            )
+          expectedDownloadedOrfFile.exists() must beFalse
+          expectedDownloadedAviFile.exists() must beFalse
 
-          }
+          fireEvent(GuiStarter.SyncButton, MouseClick)
+
+          expectedDownloadedOrfFile.exists() must beTrue
+          expectedDownloadedAviFile.exists() must beTrue
+
+          fireEvent(GuiStarter.CloseButton, MouseClick)
+
+          guiThread.isAlive mustEqual false
+
         }
-        new Thread(r).start()
-
-        Thread.sleep(WaitMs) // Let thread initialize GUI
-
-        Event.fireEvent(GuiStarter.SyncButton, MouseClick)
-
-        Thread.sleep(WaitMs)
-
-        server.stop(0)
-
-        expectedDownloadedOrfFile.exists() must beTrue
-        expectedDownloadedAviFile.exists() must beTrue
       }
     }
 
   }
 
+  private def fireEvent(target: jfxe.EventTarget, event: jfxe.Event) = {
+    Event.fireEvent(target, event)
+    Thread.sleep(GuiWaitMs) // Let firing operations take place
+  }
+
+  private def launchGuiStarterAsync(args: Array[String]): Thread = {
+    val runnable = new Runnable() {
+      override def run() = {
+        Starter.main(args)
+      }
+    }
+    val thread = new Thread(runnable)
+    thread.setDaemon(false)
+    thread.start()
+    Thread.sleep(GuiWaitMs) // Let thread initialize GUI
+    thread
+  }
 }
 
