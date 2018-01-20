@@ -7,7 +7,7 @@ import org.mauritania.photosync.starter.HttpCameraMock
 
 trait CameraMock {
 
-  val WaitMs = 2000
+  val WaitMs = 1000
 
   def withCameraMock[T](port: Int)(f: => T): T = {
     val cameraMockServer = httpCameraMock(port)

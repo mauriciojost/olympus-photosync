@@ -12,7 +12,7 @@ import scala.util.{Failure, Success, Try}
 
 object Starter {
 
-  val ConfTemplateResource = "/application.conf"
+  val ConfTemplateResource = "application.conf"
   val InitFileOutput = "application.conf"
 
   val logger = LoggerFactory.getLogger(this.getClass)

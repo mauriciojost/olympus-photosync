@@ -24,13 +24,12 @@ class GuiStarterSpec extends Specification with TempDir with CameraMock {
 
   val HttpHost = "localhost"
   val HttpPort = 8085
+  val GuiWaitMs = 1000
 
-  val GuiWaitMs = 8085
-
-  def mockedGuiArgs(tmpDir: File) = Array(
+  def mockedGuiArgs(tmpDir: File, port: Int) = Array(
     "--gui",
     "--server-name", HttpHost,
-    "--server-port", HttpPort.toString,
+    "--server-port", port.toString,
     "--output-directory", tmpDir.getAbsolutePath
   )
 
@@ -38,11 +37,12 @@ class GuiStarterSpec extends Specification with TempDir with CameraMock {
 
     "work correctly under normal conditions and close correctly" in {
       withTmpDir { tmp =>
-        withCameraMock(HttpPort){
+        val port = HttpPort
+        withCameraMock(port){
           val expectedDownloadedOrfFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
           val expectedDownloadedAviFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath)
 
-          val guiThread = launchGuiStarterAsync(mockedGuiArgs(tmp))
+          val guiThread = launchGuiStarterAsync(mockedGuiArgs(tmp, port))
 
           expectedDownloadedOrfFile.exists() must beFalse
           expectedDownloadedAviFile.exists() must beFalse
@@ -52,26 +52,13 @@ class GuiStarterSpec extends Specification with TempDir with CameraMock {
           expectedDownloadedOrfFile.exists() must beTrue
           expectedDownloadedAviFile.exists() must beTrue
 
-          fireEvent(GuiStarter.CloseButton, MouseClick)
-
-          guiThread.isAlive mustEqual false
-
-        }
-      }
-    }
-    "filter correctly and close correctly" in {
-      withTmpDir { tmp =>
-        withCameraMock(HttpPort){
-
-          val guiThread = launchGuiStarterAsync(mockedGuiArgs(tmp))
-
           GuiStarter.FileGlobText.text = "*.AVI" // only 1 file matches (out of the two existent)
 
           fireEvent(GuiStarter.FileGlobText, EnterPress)
 
           fireEvent(GuiStarter.CloseButton, MouseClick)
 
-          guiThread.isAlive mustEqual false
+          guiThread.isAlive must beFalse
 
         }
       }
