@@ -1,6 +1,9 @@
 package org.mauritania.photosync.starter
 
 import java.io.File
+import javafx.scene.input.KeyEvent
+import javafx.scene.input.KeyCode
+
 import org.mauritania.photosync.olympus.sync.{CameraMock, TempDir}
 import org.mauritania.photosync.starter.gui.GuiStarter
 import org.specs2.mutable.Specification
@@ -15,6 +18,9 @@ class GuiStarterSpec extends Specification with TempDir with CameraMock {
   val DefaultPickResult = new PickResult(GuiStarter.stage, 0, 0)
   val MouseClick = new MouseEvent(
     MouseEvent.MouseClicked, 0, 0, 0, 0, MouseButton.Primary, 1, true, true, true, true, true, true, true, true, true, true, DefaultPickResult)
+
+  val EnterPress = new KeyEvent(KeyEvent.KEY_PRESSED, null, null, KeyCode.ENTER, false, false, false, false)
+
 
   val HttpHost = "localhost"
   val HttpPort = 8085
@@ -45,6 +51,23 @@ class GuiStarterSpec extends Specification with TempDir with CameraMock {
 
           expectedDownloadedOrfFile.exists() must beTrue
           expectedDownloadedAviFile.exists() must beTrue
+
+          fireEvent(GuiStarter.CloseButton, MouseClick)
+
+          guiThread.isAlive mustEqual false
+
+        }
+      }
+    }
+    "filter correctly and close correctly" in {
+      withTmpDir { tmp =>
+        withCameraMock(HttpPort){
+
+          val guiThread = launchGuiStarterAsync(mockedGuiArgs(tmp))
+
+          GuiStarter.FileGlobText.text = "*.AVI" // only 1 file matches (out of the two existent)
+
+          fireEvent(GuiStarter.FileGlobText, EnterPress)
 
           fireEvent(GuiStarter.CloseButton, MouseClick)
 
