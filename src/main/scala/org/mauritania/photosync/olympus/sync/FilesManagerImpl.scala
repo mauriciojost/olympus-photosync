@@ -2,7 +2,6 @@ package org.mauritania.photosync.olympus.sync
 
 import java.io.{File, FileFilter}
 
-import org.mauritania.photosync.olympus.FilesManager
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.mauritania.photosync.olympus.sync.FilesManagerImpl.Config
 import org.slf4j.LoggerFactory

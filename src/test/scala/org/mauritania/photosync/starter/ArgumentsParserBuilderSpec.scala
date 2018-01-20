@@ -1,6 +1,5 @@
 package org.mauritania.photosync.starter
 
-import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClientConfig
 import org.mauritania.photosync.olympus.sync.FileInfoFilter
 import org.specs2.mutable.Specification
@@ -48,7 +47,8 @@ class ArgumentsParserBuilderSpec extends Specification {
         ),
         mediaFilter = FileInfoFilter.Criteria.Bypass,
         outputDirectory = "output",
-        gui = false
+        gui = false,
+        initConfig = false
       )
 
     }
@@ -67,7 +67,8 @@ class ArgumentsParserBuilderSpec extends Specification {
       ),
       mediaFilter = FileInfoFilter.Criteria.Bypass,
       outputDirectory = "",
-      gui = false
+      gui = false,
+      initConfig = false
     )
 
   }

@@ -21,7 +21,7 @@ class GuiStarterSpec extends Specification with TempDir {
 
   "The GUI starter" should {
 
-    "works correctly under normal conditions" in {
+    "work correctly under normal conditions" in {
       withTmpDir { tmp =>
         val expectedDownloadedOrfFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
         val expectedDownloadedAviFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath)

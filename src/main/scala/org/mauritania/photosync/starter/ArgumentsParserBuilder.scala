@@ -4,7 +4,6 @@ import java.time.LocalDate
 
 import com.typesafe.config.ConfigFactory
 import org.mauritania.photosync.Constants
-import org.mauritania.photosync.olympus.PhotosyncConfig
 import org.mauritania.photosync.olympus.client.CameraClientConfig
 import org.mauritania.photosync.olympus.sync.FileInfoFilter
 
@@ -14,7 +13,7 @@ object ArgumentsParserBuilder {
 
   val SeqSeparator = ','
 
-  def loadConfigFile: PhotosyncConfig = {
+  def loadConfigFile(): PhotosyncConfig = {
     val configFile = ConfigFactory.load()
     PhotosyncConfig(
       client = CameraClientConfig(
@@ -31,7 +30,8 @@ object ArgumentsParserBuilder {
         fileNameConditions = Try(configFile.getString("output.patterns")).toOption.map(_.split(SeqSeparator))
       ),
       outputDirectory = configFile.getString("output.directory"),
-      gui = configFile.getBoolean("gui")
+      gui = configFile.getBoolean("gui"),
+      initConfig = configFile.getBoolean("init.config")
     )
   }
 
@@ -91,6 +91,10 @@ object ArgumentsParserBuilder {
     opt[Unit]('g', "gui").
       action { (propx, c) => c.copy(gui = true)}.
       text("launch GUI (beta)")
+
+    opt[Unit]('I', "init-config").
+      action { (propx, c) => c.copy(initConfig = true)}.
+      text("create an init configuration file to ease customization")
 
   }
 

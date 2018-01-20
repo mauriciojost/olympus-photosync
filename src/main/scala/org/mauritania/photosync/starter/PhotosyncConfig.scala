@@ -1,4 +1,4 @@
-package org.mauritania.photosync.olympus
+package org.mauritania.photosync.starter
 
 import org.mauritania.photosync.olympus.client.CameraClientConfig
 import org.mauritania.photosync.olympus.sync.FileInfoFilter
@@ -23,7 +23,12 @@ case class PhotosyncConfig(
   /**
     * If true, start the GUI.
     */
-  gui: Boolean
+  gui: Boolean,
 
+
+  /**
+    * If true, dump the configuration file template for customization.
+    */
+  initConfig: Boolean
 
 )

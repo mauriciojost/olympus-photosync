@@ -5,9 +5,8 @@ import java.time.LocalDate
 
 import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.client.CameraClient
-import org.mauritania.photosync.olympus.sync.{FilesManagerImpl, SyncPlanItem}
-import org.mauritania.photosync.olympus.{FilesManager, PhotosyncConfig}
-import org.mauritania.photosync.starter.ArgumentsParserBuilder
+import org.mauritania.photosync.olympus.sync.{FilesManager, FilesManagerImpl, SyncPlanItem}
+import org.mauritania.photosync.starter.{ArgumentsParserBuilder, PhotosyncConfig}
 import org.mauritania.photosync.starter.gui.CustomCell.CellType
 import org.slf4j.LoggerFactory
 import rx._

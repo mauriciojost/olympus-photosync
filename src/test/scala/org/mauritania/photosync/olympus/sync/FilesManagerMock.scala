@@ -2,7 +2,6 @@ package org.mauritania.photosync.olympus.sync
 
 import java.io.File
 
-import org.mauritania.photosync.olympus.FilesManager
 import org.mauritania.photosync.olympus.sync.SyncPlanItem.Downloaded
 
 import scala.collection.immutable.Seq
