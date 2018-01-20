@@ -24,7 +24,7 @@ class GuiStarterSpec extends Specification with TempDir with CameraMock {
 
   val HttpHost = "localhost"
   val HttpPort = 8085
-  val GuiWaitMs = 1000
+  val GuiWaitMs = 3000
 
   def mockedGuiArgs(tmpDir: File, port: Int) = Array(
     "--gui",
