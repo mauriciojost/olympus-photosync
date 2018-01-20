@@ -7,6 +7,8 @@ import com.sun.net.httpserver.HttpServer
 import org.mauritania.photosync.olympus.sync.TempDir
 import org.specs2.mutable.Specification
 
+import scala.io.Source
+
 
 class StarterSpec extends Specification with TempDir {
 
@@ -42,6 +44,24 @@ class StarterSpec extends Specification with TempDir {
       }
     }
 
+  }
+
+  "creates correctly the init config file" in {
+    withTmpDir { tmp =>
+      val expectedDownloadedFile = new File("application.conf")
+      val template = new File("src/main/resources/application.conf")
+
+      expectedDownloadedFile.deleteOnExit()
+
+      Starter.main(Array("--init-config"))
+
+      val actualContent = Source.fromFile(expectedDownloadedFile).getLines().toList
+      val expectedContent = Source.fromFile(template).getLines().toList
+
+      expectedDownloadedFile.exists() must beTrue
+      actualContent mustEqual expectedContent
+
+    }
   }
 
 }
