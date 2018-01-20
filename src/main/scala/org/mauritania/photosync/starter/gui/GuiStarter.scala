@@ -156,8 +156,6 @@ object GuiStarter extends JFXApp {
     //new FilesManagerMock(managerConfig)
   }
 
-  override def stopApp(): Unit = System.exit(0)
-
   stage = new PrimaryStage {
     title = "Olympus Photosync v" + Constants.Version
     scene = new Scene {
