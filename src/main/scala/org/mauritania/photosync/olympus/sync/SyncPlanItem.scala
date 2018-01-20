@@ -6,9 +6,7 @@ case class SyncPlanItem(
   fileInfo: FileInfo,
   index: Index,
   downloadStatus: DownloadedStatus
-) {
-  def isDownloaded: Boolean = (downloadStatus == Downloaded)
-}
+)
 
 object SyncPlanItem {
 

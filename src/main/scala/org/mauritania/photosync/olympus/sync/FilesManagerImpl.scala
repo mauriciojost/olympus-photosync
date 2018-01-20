@@ -65,12 +65,13 @@ class FilesManagerImpl(
   override def syncFile(
     syncPlanItem: SyncPlanItem
   ): Try[File] = {
-    if (syncPlanItem.isDownloaded) {
-      logger.debug(s"Skipping file ${syncPlanItem.fileInfo} as it's been already downloaded")
-      Failure(new AlreadyDownloadedException(syncPlanItem.fileInfo.name))
-    } else {
-      logger.debug(s"Downloading file ${syncPlanItem.fileInfo} (previous status ${syncPlanItem.downloadStatus})")
-      api.downloadFile(syncPlanItem.fileInfo.folder, syncPlanItem.fileInfo.name, config.outputDir)
+    syncPlanItem.downloadStatus match {
+      case i @ (SyncPlanItem.Downloaded | SyncPlanItem.OnlyLocal) =>
+        logger.debug(s"Skipping file ${syncPlanItem.fileInfo} as it's been already downloaded")
+        Failure(new AlreadyDownloadedException(syncPlanItem.fileInfo.name))
+      case i @ (SyncPlanItem.OnlyRemote | SyncPlanItem.PartiallyDownloaded) =>
+        logger.debug(s"Downloading file ${syncPlanItem.fileInfo} (previous status ${syncPlanItem.downloadStatus})")
+        api.downloadFile(syncPlanItem.fileInfo.folder, syncPlanItem.fileInfo.name, config.outputDir)
     }
   }
 }
