@@ -31,7 +31,8 @@ object ArgumentsParserBuilder {
       ),
       outputDirectory = configFile.getString("output.directory"),
       gui = configFile.getBoolean("gui"),
-      initConfig = configFile.getBoolean("init.config")
+      initConfig = configFile.getBoolean("init.config"),
+      shutDownAfterSync = configFile.getBoolean("shutdownaftersync")
     )
   }
 
@@ -91,6 +92,10 @@ object ArgumentsParserBuilder {
     opt[Unit]('g', "gui").
       action { (propx, c) => c.copy(gui = true)}.
       text("launch GUI (beta)")
+
+    opt[Unit]('s', "shutdownaftersync").
+      action { (propx, c) => c.copy(shutDownAfterSync = true)}.
+      text("shut down camera after sync")
 
     opt[Unit]('I', "init-config").
       action { (propx, c) => c.copy(initConfig = true)}.

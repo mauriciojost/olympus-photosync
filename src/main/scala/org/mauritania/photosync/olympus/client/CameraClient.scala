@@ -43,18 +43,6 @@ class CameraClient(
     files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.getHumanDate})"))
 
     files
-
-  }
-
-  private[client] def htmlQuery(relativeUrl: String): Seq[String] = {
-    val url = configuration.fileUrl(relativeUrl)
-    logger.info(s"Querying URL $url...")
-    val connection = url.openConnection
-    connection.setConnectTimeout(ConnectTimeoutMs)
-    val inputStream = connection.getInputStream
-    val responseLines = io.Source.fromInputStream(inputStream).getLines().toList
-    if (inputStream != null) inputStream.close
-    responseLines
   }
 
   def downloadFile(folderName: String, remoteFileId: String, localTargetDirectory: File): Try[File] = {
@@ -73,6 +61,23 @@ class CameraClient(
         inputStream.close()
       }
     }
+  }
+
+  def shutDown(): Unit = {
+    logger.info("Shutting down")
+    htmlQuery("exec_pwoff.cgi")
+    logger.info("Shutdown complete")
+  }
+
+  private[client] def htmlQuery(relativeUrl: String): Seq[String] = {
+    val url = configuration.fileUrl(relativeUrl)
+    logger.info(s"Querying URL $url...")
+    val connection = url.openConnection
+    connection.setConnectTimeout(ConnectTimeoutMs)
+    val inputStream = connection.getInputStream
+    val responseLines = io.Source.fromInputStream(inputStream).getLines().toList
+    if (inputStream != null) inputStream.close
+    responseLines
   }
 
   private def generateDirectoriesListFromHtml(htmlLines: Seq[String]): Seq[String] = {
@@ -108,7 +113,6 @@ class CameraClient(
     val folderAndFileStr = folder.map(CameraClient.UrlSeparator + _ + fileStr).mkString
     configuration.serverBaseUrl + folderAndFileStr
   }
-
 }
 
 object CameraClient {
