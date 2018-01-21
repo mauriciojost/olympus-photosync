@@ -97,6 +97,10 @@ object Starter {
 
     logger.info("Synchronized!")
 
+    if (config.shutDownAfterSync) {
+      cameraClient.shutDown()
+    }
+
   }
 
 }

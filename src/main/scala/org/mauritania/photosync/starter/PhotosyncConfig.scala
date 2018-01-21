@@ -29,6 +29,11 @@ case class PhotosyncConfig(
   /**
     * If true, dump the configuration file template for customization.
     */
-  initConfig: Boolean
+  initConfig: Boolean,
+
+  /**
+    * If true, shut down camera when sync is complete
+    */
+  shutDownAfterSync: Boolean
 
 )

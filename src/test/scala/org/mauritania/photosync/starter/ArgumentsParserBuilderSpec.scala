@@ -48,7 +48,8 @@ class ArgumentsParserBuilderSpec extends Specification {
         mediaFilter = FileInfoFilter.Criteria.Bypass,
         outputDirectory = "output",
         gui = false,
-        initConfig = false
+        initConfig = false,
+        shutDownAfterSync = false
       )
 
     }
@@ -68,7 +69,8 @@ class ArgumentsParserBuilderSpec extends Specification {
       mediaFilter = FileInfoFilter.Criteria.Bypass,
       outputDirectory = "",
       gui = false,
-      initConfig = false
+      initConfig = false,
+      shutDownAfterSync = false
     )
 
   }
