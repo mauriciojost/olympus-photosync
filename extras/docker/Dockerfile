@@ -34,12 +34,11 @@ FROM builder as build
 
 ADD . .
 
-RUN sed -i '/sbt test/d' ./extras/packager/build.sh \
-    && ./extras/packager/build.sh
+RUN sbt debian:packageBin
 
 FROM openjdk:9-jre-slim
 
-COPY --from=builder /root/target/olympus-photosync-1master/usr/share/olympus-photosync /photosync
+COPY --from=build /root/target/olympus-photosync-1master/usr/share/olympus-photosync /photosync
 
 ENV PATH /photosync/bin:$PATH
 ENTRYPOINT ["olympus-photosync"]
