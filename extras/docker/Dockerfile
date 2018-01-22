@@ -25,7 +25,7 @@ RUN curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_V
 # Define working directory
 WORKDIR /root
 
-FROM scale-sbt as builder
+FROM scala-sbt as builder
 
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends graphviz \
