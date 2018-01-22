@@ -34,7 +34,8 @@ FROM builder as build
 
 ADD . .
 
-RUN ./extras/packager/build.sh
+RUN sed -i '/sbt test/d' ./extras/packager/build.sh \
+    && ./extras/packager/build.sh
 
 FROM openjdk:9-jre-slim
 
