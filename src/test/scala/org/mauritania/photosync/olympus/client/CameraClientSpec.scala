@@ -11,6 +11,8 @@ import scala.collection.immutable.Seq
 
 class CameraClientSpec extends Specification with Mockito {
 
+  val ServerBaseUrl = "./src/test/resources/org/mauritania/photosync/"
+
   "The camera server client" should {
 
     "correctly list remote files when empty from OMD E-M10" in {
@@ -66,7 +68,7 @@ class CameraClientSpec extends Specification with Mockito {
     CameraClientConfig(
       serverProtocol = "file",
       serverName = "localhost",
-      serverBaseUrl = "./src/test/resources/org/mauritania/photosync/" + rootHtmlName,
+      serverBaseUrl = ServerBaseUrl + rootHtmlName,
       serverPort = 0,
       fileRegex = """wlan.*=.*,(.*),(\d+),(\d+),(\d+),(\d+).*""",
       urlTranslator = Some(mapping)
@@ -80,6 +82,7 @@ class CameraClientSpec extends Specification with Mockito {
       file
         .replace(rootHtmlName + "/100OLYMP", "100OLYMP/" + folderHtmlName)
         .replace(folderHtmlName + "/", "photosample/")
+        .replace("/get_thumbnail.cgi?DIR=100OLYMP/", ServerBaseUrl + "100OLYMP/thumbnails/")
     }
     val relativeUrl = url.getFile
     val newRelativeUrl = transformRelativeUrl(relativeUrl)
