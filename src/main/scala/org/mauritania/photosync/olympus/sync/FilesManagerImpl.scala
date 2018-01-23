@@ -70,7 +70,7 @@ class FilesManagerImpl(
         logger.debug(s"Skipping file ${syncPlanItem.fileInfo} as it's been already downloaded")
         Failure(new AlreadyDownloadedException(syncPlanItem.fileInfo.name))
       case i @ (SyncPlanItem.OnlyRemote | SyncPlanItem.PartiallyDownloaded) =>
-        logger.debug(s"Downloading file ${syncPlanItem.fileInfo} (previous status ${syncPlanItem.downloadStatus})")
+        logger.debug(s"Downloading file ${syncPlanItem.fileInfo} to ${config.outputDir} (previous status ${syncPlanItem.downloadStatus})")
         api.downloadFile(syncPlanItem.fileInfo.folder, syncPlanItem.fileInfo.name, config.outputDir)
     }
   }

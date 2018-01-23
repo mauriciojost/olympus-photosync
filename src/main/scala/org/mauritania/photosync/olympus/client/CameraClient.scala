@@ -1,6 +1,7 @@
 package org.mauritania.photosync.olympus.client
 
-import java.io.{File, FileOutputStream}
+import java.awt.image.BufferedImage
+import java.io.{ByteArrayInputStream, File, FileOutputStream, IOException}
 import java.nio.channels.Channels
 
 import org.mauritania.photosync.olympus.sync.{Directories, FileInfo}
@@ -28,9 +29,10 @@ class CameraClient(
     * @return the list of remote [[FileInfo]] with their attributes
     */
   def listFiles(): Seq[FileInfo] = {
-    val rootHtmlLines = getAsString(baseDirFileUrl(Some(configuration.serverBaseUrl)))
+    val rootUrl = baseDirFileUrl(Some(configuration.serverBaseUrl))
+    val rootHtmlLines = getAsString(rootUrl)
 
-    logger.debug("Html root begin")
+    logger.debug(s"Html root begin ($rootUrl)")
     rootHtmlLines.foreach(logger.debug)
     logger.debug("Html root end")
 
@@ -39,10 +41,11 @@ class CameraClient(
     remoteDirs.foreach(folder => logger.info(s"Detected remote folder: $folder"))
 
     val files = remoteDirs.flatMap { dir =>
-      val dirHtmlLines = getAsString(baseDirFileUrl(Some(configuration.serverBaseUrl), Some(dir)))
-      logger.debug(s"Html for directory begin ($dir)")
+      val dirUrl = baseDirFileUrl(Some(configuration.serverBaseUrl), Some(dir))
+      val dirHtmlLines = getAsString(dirUrl)
+      logger.debug(s"Html for directory begin ($dirUrl / $dir)")
       dirHtmlLines.foreach(logger.debug)
-      logger.debug(s"Html for directory end ($dir)\n")
+      logger.debug(s"Html for directory end\n")
       filesFromDirHtml(dirHtmlLines, dir)
     }
 
@@ -110,7 +113,8 @@ class CameraClient(
     connection.setConnectTimeout(ConnectTimeoutMs)
     val inputStream = connection.getInputStream
     try {
-      io.Source.fromInputStream(inputStream).toArray
+      val readChars = io.Source.fromInputStream(inputStream).toArray
+      readChars
     } finally {
       inputStream.close()
     }
