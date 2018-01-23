@@ -202,6 +202,8 @@ sbt windows:packageBin           # To build a Windows installer (from Windows)
 sbt docker:publishLocal          # To build a docker image
 ```
 
+You cal also build your own docker image to launch the project in different architectures, such as ARM. See [here](extras/docker/run/README.md) for more details.
+
 ### Contribute
 
 This project is _open source_ so you can help make it better.
