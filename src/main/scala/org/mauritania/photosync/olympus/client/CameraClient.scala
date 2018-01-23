@@ -3,6 +3,7 @@ package org.mauritania.photosync.olympus.client
 import java.awt.image.BufferedImage
 import java.io.{ByteArrayInputStream, File, FileOutputStream, IOException}
 import java.nio.channels.Channels
+import java.nio.charset.{Charset, StandardCharsets}
 
 import org.mauritania.photosync.olympus.sync.{Directories, FileInfo}
 import org.slf4j.LoggerFactory
@@ -10,6 +11,10 @@ import org.slf4j.LoggerFactory
 import scala.util.Try
 import scala.collection.immutable.Seq
 import org.mauritania.photosync.olympus.client.CameraClient.ConnectTimeoutMs
+import javax.imageio.ImageIO
+
+import scala.io.Codec
+import scala.reflect.io.Streamable
 
 /**
   * Camera client.
@@ -80,7 +85,21 @@ class CameraClient(
   }
 
   /**
-    * Try to shutdown the camera
+    * Retrieves the thumbnail of a given media file
+    * @param remoteDir directory
+    * @param remoteFile file
+    * @return the thumbnail of the media file in GIF format
+    */
+  def thumbnailFile(remoteDir: String, remoteFile: String): BufferedImage = {
+    val reply = get(s"/get_thumbnail.cgi?DIR=$remoteDir/$remoteFile")
+    logger.info(s"Thumbnail for $remoteDir/$remoteFile is ${reply.size} bytes long")
+    val is = new ByteArrayInputStream(reply.map(_.toByte))
+    val img = ImageIO.read(is)
+    img
+  }
+
+  /**
+    * Tries to shutdown the camera
     * @return the response from the server
     */
   def shutDown(): Seq[String] = {
@@ -95,8 +114,7 @@ class CameraClient(
     * @return the collection of lines result of the query
     */
   private[client] def getAsString(relativeUrl: String): Seq[String] = {
-    val reply = get(relativeUrl)
-    val str = reply.mkString
+    val str = new String(get(relativeUrl), StandardCharsets.ISO_8859_1)
     val strLines = str.split(CameraClient.NewLineSplit)
     Seq.empty[String] ++ strLines
   }
@@ -106,15 +124,14 @@ class CameraClient(
     * @param relativeUrl
     * @return the reply result of the query
     */
-  private[client] def get(relativeUrl: String): Array[Char] = {
+  private[client] def get(relativeUrl: String): Array[Byte] = {
     val url = configuration.fileUrl(relativeUrl)
     logger.info(s"Querying URL $url...")
     val connection = url.openConnection
     connection.setConnectTimeout(ConnectTimeoutMs)
     val inputStream = connection.getInputStream
     try {
-      val readChars = io.Source.fromInputStream(inputStream).toArray
-      readChars
+      Streamable.bytes(inputStream)
     } finally {
       inputStream.close()
     }

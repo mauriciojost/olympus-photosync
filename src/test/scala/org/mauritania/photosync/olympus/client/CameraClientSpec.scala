@@ -62,6 +62,22 @@ class CameraClientSpec extends Specification with Mockito {
 
     }
 
+    "correctly retrieve thumbnail" in {
+      val cc = new CameraClient(
+        generateClientCameraConfig(
+          "01-root-em10-onefolder.html",
+          specialMappingUrlTranslator("01-root-em10-onefolder.html", "0002-em10-downloadable-file.html")
+        )
+      )
+
+      val thumbnail = cc.thumbnailFile("100OLYMP", "OR.ORF") // it's a JPG encoded file
+
+      val thumbnailWidthHeight = (thumbnail.getWidth, thumbnail.getHeight)
+
+      thumbnailWidthHeight mustEqual (160, 120)
+
+    }
+
   }
 
   def generateClientCameraConfig(rootHtmlName: String, mapping: URL => URL): CameraClientConfig = {
