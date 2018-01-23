@@ -65,7 +65,7 @@ class CameraClient(
 
   def shutDown(): Unit = {
     logger.info("Shutting down")
-    htmlQuery("exec_pwoff.cgi")
+    htmlQuery("/exec_pwoff.cgi")
     logger.info("Shutdown complete")
   }
 
