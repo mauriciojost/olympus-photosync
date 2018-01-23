@@ -2,8 +2,10 @@ package org.mauritania.photosync.olympus.client
 
 import java.io.{File, FileOutputStream}
 import java.nio.channels.Channels
+
 import org.mauritania.photosync.olympus.sync.{Directories, FileInfo}
 import org.slf4j.LoggerFactory
+
 import scala.util.Try
 import scala.collection.immutable.Seq
 import org.mauritania.photosync.olympus.client.CameraClient.ConnectTimeoutMs
@@ -21,23 +23,27 @@ class CameraClient(
 
   val logger = LoggerFactory.getLogger(this.getClass)
 
+  /**
+    * Lists all remote files
+    * @return the list of remote [[FileInfo]] with their attributes
+    */
   def listFiles(): Seq[FileInfo] = {
-    val htmlLines = htmlQuery(generateRelativeUrl())
+    val rootHtmlLines = getAsString(baseDirFileUrl(Some(configuration.serverBaseUrl)))
 
-    logger.debug("HTML ROOT BEGIN")
-    htmlLines.foreach(logger.debug)
-    logger.debug("HTML ROOT END")
+    logger.debug("Html root begin")
+    rootHtmlLines.foreach(logger.debug)
+    logger.debug("Html root end")
 
-    val folders = generateDirectoriesListFromHtml(htmlLines)
+    val remoteDirs = dirsFromRootHtml(rootHtmlLines)
 
-    folders.foreach(folder => logger.info(s"Detected remote folder: $folder"))
+    remoteDirs.foreach(folder => logger.info(s"Detected remote folder: $folder"))
 
-    val files = folders.flatMap { folder =>
-      val htmlLinesFolder = htmlQuery(generateRelativeUrl(Some(folder)))
-      logger.debug(s"HTML ROOT BEGIN ($folder)")
-      htmlLinesFolder.foreach(logger.debug)
-      logger.debug(s"HTML ROOT END ($folder)\n")
-      generateFilesListFromHtml(htmlLinesFolder, folder)
+    val files = remoteDirs.flatMap { dir =>
+      val dirHtmlLines = getAsString(baseDirFileUrl(Some(configuration.serverBaseUrl), Some(dir)))
+      logger.debug(s"Html for directory begin ($dir)")
+      dirHtmlLines.foreach(logger.debug)
+      logger.debug(s"Html for directory end ($dir)\n")
+      filesFromDirHtml(dirHtmlLines, dir)
     }
 
     files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.getHumanDate})"))
@@ -45,15 +51,22 @@ class CameraClient(
     files
   }
 
-  def downloadFile(folderName: String, remoteFileId: String, localTargetDirectory: File): Try[File] = {
-    val urlSourceFile = configuration.fileUrl(generateRelativeUrl(Some(folderName), Some(remoteFileId)))
+  /**
+    * Downloads a specific file
+    * @param remoteDir the remote directory
+    * @param remoteFile the remote filename
+    * @param localTargetDirectory the target local directory
+    * @return the [[Try]] containing the downloaded local file
+    */
+  def downloadFile(remoteDir: String, remoteFile: String, localTargetDirectory: File): Try[File] = {
+    val urlSourceFile = configuration.fileUrl(baseDirFileUrl(Some(configuration.serverBaseUrl), Some(remoteDir), Some(remoteFile)))
     Try {
       val inputStream = urlSourceFile.openStream()
       try {
         val channel = Channels.newChannel(inputStream)
-        val directory = new File(localTargetDirectory, folderName)
-        Directories.mkdirs(directory)
-        val destinationFile = new File(directory, remoteFileId)
+        val localDirectory = new File(localTargetDirectory, remoteDir)
+        Directories.mkdirs(localDirectory)
+        val destinationFile = new File(localDirectory, remoteFile)
         val outputStream = new FileOutputStream(destinationFile)
         outputStream.getChannel.transferFrom(channel, 0, Long.MaxValue)
         destinationFile.getAbsoluteFile
@@ -63,26 +76,54 @@ class CameraClient(
     }
   }
 
-  def shutDown(): Unit = {
-    logger.info("Shutting down")
-    htmlQuery("/exec_pwoff.cgi")
-    logger.info("Shutdown complete")
+  /**
+    * Try to shutdown the camera
+    * @return the response from the server
+    */
+  def shutDown(): Seq[String] = {
+    val reply = getAsString("/exec_pwoff.cgi")
+    logger.info(s"Shutdown complete: $reply")
+    reply
   }
 
-  private[client] def htmlQuery(relativeUrl: String): Seq[String] = {
+  /**
+    * Does a GET to the given relative url (transforms into text)
+    * @param relativeUrl
+    * @return the collection of lines result of the query
+    */
+  private[client] def getAsString(relativeUrl: String): Seq[String] = {
+    val reply = get(relativeUrl)
+    val str = reply.mkString
+    val strLines = str.split(CameraClient.NewLineSplit)
+    Seq.empty[String] ++ strLines
+  }
+
+  /**
+    * Does a GET to the given relative url
+    * @param relativeUrl
+    * @return the reply result of the query
+    */
+  private[client] def get(relativeUrl: String): Array[Char] = {
     val url = configuration.fileUrl(relativeUrl)
     logger.info(s"Querying URL $url...")
     val connection = url.openConnection
     connection.setConnectTimeout(ConnectTimeoutMs)
     val inputStream = connection.getInputStream
-    val responseLines = io.Source.fromInputStream(inputStream).getLines().toList
-    if (inputStream != null) inputStream.close
-    responseLines
+    try {
+      io.Source.fromInputStream(inputStream).toArray
+    } finally {
+      inputStream.close()
+    }
   }
 
-  private def generateDirectoriesListFromHtml(htmlLines: Seq[String]): Seq[String] = {
+  /**
+    * Gets the collection of directories from HTML at root level
+    * @param rootHtmlLines text lines as obtained from a GET at root level
+    * @return the collection of remote directories
+    */
+  private def dirsFromRootHtml(rootHtmlLines: Seq[String]): Seq[String] = {
     val fileRegex = configuration.fileRegex.r
-    val folderNames = htmlLines.flatMap(
+    val folderNames = rootHtmlLines.flatMap(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
           case fileRegex(folderName, fileSizeBytes, _, _, _) => Some(folderName)
@@ -93,13 +134,19 @@ class CameraClient(
     folderNames.distinct
   }
 
-  private def generateFilesListFromHtml(htmlLines: Seq[String], folder: String): Seq[FileInfo] = {
+  /**
+    * Gets the collection of files from HTML at directory level
+    * @param dirHtmlLines text lines as obtained from a GET at dir level
+    * @param dir directory that is being targetted
+    * @return the collection of [[FileInfo]] inside such directory
+    */
+  private def filesFromDirHtml(dirHtmlLines: Seq[String], dir: String): Seq[FileInfo] = {
     val fileRegex = configuration.fileRegex.r
-    val fileIdsAndSize = htmlLines.flatMap(
+    val fileIdsAndSize = dirHtmlLines.flatMap(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
           case fileRegex(fileId, fileSizeBytes, _, date, time) =>
-            Some(FileInfo(folder, fileId, fileSizeBytes.toLong, date.toInt))
+            Some(FileInfo(dir, fileId, fileSizeBytes.toLong, date.toInt))
           case _ =>
             None
         }
@@ -108,15 +155,24 @@ class CameraClient(
     fileIdsAndSize.distinct
   }
 
-  private def generateRelativeUrl(folder: Option[String] = None, file: Option[String] = None): String = {
-    val fileStr = file.map(CameraClient.UrlSeparator + _).mkString
-    val folderAndFileStr = folder.map(CameraClient.UrlSeparator + _ + fileStr).mkString
-    configuration.serverBaseUrl + folderAndFileStr
+  /**
+    * Builds a relative URL from the arguments
+    * @param base base url
+    * @param dir directory
+    * @param file file
+    * @return the resulting url
+    */
+  private def baseDirFileUrl(base: Option[String], dir: Option[String] = None, file: Option[String] = None): String = {
+    val filePart = file.map(CameraClient.UrlSeparator + _).mkString // "" or /file
+    val dirFilePart = dir.map(CameraClient.UrlSeparator + _ + filePart).mkString // "" or /dir + <file>
+    val baseDirFilePart = base.map(_ + dirFilePart).mkString // "" or /base + <dirfile>
+    baseDirFilePart
   }
 }
 
 object CameraClient {
   val UrlSeparator = "/"
   val ConnectTimeoutMs = 5000
+  val NewLineSplit = "\\r?\\n"
 }
 
