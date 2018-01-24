@@ -1,12 +1,14 @@
 package org.mauritania.photosync.olympus.sync
 
+import java.awt.image.BufferedImage
 import java.time.LocalDate
 
 case class FileInfo(
   folder: String,
   name: String,
   size: Long,
-  date: Int = FileInfo.DefaultDate
+  date: Int = FileInfo.DefaultDate,
+  thumbnail: Option[String] = None
 ) {
 
   import FileInfo._

@@ -8,8 +8,9 @@ import javafx.scene.{control => javafxcontrol}
 import org.mauritania.photosync.olympus.sync.SyncPlanItem.DownloadedStatus
 import org.mauritania.photosync.olympus.sync.SyncPlanItem
 import org.mauritania.photosync.starter.gui.CustomCell.CellType
-
 import javafx.util.Callback
+
+import scalafx.scene.image.ImageView
 
 class CustomCell extends javafxcontrol.ListCell[CellType] {
 
@@ -22,6 +23,7 @@ class CustomCell extends javafxcontrol.ListCell[CellType] {
       val fileName = item.fileInfo.name
       val fileNameDir = s"$fileDir/$fileName"
       val downloadStatus = item.downloadStatus
+      val fileThumbnail = item.fileInfo.thumbnail
       val toolTipText =
         s"""File:  $fileNameDir
            |Size:  $fileSize bytes
@@ -29,7 +31,10 @@ class CustomCell extends javafxcontrol.ListCell[CellType] {
            |Status: $downloadStatus""".stripMargin
       setText(fileNameDir)
       setTooltip(new Tooltip(toolTipText))
-      setGraphic(getRectangle(downloadStatus))
+      fileThumbnail match {
+        case Some(t) => setGraphic(new ImageView(t))
+        case None => setGraphic(getRectangle(downloadStatus))
+      }
     } else {
       setText(null)
       setTooltip(null)

@@ -1,9 +1,10 @@
 package org.mauritania.photosync.olympus.client
 
 import java.awt.image.BufferedImage
-import java.io.{ByteArrayInputStream, File, FileOutputStream, IOException}
+import java.io.{ByteArrayInputStream, File, FileOutputStream}
+import java.net.URL
 import java.nio.channels.Channels
-import java.nio.charset.{Charset, StandardCharsets}
+import java.nio.charset.StandardCharsets
 
 import org.mauritania.photosync.olympus.sync.{Directories, FileInfo}
 import org.slf4j.LoggerFactory
@@ -13,7 +14,6 @@ import scala.collection.immutable.Seq
 import org.mauritania.photosync.olympus.client.CameraClient.ConnectTimeoutMs
 import javax.imageio.ImageIO
 
-import scala.io.Codec
 import scala.reflect.io.Streamable
 
 /**
@@ -90,10 +90,22 @@ class CameraClient(
     * @param remoteFile file
     * @return the thumbnail of the media file in GIF format
     */
+  def thumbnailFileUrl(remoteDir: String, remoteFile: String): URL = {
+    val relativeUrl = s"/get_thumbnail.cgi?DIR=$remoteDir/$remoteFile"
+    val url = configuration.fileUrl(relativeUrl)
+    url
+  }
+
+  /**
+    * Retrieves the thumbnail of a given media file
+    * @param remoteDir directory
+    * @param remoteFile file
+    * @return the thumbnail of the media file in GIF format
+    */
   def thumbnailFile(remoteDir: String, remoteFile: String): BufferedImage = {
     val reply = get(s"/get_thumbnail.cgi?DIR=$remoteDir/$remoteFile")
-    logger.info(s"Thumbnail for $remoteDir/$remoteFile is ${reply.size} bytes long")
-    val is = new ByteArrayInputStream(reply.map(_.toByte))
+    logger.info(s"Thumbnail for $remoteDir/$remoteFile is ${reply.length} bytes long")
+    val is = new ByteArrayInputStream(reply)
     val img = ImageIO.read(is)
     img
   }
@@ -158,16 +170,17 @@ class CameraClient(
   /**
     * Gets the collection of files from HTML at directory level
     * @param dirHtmlLines text lines as obtained from a GET at dir level
-    * @param dir directory that is being targetted
+    * @param fileDir directory that is being targetted
     * @return the collection of [[FileInfo]] inside such directory
     */
-  private def filesFromDirHtml(dirHtmlLines: Seq[String], dir: String): Seq[FileInfo] = {
+  private def filesFromDirHtml(dirHtmlLines: Seq[String], fileDir: String): Seq[FileInfo] = {
     val fileRegex = configuration.fileRegex.r
     val fileIdsAndSize = dirHtmlLines.flatMap(
       htmlLineToBeParsed =>
         htmlLineToBeParsed match {
-          case fileRegex(fileId, fileSizeBytes, _, date, time) =>
-            Some(FileInfo(dir, fileId, fileSizeBytes.toLong, date.toInt))
+          case fileRegex(fileName, fileSizeBytes, _, date, time) =>
+            val thumbnail = thumbnailFileUrl(fileDir, fileName)
+            Some(FileInfo(fileDir, fileName, fileSizeBytes.toLong, date.toInt, Some(thumbnail.toString)))
           case _ =>
             None
         }

@@ -29,7 +29,7 @@ class FilesManagerImpl(
 
     directories.flatMap { directory =>
       val files = directory.listFiles()
-      val filesAndSizes = files.map(file => FileInfo(directory.getName, file.getName, file.length()))
+      val filesAndSizes = files.map(file => FileInfo(directory.getName, file.getName, file.length))
       filesAndSizes
     }
   }
