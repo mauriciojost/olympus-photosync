@@ -1,6 +1,6 @@
 package org.mauritania.photosync.olympus.sync
 
-import java.awt.image.BufferedImage
+import java.net.URL
 import java.time.LocalDate
 
 case class FileInfo(
@@ -8,7 +8,7 @@ case class FileInfo(
   name: String,
   size: Long,
   date: Int = FileInfo.DefaultDate,
-  thumbnail: Option[String] = None
+  thumbnailUrl: Option[URL] = None
 ) {
 
   import FileInfo._

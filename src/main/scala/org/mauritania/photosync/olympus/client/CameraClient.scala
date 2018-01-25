@@ -85,29 +85,16 @@ class CameraClient(
   }
 
   /**
-    * Retrieves the thumbnail of a given media file
+    * Retrieves the URL of the thumbnail of a given media file
     * @param remoteDir directory
     * @param remoteFile file
-    * @return the thumbnail of the media file in GIF format
+    * @return the URL pointing to the thumbnail image
     */
   def thumbnailFileUrl(remoteDir: String, remoteFile: String): URL = {
-    val relativeUrl = s"/get_thumbnail.cgi?DIR=$remoteDir/$remoteFile"
-    val url = configuration.fileUrl(relativeUrl)
-    url
-  }
-
-  /**
-    * Retrieves the thumbnail of a given media file
-    * @param remoteDir directory
-    * @param remoteFile file
-    * @return the thumbnail of the media file in GIF format
-    */
-  def thumbnailFile(remoteDir: String, remoteFile: String): BufferedImage = {
-    val reply = get(s"/get_thumbnail.cgi?DIR=$remoteDir/$remoteFile")
-    logger.info(s"Thumbnail for $remoteDir/$remoteFile is ${reply.length} bytes long")
-    val is = new ByteArrayInputStream(reply)
-    val img = ImageIO.read(is)
-    img
+    val fileUrlPart = baseDirFileUrl(Some(configuration.serverBaseUrl), Some(remoteDir), Some(remoteFile))
+    val relativeUrl = s"/get_thumbnail.cgi?DIR=$fileUrlPart"
+    val fullUrl = configuration.fileUrl(relativeUrl)
+    fullUrl
   }
 
   /**
@@ -180,7 +167,7 @@ class CameraClient(
         htmlLineToBeParsed match {
           case fileRegex(fileName, fileSizeBytes, _, date, time) =>
             val thumbnail = thumbnailFileUrl(fileDir, fileName)
-            Some(FileInfo(fileDir, fileName, fileSizeBytes.toLong, date.toInt, Some(thumbnail.toString)))
+            Some(FileInfo(fileDir, fileName, fileSizeBytes.toLong, date.toInt, Some(thumbnail)))
           case _ =>
             None
         }

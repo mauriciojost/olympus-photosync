@@ -16,7 +16,10 @@ object SyncPlanItem {
   case object OnlyRemote extends DownloadedStatus
   case object PartiallyDownloaded extends DownloadedStatus
 
-  case class Index(i: Int, total: Int)
+  case class Index(i: Int, total: Int) {
+    def percentage: Float = i.toFloat / total
+    def percentageAsStr: String = (percentage * 100).toInt + "%"
+  }
 
   def apply(fileInfo: FileInfo, index: Index, local: Map[String, FileInfo], remote: Map[String, FileInfo]): SyncPlanItem = {
     val status = isDownloaded(fileInfo, local, remote)

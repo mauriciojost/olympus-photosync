@@ -13,6 +13,15 @@ class CameraClientSpec extends Specification with Mockito {
 
   val ServerBaseUrl = "./src/test/resources/org/mauritania/photosync/"
 
+  val DefaultCameraClientConfig = CameraClientConfig(
+    serverProtocol = "file",
+    serverName = "localhost",
+    serverBaseUrl = "/DCIM",
+    serverPort = 0,
+    fileRegex = """wlan.*=.*,(.*),(\d+),(\d+),(\d+),(\d+).*""",
+    urlTranslator = None
+  )
+
   "The camera server client" should {
 
     "correctly list remote files when empty from OMD E-M10" in {
@@ -46,8 +55,13 @@ class CameraClientSpec extends Specification with Mockito {
       )
 
       // wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
-      cc.listFiles() mustEqual Seq(FileInfo("100OLYMP", "OR.ORF", 15441739L, 18229))
-
+      val remoteFiles = cc.listFiles()
+      remoteFiles.size mustEqual 1
+      remoteFiles.head.folder mustEqual "100OLYMP"
+      remoteFiles.head.name mustEqual "OR.ORF"
+      remoteFiles.head.size mustEqual 15441739L
+      remoteFiles.head.date mustEqual 18229
+      remoteFiles.head.thumbnailUrl must beSome
 
       val outputDirectory = TestHelper.createTmpDir("output")
       cc.downloadFile("100OLYMP", "OR.ORF", outputDirectory)
@@ -62,34 +76,22 @@ class CameraClientSpec extends Specification with Mockito {
 
     }
 
-    "correctly retrieve thumbnail" in {
-      val cc = new CameraClient(
-        generateClientCameraConfig(
-          "01-root-em10-onefolder.html",
-          specialMappingUrlTranslator("01-root-em10-onefolder.html", "0002-em10-downloadable-file.html")
-        )
-      )
+    "correctly retrieve thumbnail URL" in {
+      val cc = new CameraClient(DefaultCameraClientConfig)
 
-      val thumbnail = cc.thumbnailFile("100OLYMP", "OR.ORF") // it's a JPG encoded file
+      val thumbnailUrl = cc.thumbnailFileUrl("100OLYMP", "OR.ORF")
 
-      val thumbnailWidthHeight = (thumbnail.getWidth, thumbnail.getHeight)
-
-      thumbnailWidthHeight mustEqual (160, 120)
+      thumbnailUrl mustEqual new URL("file", "localhost", 0, "/get_thumbnail.cgi?DIR=/DCIM/100OLYMP/OR.ORF")
 
     }
 
   }
 
   def generateClientCameraConfig(rootHtmlName: String, mapping: URL => URL): CameraClientConfig = {
-    CameraClientConfig(
-      serverProtocol = "file",
-      serverName = "localhost",
+    DefaultCameraClientConfig.copy(
       serverBaseUrl = ServerBaseUrl + rootHtmlName,
-      serverPort = 0,
-      fileRegex = """wlan.*=.*,(.*),(\d+),(\d+),(\d+),(\d+).*""",
       urlTranslator = Some(mapping)
     )
-
   }
 
   def specialMappingUrlTranslator(rootHtmlName: String, folderHtmlName: String)(url: URL): URL = {
@@ -98,7 +100,6 @@ class CameraClientSpec extends Specification with Mockito {
       file
         .replace(rootHtmlName + "/100OLYMP", "100OLYMP/" + folderHtmlName)
         .replace(folderHtmlName + "/", "photosample/")
-        .replace("/get_thumbnail.cgi?DIR=100OLYMP/", ServerBaseUrl + "100OLYMP/thumbnails/")
     }
     val relativeUrl = url.getFile
     val newRelativeUrl = transformRelativeUrl(relativeUrl)

@@ -30,10 +30,11 @@ object GuiStarter extends JFXApp {
 
   val NoneText = ""
   val SeqSeparator = ','
-  val SloganText = "Synchronize your photos!!!"
+  val SloganText = "Synchronize your photos with Olympus Photosync!!!"
   val StatusTextIdle = "Idle"
   val TitleStyle = "-fx-font: normal bold 15pt sans-serif"
   val StatusStyle = "-fx-font: normal italic 10pt sans-serif"
+  val DefaultSpacing = 20
 
   val baseConfigVar = Var[Option[PhotosyncConfig]](None)
   val fileGlobVar = Var(NoneText)
@@ -94,9 +95,7 @@ object GuiStarter extends JFXApp {
     }
   }
 
-  val Separator = new Separator {
-    maxWidth = 200
-  }
+  val Separator = new Separator { }
 
   val TitleText = new Text {
     text = SloganText
@@ -137,6 +136,8 @@ object GuiStarter extends JFXApp {
       case invalid => throw new IllegalArgumentException(s"Bad command line arguments: $invalid")
     }
     SyncPlanList.setCellFactory(CustomCell.CustomCellCallback)
+
+
     baseConfigVar() = parsedConfig
   }
 
@@ -159,21 +160,20 @@ object GuiStarter extends JFXApp {
   stage = new PrimaryStage {
     title = "Olympus Photosync v" + Constants.Version
     scene = new Scene {
-      resizable = false
+      resizable = true
       content = new VBox {
         alignment = Pos.Center
-        padding = Insets(30, 200, 30, 200)
-        spacing = 30
+        spacing = DefaultSpacing
+        padding = Insets(DefaultSpacing, DefaultSpacing, DefaultSpacing, DefaultSpacing)
         children = Seq(
           TitleText,
           new VBox {
             alignment = Pos.Center
-            spacing = 10
+            spacing = DefaultSpacing
             children = Seq(
               new HBox {
                 alignment = Pos.Center
-                fillHeight = true
-                spacing = 20
+                spacing = DefaultSpacing
                 children = Seq(RefreshButton, SyncButton, CloseButton)
               },
               FileGlobText,
@@ -218,7 +218,7 @@ object GuiStarter extends JFXApp {
   }
 
   def syncFile(manager: FilesManager, syncPlanItem: SyncPlanItem) = {
-    updateStatus(s"Synchronizing ${syncPlanItem.fileInfo.name} (${syncPlanItem.index})")
+    updateStatus(s"Synchronizing ${syncPlanItem.fileInfo.name} (${syncPlanItem.index.percentageAsStr})")
     manager.syncFile(syncPlanItem)
   }
 

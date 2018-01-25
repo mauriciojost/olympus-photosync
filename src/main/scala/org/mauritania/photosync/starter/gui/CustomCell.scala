@@ -23,16 +23,17 @@ class CustomCell extends javafxcontrol.ListCell[CellType] {
       val fileName = item.fileInfo.name
       val fileNameDir = s"$fileDir/$fileName"
       val downloadStatus = item.downloadStatus
-      val fileThumbnail = item.fileInfo.thumbnail
+      val downloadStatusCode = asCode(downloadStatus)
+      val fileThumbnail = item.fileInfo.thumbnailUrl
       val toolTipText =
         s"""File:  $fileNameDir
            |Size:  $fileSize bytes
            |Date:  $fileDate
            |Status: $downloadStatus""".stripMargin
-      setText(fileNameDir)
+      setText("[" + downloadStatusCode + "] " + fileNameDir)
       setTooltip(new Tooltip(toolTipText))
       fileThumbnail match {
-        case Some(t) => setGraphic(new ImageView(t))
+        case Some(t) => setGraphic(new ImageView(t.toString))
         case None => setGraphic(getRectangle(downloadStatus))
       }
     } else {
@@ -43,18 +44,32 @@ class CustomCell extends javafxcontrol.ListCell[CellType] {
   }
 
   def getRectangle(downloadStatus: DownloadedStatus): Rectangle = {
-    val statusColor = downloadStatus match {
-      case SyncPlanItem.PartiallyDownloaded => Color.ORANGE
-      case SyncPlanItem.Downloaded => Color.GREEN
-      case SyncPlanItem.OnlyLocal => Color.WHITE
-      case SyncPlanItem.OnlyRemote => Color.RED
-    }
+    val statusColor = asColor(downloadStatus)
     val rect = new Rectangle(20, 20)
     rect.setFill(statusColor)
     rect.setAccessibleText(downloadStatus.toString)
     rect
   }
 
+  private def asColor(downloadStatus: DownloadedStatus) = {
+    val statusColor = downloadStatus match {
+      case SyncPlanItem.PartiallyDownloaded => Color.ORANGE
+      case SyncPlanItem.Downloaded => Color.GREEN
+      case SyncPlanItem.OnlyLocal => Color.WHITE
+      case SyncPlanItem.OnlyRemote => Color.RED
+    }
+    statusColor
+  }
+
+  private def asCode(downloadStatus: DownloadedStatus) = {
+    val statusColor = downloadStatus match {
+      case SyncPlanItem.PartiallyDownloaded => ".R"
+      case SyncPlanItem.Downloaded => "LR"
+      case SyncPlanItem.OnlyLocal => "L."
+      case SyncPlanItem.OnlyRemote => ".R"
+    }
+    statusColor
+  }
 }
 
 object CustomCell {
