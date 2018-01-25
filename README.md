@@ -26,11 +26,11 @@ This application has been successfully tested on the following operating systems
 
 Contact me if you have any issue.
 
-## **New: GUI**
+## **GUI**
 
-Still in beta, but open to feedback!
+Open to feedback!
 
-![GUI](doc/images/gui-sample-v0.12.png)
+![GUI](doc/images/gui-sample-v0.13.png)
 
 In Linux/MacOS launch with: 
 
@@ -59,12 +59,7 @@ create [issues here](https://github.com/mauriciojost/olympus-photosync/issues)!
 
 First [**download** the application package from here](https://bitbucket.org/mauriciojost/olympus-photosync/downloads).
 
-If you use a **Linux** distribution I strongly suggest to download the _.deb_
-package for Debian/Ubuntu or the _.rpm_ one for _Red Hat_ like distributions.
-
-If you use **Windows** or **Mac OS** I strongly suggest to download the _.zip_ package.
-
-#### Using generic packages (_.zip_ or _.tgz_, suggested for Windows & Mac OS)
+#### Use generic packages (_.zip_ or _.tgz_) on Windows or Mac OS
 
 These packages are provided so that the application can be used without
 installation. Download the latest version (for instance _photosync-XX.zip_) and
@@ -79,12 +74,12 @@ will have to:
 
  - (if under Windows) navigate to the folder _<PHOTOSYNC>\bin_ and execute _photosync.bat_.
 
-#### Using Linux packages (_.deb_ and _.rpm_ files)
+#### Use Linux packages (_.deb_ and _.rpm_ files)
 
 Packages _.deb_ and _.rpm_ are available for Linux distributions. You can
 install them using _dpkg_ and _rpm_ tools.
 
-For instance the _.deb_ package can be installed in _Ubuntu_ typing:
+For instance, the _.deb_ package can be installed in _Ubuntu_ typing:
 
 ```
 sudo apt-get install openjdk-8-jre
@@ -100,8 +95,8 @@ To transfer media from your camera to your PC follow these steps:
 
 1. Turn on the WIFI service of your camera using _Private_ mode in _Wi-Fi Connect Settings_.
 
-    This step is **very important**, if not set up correctly the camera won't let
-    this application download media files! To change to _Private_ mode go to the menu of
+    This step is **very important**. If not set up correctly the camera won't let
+    this application download media files. To change to _Private_ mode go to the menu of
     your camera, and set _Wi-Fi Connect Settings_ to _Private_ as shown in the following image.
 
     ![Camera in private mode](doc/images/camera-in-wifi-connect-settings-private-mode.jpg)
@@ -116,17 +111,17 @@ To transfer media from your camera to your PC follow these steps:
 
     ![PC correctly connected to the camera](doc/images/oishare-wifi-connected-ok.jpg)
 
-3. Now you can launch the application executing _photosync_ (depending on how you
-installed the application and your OS)
+3. Now you can launch the application executing _photosync_
 
     The application will start copying files from your camera to a local
-    directory (as configured). To tune your application (to launch GUI, write
-    to a different directory, sync certain files, etc.) continue below.
-    
-    The application synchronizes media one way (remote to local), if remote
+    directory (as configured).
+
+    By default, the application synchronizes media one way (remote to local), if remote
     files are already copied locally the application will skip them, so it is
     safe to run it multiple times to finish synchronization in case of
     network connectivity issues.
+
+    However more customized behaviour can be achieved via configuration. See section below.
 
 ### Configure
 
@@ -135,8 +130,9 @@ you may want to customize its execution, for instance to download photos to
 a non-default directory.
 
 For such cases, the application uses several parameters that can be set either
-through command line arguments, or by modifying the configuration file. Command line
-arguments take precedence over the configuration file.
+through command line arguments, or by modifying the configuration file.
+
+Command line arguments take precedence over the configuration file.
 
 #### Command line arguments
 
@@ -191,17 +187,13 @@ set _APP_ARGS=--file-patterns *.AVI
 
 #### Configuration file
 
-This project uses the _typesafehub/config_ library to cope with configuration
-files, Find here a [valid **configuration file**](src/main/resources/application.conf).
-
-Just copy its content somewhere, modify it as wished, and launch the
-application as follows:
+You can generate a template using:
 
 ```
-photosync -Dconfig.file=/path/to/application.conf
+photosync --init-config
 ```
 
-
+Then you can customize it and use it (as explained by the tool itself).
 
 ## Develop
 
@@ -241,17 +233,12 @@ See [here](extras/docker/run/README.md) for more details.
 
 This project is _open source_ so you can help make it better.
 
-**Found issues?** Then please [**file an issue** here](https://github.com/mauriciojost/olympus-photosync/issues)
+- **Found issues?** Then please [**file an issue** here](https://github.com/mauriciojost/olympus-photosync/issues)
 or send me by mail the logs.
-
-**Own a OMD E-MX camera not supported?** Then please contact me by e-mail too.
-
-**Want to simply contribute?** You can create a _PR_ in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as _deprecated_ in the future.
-
-**Need more information?** Send me an [e-mail to _mauriciojostx@gmail.com_](mailto:mauriciojostx@gmail.com).
-
-**Liked the project?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
-
-**Want it to be maintained?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
+- **Own a OMD E-MX camera not supported?** Then please contact me by e-mail too.
+- **Want to simply contribute?** You can create a _PR_ in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as _deprecated_ in the future.
+- **Need more information?** Send me an [e-mail to _mauriciojostx@gmail.com_](mailto:mauriciojostx@gmail.com).
+- **Liked the project?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
+- **Want it to be maintained?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
 
 
