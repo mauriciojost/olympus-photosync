@@ -1,9 +1,6 @@
 # README
 
-[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
-[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
-
-[![Download](https://img.shields.io/badge/download-installer-aa3333.svg)](https://github.com/mauriciojost/olympus-photosync/releases/) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
+[![Download](https://img.shields.io/badge/download-installer-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
 
 This application allows to wirelessly download media from Olympus cameras to your PC.
 
@@ -26,9 +23,9 @@ This application has been successfully tested on the following operating systems
 
 Contact me if you have any issue.
 
-## **GUI**
+## Graphical User Interface (**new!**)
 
-Open to feedback!
+This is a recently added feature. I am open to feedback!
 
 ![GUI](doc/images/gui-sample-v0.13.png)
 
@@ -59,7 +56,7 @@ create [issues here](https://github.com/mauriciojost/olympus-photosync/issues)!
 
 First [**download** the application package from here](https://github.com/mauriciojost/olympus-photosync/releases/) ([bitbucket deprecated](https://bitbucket.org/mauriciojost/olympus-photosync/downloads)).
 
-#### Use generic packages (_.zip_ or _.tgz_) on Windows or Mac OS
+#### Use generic packages: _.zip_ or _.tgz_ (prefered for Windows or Mac OS)
 
 These packages are provided so that the application can be used without
 installation. Download the latest version (for instance _photosync-XX.zip_) and
@@ -74,7 +71,7 @@ will have to:
 
  - (if under Windows) navigate to the folder _<PHOTOSYNC>\bin_ and execute _photosync.bat_.
 
-#### Use Linux packages (_.deb_ and _.rpm_ files)
+#### Use Linux packages: _.deb_ and _.rpm_
 
 Packages _.deb_ and _.rpm_ are available for Linux distributions. You can
 install them using _dpkg_ and _rpm_ tools.
@@ -197,6 +194,9 @@ Then you can customize it and use it (as explained by the tool itself).
 
 ## Develop
 
+[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
+[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
+
 This application is written in _Scala_ and uses _SBT_. Find below some
 useful commands for basic actions.
 
@@ -240,5 +240,14 @@ or send me by mail the logs.
 - **Need more information?** Send me an [e-mail to _mauriciojostx@gmail.com_](mailto:mauriciojostx@gmail.com).
 - **Liked the project?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
 - **Want it to be maintained?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
+
+
+# References
+
+- https://medium.com/@dmpop/olympus-photosync-wireless-bridge-between-olympus-cameras-and-linux-79b43338e18e
+- https://discuss.pixls.us/t/nifty-tool-for-olympus-cameras/6223
+- https://www.dpreview.com/forums/thread/4209650
+- https://scribblesandsnaps.com/2018/01/11/olympus-photosync-wireless-bridge-between-olympus-cameras-and-linux/
+
 
 
