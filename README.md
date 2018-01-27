@@ -244,10 +244,11 @@ or send me by mail the logs.
 
 # References
 
-- https://medium.com/@dmpop/olympus-photosync-wireless-bridge-between-olympus-cameras-and-linux-79b43338e18e
-- https://discuss.pixls.us/t/nifty-tool-for-olympus-cameras/6223
-- https://www.dpreview.com/forums/thread/4209650
-- https://scribblesandsnaps.com/2018/01/11/olympus-photosync-wireless-bridge-between-olympus-cameras-and-linux/
+- [Medium - Blog Post](https://medium.com/@dmpop/olympus-photosync-wireless-bridge-between-olympus-cameras-and-linux-79b43338e18e)
+- [Linux Photography Book - Dmitri Popov](https://gumroad.com/l/linux-photography)
+- [Pixls - Thread](https://discuss.pixls.us/t/nifty-tool-for-olympus-cameras/6223)
+- [DP Review - Thread](https://www.dpreview.com/forums/thread/4209650)
+- [Scribbles And Snaps - Blog Post](https://scribblesandsnaps.com/2018/01/11/olympus-photosync-wireless-bridge-between-olympus-cameras-and-linux/)
 
 
 
