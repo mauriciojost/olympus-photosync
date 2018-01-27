@@ -3,7 +3,7 @@
 [![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
 [![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
 
-[![Download](https://img.shields.io/badge/download-installer-aa3333.svg)](https://bitbucket.org/mauriciojost/olympus-photosync/downloads) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
+[![Download](https://img.shields.io/badge/download-installer-aa3333.svg)](https://github.com/mauriciojost/olympus-photosync/releases/) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
 
 This application allows to wirelessly download media from Olympus cameras to your PC.
 
@@ -57,7 +57,7 @@ create [issues here](https://github.com/mauriciojost/olympus-photosync/issues)!
 
 ### Install/unzip the application
 
-First [**download** the application package from here](https://bitbucket.org/mauriciojost/olympus-photosync/downloads).
+First [**download** the application package from here](https://github.com/mauriciojost/olympus-photosync/releases/) ([bitbucket deprecated](https://bitbucket.org/mauriciojost/olympus-photosync/downloads)).
 
 #### Use generic packages (_.zip_ or _.tgz_) on Windows or Mac OS
 
