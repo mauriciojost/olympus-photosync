@@ -168,15 +168,3 @@
 - commit Add thumbnails to the GUI #35
 - commit Bump to v0.13
 
-
-## RELEASE: 0.14.0
-
-- commit Improve README.md as per issues #48 #47 #45 #44 #43 #42 #41
-- commit Add RELEASE-NOTES.md
-- commit In Windows, launch GUI by default #46
-- commit Make files pattern no case-sensitive #51
-- commit Update documentation for #51
-- commit At the end of the sync clearly display where the photos are #50
-- commit Ease releasing
-- commit Update correctly the versions in Constants.scala and version.sbt
-- commit Update release notes
