@@ -169,9 +169,9 @@
 - commit Bump to v0.13
 
 
-
 ## RELEASE: 0.14.0
 
+- commit Improve README.md as per issues #48 #47 #45 #44 #43 #42 #41
 - commit Add RELEASE-NOTES.md
 - commit In Windows, launch GUI by default #46
 - commit Make files pattern no case-sensitive #51
