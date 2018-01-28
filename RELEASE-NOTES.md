@@ -1,7 +1,7 @@
 # RELEASE NOTES
 
 
-## RELEASE: v0.2
+## RELEASE: 0.2
 
 - commit #3 Improve documentation
 - commit #1 #2 #7 Add parameters
@@ -14,7 +14,7 @@
 - commit Set to v0.2
 
 
-## RELEASE: v0.3
+## RELEASE: 0.3
 
 - commit Refactoring
 - commit Set version to 0.3-SNAPSHOT
@@ -22,7 +22,7 @@
 - commit Set scala version in .travis.yml
 
 
-## RELEASE: v0.4
+## RELEASE: 0.4
 
 - commit Add LICENSE.md and CONTRIBUTORS.md files
 - commit Bump to v0.5 without log configurations
@@ -41,7 +41,7 @@
 - commit Mention project website when executing --help
 
 
-## RELEASE: v0.5
+## RELEASE: 0.5
 
 - commit Mention project website when executing --help
 - commit #18 Use scripts to set up /var/log/photosync
@@ -49,7 +49,7 @@
 - commit Bump to v0.6
 
 
-## RELEASE: v0.6
+## RELEASE: 0.6
 
 - commit Mention project website when executing --help
 - commit #18 Use scripts to set up /var/log/photosync
@@ -57,7 +57,7 @@
 - commit Bump to v0.6
 
 
-## RELEASE: v0.7
+## RELEASE: 0.7
 
 - commit Fix link to current version documentation
 - commit Upgrade scala, sbt and dependencies
@@ -68,7 +68,7 @@
 - commit Bump to v0.7
 
 
-## RELEASE: v0.8
+## RELEASE: 0.8
 
 - commit Add scoverage plugin
 - commit Enable coveralls
@@ -92,7 +92,7 @@
 - commit Bump to v0.8
 
 
-## RELEASE: v0.9
+## RELEASE: 0.9
 
 - commit Add another supported camera
 - commit Use better immutable collections
@@ -104,7 +104,7 @@
 - commit Improve build.bash
 
 
-## RELEASE: v0.10
+## RELEASE: 0.10
 
 - commit Display versions in Constant.scala & version.sbt before packaging
 - commit Add documentation via plantuml
@@ -117,7 +117,7 @@
 - commit Bump to v0.10
 
 
-## RELEASE: v0.11
+## RELEASE: 0.11
 
 - commit Very first version of a GUI
 - commit Add first version of GUI #20
@@ -126,7 +126,7 @@
 - commit Bump to v0.11 (add gui)
 
 
-## RELEASE: v0.12
+## RELEASE: 0.12
 
 - commit Minor refactoring on packager script
 - commit Disable coverage for GUI (which is in beta)
@@ -140,7 +140,7 @@
 - commit Bump to v0.12
 
 
-## RELEASE: v0.13
+## RELEASE: 0.13
 
 - commit Ignore gui files for coverage measurement
 - commit Update Jenkinsfile accordingly
@@ -167,4 +167,17 @@
 - commit Added thumbnails (part I)
 - commit Add thumbnails to the GUI #35
 - commit Bump to v0.13
+
+
+## RELEASE: 0.14.0
+
+- commit Add RELEASE-NOTES.md
+- commit In Windows, launch GUI by default #46
+- commit Make files pattern no case-sensitive #51
+- commit Update documentation for #51
+- commit At the end of the sync clearly display where the photos are #50
+- commit Ease releasing
+- commit Update correctly the versions in Constants.scala and version.sbt
+- commit Update release notes
+
 
