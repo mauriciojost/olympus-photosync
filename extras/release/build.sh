@@ -91,7 +91,9 @@ cat $root_dir/packages.md5sum
 
 echo "### 4. Review and create commit"
 
-echo "### 5. Tag commit: git tag -a v$release_version"
+echo "### 5. Tag commit: git tag -a v$release_version -m $release_version"
+
+echo "### 6. Push tags: git push origin master --tags"
 
 echo "### 6. Create release in github and upload release packages with release notes"
 
