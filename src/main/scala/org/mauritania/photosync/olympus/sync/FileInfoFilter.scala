@@ -17,9 +17,10 @@ object FileInfoFilter {
   }
 
   private def fileNameConforms(fileName: String, patterns: Seq[String]): Boolean = {
-    val f = Paths.get(fileName)
-    val matchers = patterns.map(p => FileSystems.getDefault.getPathMatcher(PatternPrefix + p))
-    matchers.exists(matcher => matcher.matches(f))
+    def toUpperCase(s: String) = s.toUpperCase
+    val file = Paths.get(toUpperCase(fileName))
+    val matchers = patterns.map(p => FileSystems.getDefault.getPathMatcher(PatternPrefix + toUpperCase(p)))
+    matchers.exists(matcher => matcher.matches(file))
   }
 
   case class Criteria(

@@ -43,13 +43,13 @@ class FileInfoFilterSpec extends Specification {
 
     "correctly filter all files after with extension 'avi'" in {
       FileInfoFilter.isFileEligible(fileWithName("xx.avo"), filter("*.avi")) must beFalse
-      FileInfoFilter.isFileEligible(fileWithName("xx.AVI"), filter("*.avi")) must beFalse
+      FileInfoFilter.isFileEligible(fileWithName("xx.AVI"), filter("*.avi")) must beTrue // non case-sensitive
       FileInfoFilter.isFileEligible(fileWithName("xx.avi"), filter("*.avi")) must beTrue
     }
 
     "correctly filter all files after containing 'XX'" in {
-      FileInfoFilter.isFileEligible(fileWithName("xx.avo"), filter("*XX*")) must beFalse
-      FileInfoFilter.isFileEligible(fileWithName("xxxxxx.AVI"), filter("*XX*")) must beFalse
+      FileInfoFilter.isFileEligible(fileWithName("xx.avo"), filter("*XX*")) must beTrue // non case-sensitive
+      FileInfoFilter.isFileEligible(fileWithName("xyxyxy.AVI"), filter("*XX*")) must beFalse
       FileInfoFilter.isFileEligible(fileWithName("xxXXxx.avi"), filter("*XX*")) must beTrue
     }
 
