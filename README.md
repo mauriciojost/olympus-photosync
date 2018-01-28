@@ -121,9 +121,9 @@ To transfer media from your camera to your PC follow these steps:
     Then you need to connect to that WIFI network from your PC.
 
     Once done, you can verify that the connection is correct opening any of the two
-     following URLs:
-     - <a href="http://192.168.0.10/" target="_blank">http://192.168.0.10/</a>
-     - <a href="http://oishare/" target="_blank">http://oishare/</a>
+    following URLs:
+    - [http://192.168.0.10/](http://192.168.0.10/){:target="_blank"}
+    - [http://oishare/](http://oishare/){:target="_blank"}
 
     If any of them show black screen as the one below, then you're correctly connected.
 
