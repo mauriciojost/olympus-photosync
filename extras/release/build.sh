@@ -1,0 +1,96 @@
+#!/bin/bash
+
+installer_dir=$(readlink -e `dirname $0`)
+root_dir=$installer_dir/../../../
+src_dir=$root_dir/src
+
+release_version=$1
+previous_release_version=$2
+
+echo "Generating release: v$release_version"
+echo "Previous release: v$previous_release_version"
+
+echo ""
+echo "### 1. Update versions"
+
+find $src_dir | grep Constants.scala | sed -i "s/1master/$release_version/g"
+find $src_dir | grep version.sbt | sed -i "s/1master/$release_version/g"
+find $src_dir | grep README.md | sed -i "s/1master/$release_version/g"
+
+version_constants=`find $src_dir | grep Constants.scala | xargs cat | grep Version`
+version_sbt=`find $root_dir | grep version.sbt | xargs cat`
+echo "Version should be of the form: $release_verion"
+echo "Currently are: $version_constants and $version_sbt"
+echo "Update in:"
+find $root_dir | grep Constants.scala
+find $root_dir | grep version.sbt
+find $root_dir | grep README.md
+echo ""
+
+echo "### 2. Update release notes"
+
+echo "### 3. Create commit"
+
+echo "### 3. Tag commit: git tag -a $release_version"
+
+echo "### 4. Create release in github and upload release packages with release notes"
+
+
+sleep 6
+
+set -e
+set -x
+
+
+echo "### Building packages..."
+cd $root_dir
+
+sbt clean
+sbt test
+sbt universal:packageBin
+sbt universal:packageZipTarball
+sbt debian:packageBin
+sbt rpm:packageBin
+#sbt windows:packageBin
+
+cd $installer_dir
+
+rm -f $root_dir/packages.log
+rm -f $root_dir/packages.md5sum
+
+echo "### Locating packages..."
+find $root_dir/target -name *.zip >> $root_dir/packages.log
+find $root_dir/target -name *.tgz >> $root_dir/packages.log
+find $root_dir/target -name *.deb >> $root_dir/packages.log
+find $root_dir/target -name *.rpm >> $root_dir/packages.log
+#find $root_dir/target -name *.exe >> $root_dir/packages.log
+
+cat $root_dir/packages.log | xargs -I% md5sum % >> $root_dir/packages.md5sum
+
+echo "### Packages generated:"
+cat $root_dir/packages.log
+cat $root_dir/packages.md5sum
+
+echo "### Generating release notes..."
+rnfile=$root_dir/RELEASE-NOTES.md
+
+function release(){
+  local from=$1
+  local to=$2
+  echo ""
+  echo ""
+  echo "## RELEASE: $to"
+  echo ""
+  git log $from...$to --pretty=format:'commit %s' --reverse | \
+    grep -v .gitignore | \
+    grep -vi README | \
+    grep -vi TODO | \
+    grep -vi MOVE | \
+    grep -vi TEST | \
+    grep -vi INDENTATION
+}
+
+release $previous_release_version $release_version >> $rnfile 
+
+
+echo "### Done."
