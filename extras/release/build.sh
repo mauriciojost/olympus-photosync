@@ -89,13 +89,17 @@ echo "### Packages generated:"
 cat $root_dir/packages.log
 cat $root_dir/packages.md5sum
 
-echo "### 4. Review and create commit"
+echo "### 4. Review and create 2 commits (in dev branch): one for release notes, and one for the bump (that will be reverted in dev branch)"
 
 echo "### 5. Tag commit: git tag -a v$release_version -m $release_version"
 
 echo "### 6. Push tags: git push origin master --tags"
 
-echo "### 6. Create release in github and upload release packages with release notes"
+echo "### 7. Make master branch in sync with such tagged commit."
+
+echo "### 8. Create release in github and upload release packages with release notes."
+
+echo "### 9. Revert in dev branch the bump commit."
 
 
 

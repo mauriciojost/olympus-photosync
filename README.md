@@ -300,7 +300,7 @@ This project is _open source_ so you can help make it better!
 - **Found issues?** Then please [**file an issue** here](https://github.com/mauriciojost/olympus-photosync/issues)
 or send me by mail the logs.
 - **Own an OMD E-MX camera not supported?** Then please contact me by e-mail too.
-- **Want to code-contribute?** You can create a _PR_ in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as _deprecated_ in the future.
+- **Want to code-contribute?** You can create a _PR_ versus [dev](https://github.com/mauriciojost/olympus-photosync/tree/dev) branch in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as _deprecated_ in the future.
 - **Need more information?** Send me an [e-mail to _mauriciojostx@gmail.com_](mailto:mauriciojostx@gmail.com).
 - **Liked the project?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
 - **Want it to be maintained?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
