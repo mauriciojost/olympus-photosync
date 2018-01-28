@@ -88,7 +88,7 @@ object ArgumentsParserBuilder {
 
     opt[String]('P', "file-patterns").valueName(s"<pattern1>$SeqSeparator<pattern2>$SeqSeparator...").
       action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(fileNameConditions = Some(propx.split(SeqSeparator)))) }.
-      text("synchronize only files that match one of the provided glob patterns, for instance *.avi for AVI files (matching is case sensitive, so '*.AVI' is not equivalent to '*.avi')")
+      text("synchronize only files that match one of the provided glob patterns, for instance *.avi for AVI files (matching is not case-sensitive, so '*.AVI' is equivalent to '*.avi')")
 
     opt[Unit]('g', "gui").
       action { (propx, c) => c.copy(guiMode = true)}.
