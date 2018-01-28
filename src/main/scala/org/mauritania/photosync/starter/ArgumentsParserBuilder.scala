@@ -30,7 +30,8 @@ object ArgumentsParserBuilder {
         fileNameConditions = Try(configFile.getString("output.patterns")).toOption.map(_.split(SeqSeparator))
       ),
       outputDirectory = configFile.getString("output.directory"),
-      gui = configFile.getBoolean("gui"),
+      guiMode = configFile.getBoolean("gui"),
+      commandLineMode = configFile.getBoolean("commandline"),
       initConfig = configFile.getBoolean("init.config"),
       shutDownAfterSync = configFile.getBoolean("shutdownaftersync")
     )
@@ -90,8 +91,12 @@ object ArgumentsParserBuilder {
       text("synchronize only files that match one of the provided glob patterns, for instance *.avi for AVI files (matching is case sensitive, so '*.AVI' is not equivalent to '*.avi')")
 
     opt[Unit]('g', "gui").
-      action { (propx, c) => c.copy(gui = true)}.
-      text("launch GUI (beta)")
+      action { (propx, c) => c.copy(guiMode = true)}.
+      text("launch application using GUI")
+
+    opt[Unit]('c', "commandline").
+      action { (propx, c) => c.copy(commandLineMode = true)}.
+      text("launch application in command line mode (precedence over GUI)")
 
     opt[Unit]('s', "shutdownaftersync").
       action { (propx, c) => c.copy(shutDownAfterSync = true)}.

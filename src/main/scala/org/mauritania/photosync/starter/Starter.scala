@@ -5,6 +5,7 @@ import java.io.{File, PrintWriter}
 import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.client.CameraClient
 import org.mauritania.photosync.olympus.sync.FilesManagerImpl
+import org.mauritania.photosync.starter.Os.Windows
 import org.mauritania.photosync.starter.gui.GuiStarter
 import org.slf4j.LoggerFactory
 
@@ -35,9 +36,12 @@ object Starter {
 
     logger.info(s"Loading file configuration: $fileConfiguration")
 
+    val osIswindows = (Os.currentOs(Os.JavaOsProperty) == Windows)
+
     ArgumentsParserBuilder.Parser.parse(args, fileConfiguration) match {
-      case Some(config) if config.gui => GuiStarter.main(args)
       case Some(config) if config.initConfig => initConfig(args)
+      case Some(config) if config.guiMode && !config.commandLineMode => GuiStarter.main(args)
+      case Some(config) if osIswindows && !config.commandLineMode => GuiStarter.main(args)
       case Some(config) => Starter.startSynchronization(config)
       case None =>  throw new IllegalArgumentException("Bad command line arguments!")
     }

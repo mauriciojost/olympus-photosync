@@ -21,10 +21,14 @@ case class PhotosyncConfig(
   mediaFilter: FileInfoFilter.Criteria,
 
   /**
-    * If true, start the GUI.
+    * If true, force the use of GUI.
     */
-  gui: Boolean,
+  guiMode: Boolean,
 
+  /**
+    * If true, force the use of command line mode.
+    */
+  commandLineMode: Boolean,
 
   /**
     * If true, dump the configuration file template for customization.
