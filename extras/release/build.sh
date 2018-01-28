@@ -34,14 +34,13 @@ echo "### 2. Update release notes"
 
 rnfile=$root_dir/RELEASE-NOTES.md
 
-function release(){
+function release_notes(){
   local from=$1
-  local to=$2
   echo ""
   echo ""
   echo "## RELEASE: $release_version"
   echo ""
-  git log $from...$to --pretty=format:'commit %s' --reverse | \
+  git log $from..HEAD --pretty=format:'commit %s' --reverse | \
     grep -v .gitignore | \
     grep -vi README | \
     grep -vi TODO | \
@@ -50,7 +49,7 @@ function release(){
     grep -vi INDENTATION
 }
 
-release $previous_release_version HEAD >> $rnfile 
+release_notes $previous_release_version >> $rnfile 
 
 
 echo "### 3. Create releases..."
