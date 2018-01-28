@@ -8,7 +8,7 @@ case class FileInfo(
   name: String,
   size: Long,
   date: Int = FileInfo.DefaultDate,
-  thumbnailUrl: Option[URL] = None
+  thumbnailUrl: Option[URL] = None // if local, no thumbnail will be available
 ) {
 
   import FileInfo._

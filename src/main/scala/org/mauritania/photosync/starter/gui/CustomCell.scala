@@ -30,7 +30,7 @@ class CustomCell extends javafxcontrol.ListCell[CellType] {
            |Size:  $fileSize bytes
            |Date:  $fileDate
            |Status: $downloadStatus""".stripMargin
-      setText("[" + downloadStatusCode + "] " + fileNameDir)
+      setText(fileNameDir + " [" + downloadStatusCode + "]")
       setTooltip(new Tooltip(toolTipText))
       fileThumbnail match {
         case Some(t) => setGraphic(new ImageView(t.toString))
@@ -63,10 +63,10 @@ class CustomCell extends javafxcontrol.ListCell[CellType] {
 
   private def asCode(downloadStatus: DownloadedStatus) = {
     val statusColor = downloadStatus match {
-      case SyncPlanItem.PartiallyDownloaded => ".R"
-      case SyncPlanItem.Downloaded => "LR"
-      case SyncPlanItem.OnlyLocal => "L."
-      case SyncPlanItem.OnlyRemote => ".R"
+      case SyncPlanItem.PartiallyDownloaded => "KO: broken locally"
+      case SyncPlanItem.Downloaded => "OK: in PC and in camera"
+      case SyncPlanItem.OnlyLocal => "OK: only in PC"
+      case SyncPlanItem.OnlyRemote => "KO: only in camera"
     }
     statusColor
   }

@@ -32,6 +32,7 @@ object GuiStarter extends JFXApp {
   val SeqSeparator = ','
   val SloganText = "Synchronize your photos with Olympus Photosync!!!"
   val StatusTextIdle = "Idle"
+  val StatusSyncdFinished = "Sync finished"
   val TitleStyle = "-fx-font: normal bold 15pt sans-serif"
   val StatusStyle = "-fx-font: normal italic 10pt sans-serif"
   val DefaultSpacing = 20
@@ -207,7 +208,8 @@ object GuiStarter extends JFXApp {
       syncPlan.foreach { syncPlanItem =>
         syncFile(manager, syncPlanItem)
       }
-      StatusTextIdle
+      val outputDirectory = baseConfigVar.now.map(_.outputDirectory).mkString
+      StatusSyncdFinished + s"(output at: $outputDirectory)"
     }
 
     def onFxSyncThread(msg: String) = {
