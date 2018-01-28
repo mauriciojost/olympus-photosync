@@ -49,7 +49,7 @@ function release_notes(){
     grep -vi INDENTATION
 }
 
-release_notes $previous_release_version >> $rnfile 
+release_notes v$previous_release_version >> $rnfile 
 
 
 echo "### 3. Create releases..."
@@ -91,7 +91,7 @@ cat $root_dir/packages.md5sum
 
 echo "### 4. Review and create commit"
 
-echo "### 5. Tag commit: git tag -a $release_version"
+echo "### 5. Tag commit: git tag -a v$release_version"
 
 echo "### 6. Create release in github and upload release packages with release notes"
 
