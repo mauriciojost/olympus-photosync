@@ -7,6 +7,7 @@ src_dir=$root_dir/src
 release_version=$1
 previous_release_version=$2
 
+echo "Example of use: bash build.sh 0.15.0 0.14.0 # bash build.sh new_release old_release"
 echo "Generating release: v$release_version"
 echo "Previous release: v$previous_release_version"
 
