@@ -1,7 +1,7 @@
 #!/bin/bash
 
 installer_dir=$(readlink -e `dirname $0`)
-root_dir=$installer_dir/../../../
+root_dir=$installer_dir/../../
 src_dir=$root_dir/src
 
 release_version=$1
@@ -10,12 +10,14 @@ previous_release_version=$2
 echo "Generating release: v$release_version"
 echo "Previous release: v$previous_release_version"
 
+sleep 5
+
 echo ""
 echo "### 1. Update versions"
 
-find $src_dir | grep Constants.scala | sed -i "s/1master/$release_version/g"
-find $src_dir | grep version.sbt | sed -i "s/1master/$release_version/g"
-find $src_dir | grep README.md | sed -i "s/1master/$release_version/g"
+find $root_dir | grep Constants.scala | xargs -I% sed -i "s/1master/$release_version/g" %
+find $root_dir | grep version.sbt | xargs -I% sed -i "s/1master/$release_version/g" %
+find $root_dir | grep README.md | xargs -I% sed -i "s/1master/$release_version/g" %
 
 version_constants=`find $src_dir | grep Constants.scala | xargs cat | grep Version`
 version_sbt=`find $root_dir | grep version.sbt | xargs cat`
