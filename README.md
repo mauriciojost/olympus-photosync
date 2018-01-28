@@ -1,6 +1,6 @@
-# README
+# 1. Overview
 
-[![Download](https://img.shields.io/badge/download-installer-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/) [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](/LICENSE.md)
 
 This application allows to wirelessly download media from Olympus cameras to your PC.
 
@@ -11,70 +11,45 @@ It has been successfully tested on the following cameras:
 - _Olympus OMD E-M1_ (thanks Jean Pierre!)
 - _Olympus OMD E-M5 Mark II_ (thanks David!)
 - _Olympus PEN Lite E-PL7_ (thanks Dmitri!)
-- _Olympus OMD E-M10_
+- _Olympus OMD E-M10_ (thanks Mauricio!)
 
 Also it should work _out-of-the-box_ with other similar Olympus cameras.
 
 This application has been successfully tested on the following operating systems:
 
-- _Linux_
-- _Windows_
+- _Linux_ (thanks Mauricio!)
+- _Windows_ (thanks Mauricio!)
 - _Mac OS_ (thanks Ola!)
 
-Contact me if you have any issue.
+[Contact me via _mauriciojostx@gmail.com_](mailto:mauriciojostx@gmail.com) if you have any issues.
 
-## Graphical User Interface (**new!**)
+# 2. Get started
 
-This is a recently added feature. I am open to feedback!
+## 2.a. Install the application
 
-![GUI](doc/images/gui-sample-v0.13.png)
+The installation procedure depends on your operating system. See below all releases:
 
-In Linux/MacOS launch with: 
+[![All releases](https://img.shields.io/badge/all-releases-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/)
 
-```
-photosync --gui
-```
+### Install on Windows
 
-In Windows you better modify `photosync.bat` replacing:
+Download the latest release for Windows:
 
-```
-set _APP_ARGS=
-```
+[![Windows releases](https://img.shields.io/badge/windows-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.13/olympus-photosync-0.13.zip)
 
-with:
+No installation needed. Decompress the release in `C:\olympus\` (you will need to create the directory).
 
-```
-set _APP_ARGS=--gui
-```
+The executables will be under the unzipped directory, in the `bin` subdirectory: you will use `olympus-photosync.bat`.
 
-Feel free to give your [opinion](mailto:mauriciojostx@gmail.com) or
-create [issues here](https://github.com/mauriciojost/olympus-photosync/issues)!
+### Use Linux native packages
 
-## Get started
+For Linux both _.deb_ and _.rpm_ packages are provided. Download the latest release
+for your own distribution:
 
-### Install/unzip the application
+[![Debian release](https://img.shields.io/badge/debian-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.13/olympus-photosync_0.13_all.deb)
+[![RedHat release](https://img.shields.io/badge/redhat-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.13/olympus-photosync-0.13-1.noarch.rpm)
 
-First [**download** the application package from here](https://github.com/mauriciojost/olympus-photosync/releases/) ([bitbucket deprecated](https://bitbucket.org/mauriciojost/olympus-photosync/downloads)).
-
-#### Use generic packages: _.zip_ or _.tgz_ (prefered for Windows or Mac OS)
-
-These packages are provided so that the application can be used without
-installation. Download the latest version (for instance _photosync-XX.zip_) and
-decompress it somewhere (for example in _/home/user/_). Then the executables will be
-under the unzipped directory, on the _<PHOTOSYNC>/bin/_ subdirectory.
-
-In the coming sections of this document, when requested to execute _photosync_ you
-will have to:
-
- - (if under Linux) execute _<PHOTOSYNC>/bin/photosync_ (you might need to set
- the file _<PHOTOSYNC>/bin/photosync_ as _executable_, doing `chmod +x bin/photosync`).
-
- - (if under Windows) navigate to the folder _<PHOTOSYNC>\bin_ and execute _photosync.bat_.
-
-#### Use Linux packages: _.deb_ and _.rpm_
-
-Packages _.deb_ and _.rpm_ are available for Linux distributions. You can
-install them using _dpkg_ and _rpm_ tools.
+You can install such packages using _dpkg_ and _rpm_ tools.
 
 For instance, the _.deb_ package can be installed in _Ubuntu_ typing:
 
@@ -83,44 +58,100 @@ sudo apt-get install openjdk-8-jre
 sudo dpkg -i photosync_x.x_all.deb
 ```
 
-In the coming sections of this document, when requested to execute _photosync_,
-simply execute _photosync_ from any current directory (as it will be already in the _PATH_ environment variable).
+The tool `olympus-photosync` will be added to the `PATH` so that you can use it anywhere.
 
-### Run the application
+### Install on MacOS / Linux as standalone
+
+Download the latest release:
+
+[![MacOS release](https://img.shields.io/badge/macos-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.13/olympus-photosync-0.13.tgz)
+[![Linux release (standalone)](https://img.shields.io/badge/linux-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.13/olympus-photosync-0.13.tgz)
+
+These packages are provided so that the application can be used without
+installation. Download the release and decompress it somewhere
+(for example in _/home/user/opt/olympus_). Then the executables will be
+under the unzipped directory, under the _bin_ subdirectory.
+
+The tool `bin/olympus-photosync` is the one to be used.
+
+You may need to execute the following command to make the binary executable:
+
+```
+cd <uncompression-directory>
+chmod +x bin/olympus-photosync
+```
+
+## 2.b. Run the application
 
 To transfer media from your camera to your PC follow these steps:
 
-1. Turn on the WIFI service of your camera using _Private_ mode in _Wi-Fi Connect Settings_.
+1. Switch on your camera and go to the _Setup Menu_
+
+    ![Step 0](doc/images/wifi-0.jpg)
+
+2. Set up the WIFI service of your camera as _Private_
+
+    This step needs to be done only once as your camera
+    will remember this setting.
+
+    Go to the WIFI Settings:
+
+    ![Step 1](doc/images/wifi-1.jpg)
+
+    And select _Private_ mode:
+
+    ![Step 2](doc/images/wifi-2.jpg)
 
     This step is **very important**. If not set up correctly the camera won't let
-    this application download media files. To change to _Private_ mode go to the menu of
-    your camera, and set _Wi-Fi Connect Settings_ to _Private_ as shown in the following image.
+    this application download media files.
 
-    ![Camera in private mode](doc/images/camera-in-wifi-connect-settings-private-mode.jpg)
+3. Launch the WIFI service from your camera
 
-2. Connect your PC to the WIFI provided by the camera.
+    ![Step 3](doc/images/wifi-3.jpg)
 
-    The SSID of the WIFI network should be something like "E-M10-V5PG53223". Your PC
-    should be connected to the camera WIFI. To verify such, you can open a web
-    browser (like Explorer, Chrome, Firefox, etc.) and set as URL either _http://oishare/_
-    or _http://192.168.0.10/_. If browsing any of these URLs results in a nice dark web
-    page that mentions Olympus somewhere as follows, then you can proceed:
+    You should see something like this:
+
+    ![Step 4](doc/images/wifi-4.jpg)
+
+4. Connect your PC to the WIFI provided by the camera
+
+    In the example above, the WIFI network (SSID) was `E-M10-P-V5PG56225`. You
+    will need to find your own camera SSID.
+
+    Then you need to connect to that WIFI network from your PC.
+
+    Once done, you can verify that the connection is correct opening any of the two
+     following URLs:
+     - <a href="http://192.168.0.10/" target="_blank">http://192.168.0.10/</a>
+     - <a href="http://oishare/" target="_blank">http://oishare/</a>
+
+    If any of them show black screen as the one below, then you're correctly connected.
 
     ![PC correctly connected to the camera](doc/images/oishare-wifi-connected-ok.jpg)
 
-3. Now you can launch the application executing _photosync_
+    You can close that browser and continue with the steps below.
+
+5. Now you are ready to execute the application
+
+    Execute the application. This step depends on the Operating System (Windows, Linux, etc.)
+    you have.
+
+    - If Windows: go to `C:\olympus\<uncompression-folder>`, then to `bin` subfolder, and double click `olympus-photosync.bat`
+    - If Linux standalone or MacOS: go to `/home/user/opt/olympus`, then to `bin` subfolder, and execute `./olympus-photosync`
+    - If Debian or Red Hat: simply execute `olympus-photosync`
 
     The application will start copying files from your camera to a local
     directory (as configured).
 
-    By default, the application synchronizes media one way (remote to local), if remote
-    files are already copied locally the application will skip them, so it is
-    safe to run it multiple times to finish synchronization in case of
+    By default, the application synchronizes media one way (remote to local).
+    If remote files are already copied locally the application will skip them.
+    This means it is safe to run it multiple times to finish synchronization in case of
     network connectivity issues.
 
-    However more customized behaviour can be achieved via configuration. See section below.
+    More customized behaviours can be achieved via configuration.
+    For such, see sections below.
 
-### Configure
+## 2.c. Configure
 
 The application should work _out-of-the-box_ for the cameras listed above. However
 you may want to customize its execution, for instance to download photos to
@@ -131,7 +162,7 @@ through command line arguments, or by modifying the configuration file.
 
 Command line arguments take precedence over the configuration file.
 
-#### Command line arguments
+### Via command line arguments
 
 There are several parameters to be set. To list these parameters you can execute:
 
@@ -139,13 +170,7 @@ There are several parameters to be set. To list these parameters you can execute
 photosync --help
 ```
 
-For instance you can set the server name that is used by executing:
-
-```
-photosync --server-name 192.168.0.10
-```
-
-To synchronize files and download them to local directory `/home/john/output` do:
+For instance, to synchronize files and download them to local directory `/home/john/output` do:
 
 ```
 photosync --output-directory /home/john/output
@@ -182,23 +207,63 @@ For instance if you want to synchronize only *.AVI you can do:
 set _APP_ARGS=--file-patterns *.AVI
 ```
 
-#### Configuration file
+### Persist configuration (via config file)
 
-You can generate a template using:
+If you want your configuration to keep being the same along multiple executions of
+the application, you can store it in a configuration file and reuse it.
+
+You can generate a template configuration file using:
 
 ```
 photosync --init-config
 ```
 
-Then you can customize it and use it (as explained by the tool itself).
+Then you can customize as you wish.
+After that you can launch the application using such configuration file (and
+its settings). See the output of the command above for more information.
 
-## Develop
+## 2.d. Use the Graphical User Interface (**new!**)
+
+This is a recently added feature, so may be lacking some basic features.
+
+I am open to feedback.
+
+![GUI](doc/images/gui-sample-v0.13.png)
+
+In Linux/MacOS launch with:
+
+```
+photosync --gui
+```
+
+In Windows you better modify `photosync.bat` replacing:
+
+```
+set _APP_ARGS=
+```
+
+with:
+
+```
+set _APP_ARGS=--gui
+```
+
+Feel free to give your [opinion](mailto:mauriciojostx@gmail.com) or
+create [issues here](https://github.com/mauriciojost/olympus-photosync/issues)!
+
+
+# 3. Develop
 
 [![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
 [![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
 
-This application is written in _Scala_ and uses _SBT_. Find below some
-useful commands for basic actions.
+The main repository is in [GitHub](https://github.com/mauriciojost/olympus-photosync).
+
+This application is written in _Scala_ and uses _SBT_.
+
+## 3.a. Get started
+
+Find below some useful commands for basic actions.
 
 ```
 sbt compile  # To compile the application
@@ -211,7 +276,7 @@ package `openjfx`.
 
 You can also use the provided docker image to use `Jenkinsfile`.
 
-### Build packages
+## 3.b. Build releases
 
 The project uses _sbt-native-packager_ so you can build packages for
 many operating systems / distributions.
@@ -229,20 +294,22 @@ You cal also build your own docker image to launch the project in
 different architectures, such as ARM.
 See [here](extras/docker/run/README.md) for more details.
 
-### Contribute
+## 3.c. Contribute
 
-This project is _open source_ so you can help make it better.
+This project is _open source_ so you can help make it better!
 
 - **Found issues?** Then please [**file an issue** here](https://github.com/mauriciojost/olympus-photosync/issues)
 or send me by mail the logs.
-- **Own a OMD E-MX camera not supported?** Then please contact me by e-mail too.
-- **Want to simply contribute?** You can create a _PR_ in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as _deprecated_ in the future.
+- **Own an OMD E-MX camera not supported?** Then please contact me by e-mail too.
+- **Want to code-contribute?** You can create a _PR_ in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as _deprecated_ in the future.
 - **Need more information?** Send me an [e-mail to _mauriciojostx@gmail.com_](mailto:mauriciojostx@gmail.com).
 - **Liked the project?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
 - **Want it to be maintained?** Then please [star](https://github.com/mauriciojost/olympus-photosync) it!
 
 
-# References
+# 4. Citations
+
+This project was mentioned in different sites:
 
 - [Medium - Blog Post](https://medium.com/@dmpop/olympus-photosync-wireless-bridge-between-olympus-cameras-and-linux-79b43338e18e)
 - [Linux Photography Book - Dmitri Popov](https://gumroad.com/l/linux-photography)
