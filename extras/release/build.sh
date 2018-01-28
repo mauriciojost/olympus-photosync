@@ -31,12 +31,28 @@ echo ""
 
 echo "### 2. Update release notes"
 
-echo "### 3. Create commit"
+rnfile=$root_dir/RELEASE-NOTES.md
 
-echo "### 3. Tag commit: git tag -a $release_version"
+function release(){
+  local from=$1
+  local to=$2
+  echo ""
+  echo ""
+  echo "## RELEASE: $to"
+  echo ""
+  git log $from...$to --pretty=format:'commit %s' --reverse | \
+    grep -v .gitignore | \
+    grep -vi README | \
+    grep -vi TODO | \
+    grep -vi MOVE | \
+    grep -vi TEST | \
+    grep -vi INDENTATION
+}
 
-echo "### 4. Create release in github and upload release packages with release notes"
+release $previous_release_version $release_version >> $rnfile 
 
+
+echo "### 3. Create releases..."
 
 sleep 6
 
@@ -73,26 +89,12 @@ echo "### Packages generated:"
 cat $root_dir/packages.log
 cat $root_dir/packages.md5sum
 
-echo "### Generating release notes..."
-rnfile=$root_dir/RELEASE-NOTES.md
+echo "### 4. Review and create commit"
 
-function release(){
-  local from=$1
-  local to=$2
-  echo ""
-  echo ""
-  echo "## RELEASE: $to"
-  echo ""
-  git log $from...$to --pretty=format:'commit %s' --reverse | \
-    grep -v .gitignore | \
-    grep -vi README | \
-    grep -vi TODO | \
-    grep -vi MOVE | \
-    grep -vi TEST | \
-    grep -vi INDENTATION
-}
+echo "### 5. Tag commit: git tag -a $release_version"
 
-release $previous_release_version $release_version >> $rnfile 
+echo "### 6. Create release in github and upload release packages with release notes"
+
 
 
 echo "### Done."
