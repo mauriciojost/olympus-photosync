@@ -225,9 +225,7 @@ its settings). See the output of the command above for more information.
 
 ## 2.d. Use the Graphical User Interface (**new!**)
 
-This is a recently added feature, so may be lacking some basic features.
-
-I am open to feedback.
+This is a recently added feature, so be cool! I am very open to feedback.
 
 ![GUI](doc/images/gui-sample-v0.13.png)
 
