@@ -39,7 +39,7 @@ function release(){
   local to=$2
   echo ""
   echo ""
-  echo "## RELEASE: $to"
+  echo "## RELEASE: $release_version"
   echo ""
   git log $from...$to --pretty=format:'commit %s' --reverse | \
     grep -v .gitignore | \
@@ -50,7 +50,7 @@ function release(){
     grep -vi INDENTATION
 }
 
-release $previous_release_version $release_version >> $rnfile 
+release $previous_release_version HEAD >> $rnfile 
 
 
 echo "### 3. Create releases..."
