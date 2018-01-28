@@ -122,8 +122,8 @@ To transfer media from your camera to your PC follow these steps:
 
     Once done, you can verify that the connection is correct opening any of the two
     following URLs:
-    - [http://192.168.0.10/](http://192.168.0.10/){:target="_blank"}
-    - [http://oishare/](http://oishare/){:target="_blank"}
+    - <a href="http://192.168.0.10/" target="_blank">link1/</a>
+    - <a href="http://oishare/" target="_blank">link2/</a>
 
     If any of them show black screen as the one below, then you're correctly connected.
 
