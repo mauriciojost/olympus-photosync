@@ -4,7 +4,7 @@ import java.io.{File, PrintWriter}
 
 import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.client.CameraClient
-import org.mauritania.photosync.olympus.sync.FilesManagerImpl
+import org.mauritania.photosync.olympus.sync.FilesManager
 import org.mauritania.photosync.starter.Os.Windows
 import org.mauritania.photosync.starter.gui.GuiStarter
 import org.slf4j.LoggerFactory
@@ -90,11 +90,11 @@ object Starter {
 
     logger.info(s"Using configuration ($config)...")
     val cameraClient = new CameraClient(config.client)
-    val managerConfig = FilesManagerImpl.Config(
+    val managerConfig = FilesManager.Config(
       outputDir = new File(config.outputDirectory),
       mediaFilter = config.mediaFilter
     )
-    val manager = new FilesManagerImpl(cameraClient, managerConfig)
+    val manager = new FilesManager(cameraClient, managerConfig)
 
     logger.info("Synchronizing media from camera -> PC...")
     manager.sync()

@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.client.CameraClient
-import org.mauritania.photosync.olympus.sync.{FilesManager, FilesManagerImpl, SyncPlanItem}
+import org.mauritania.photosync.olympus.sync.{FilesManager, SyncPlanItem}
 import org.mauritania.photosync.starter.{ArgumentsParserBuilder, PhotosyncConfig}
 import org.mauritania.photosync.starter.gui.CustomCell.CellType
 import org.slf4j.LoggerFactory
@@ -150,11 +150,11 @@ object GuiStarter extends JFXApp {
 
   private def filesManager(config: PhotosyncConfig): FilesManager = {
     val cameraClient = new CameraClient(config.client)
-    val managerConfig = FilesManagerImpl.Config(
+    val managerConfig = FilesManager.Config(
       outputDir = new File(config.outputDirectory),
       mediaFilter = config.mediaFilter
     )
-    new FilesManagerImpl(cameraClient, managerConfig)
+    new FilesManager(cameraClient, managerConfig)
     //new FilesManagerMock(managerConfig)
   }
 
