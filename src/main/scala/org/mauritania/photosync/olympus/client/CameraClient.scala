@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory
 
 import scala.util.Try
 import scala.collection.immutable.Seq
-import org.mauritania.photosync.olympus.client.CameraClient.ConnectTimeoutMs
-import javax.imageio.ImageIO
 
 import scala.reflect.io.Streamable
 
@@ -26,6 +24,8 @@ import scala.reflect.io.Streamable
 class CameraClient(
   configuration: CameraClientConfig
 ) {
+
+  import CameraClient._
 
   val logger = LoggerFactory.getLogger(this.getClass)
 
@@ -114,7 +114,7 @@ class CameraClient(
     */
   private[client] def getAsString(relativeUrl: String): Seq[String] = {
     val str = new String(get(relativeUrl), StandardCharsets.ISO_8859_1)
-    val strLines = str.split(CameraClient.NewLineSplit)
+    val strLines = str.split(NewLineSplit)
     Seq.empty[String] ++ strLines
   }
 
@@ -184,8 +184,8 @@ class CameraClient(
     * @return the resulting url
     */
   private def baseDirFileUrl(base: Option[String], dir: Option[String] = None, file: Option[String] = None): String = {
-    val filePart = file.map(CameraClient.UrlSeparator + _).mkString // "" or /file
-    val dirFilePart = dir.map(CameraClient.UrlSeparator + _ + filePart).mkString // "" or /dir + <file>
+    val filePart = file.map(UrlSeparator + _).mkString // "" or /file
+    val dirFilePart = dir.map(UrlSeparator + _ + filePart).mkString // "" or /dir + <file>
     val baseDirFilePart = base.map(_ + dirFilePart).mkString // "" or /base + <dirfile>
     baseDirFilePart
   }
