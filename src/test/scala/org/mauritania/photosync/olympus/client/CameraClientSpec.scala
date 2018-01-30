@@ -2,11 +2,12 @@ package org.mauritania.photosync.olympus.client
 
 import java.net.URL
 
-import org.mauritania.photosync.olympus.sync.FileInfo
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import java.io.File
+
 import org.mauritania.photosync.TestHelper
+
 import scala.collection.immutable.Seq
 
 class CameraClientSpec extends Specification with Mockito {

@@ -6,7 +6,7 @@ import java.net.URL
 import java.nio.channels.Channels
 import java.nio.charset.StandardCharsets
 
-import org.mauritania.photosync.olympus.sync.{Directories, FileInfo}
+import org.mauritania.photosync.olympus.sync.Directories
 import org.slf4j.LoggerFactory
 
 import scala.util.Try

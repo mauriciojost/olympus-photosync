@@ -1,5 +1,6 @@
 package org.mauritania.photosync.olympus.sync
 
+import org.mauritania.photosync.olympus.client.FileInfo
 import org.mauritania.photosync.olympus.sync.SyncPlanItem.{Downloaded, DownloadedStatus, Index}
 
 case class SyncPlanItem(

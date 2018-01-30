@@ -3,7 +3,7 @@ package org.mauritania.photosync.olympus.sync
 import java.io.File
 
 import org.mauritania.photosync.TestHelper
-import org.mauritania.photosync.olympus.client.CameraClient
+import org.mauritania.photosync.olympus.client.{CameraClient, FileInfo}
 import org.mauritania.photosync.olympus.sync.FilesManagerImpl.Config
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification

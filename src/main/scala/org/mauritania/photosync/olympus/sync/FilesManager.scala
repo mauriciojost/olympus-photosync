@@ -2,6 +2,8 @@ package org.mauritania.photosync.olympus.sync
 
 import java.io.File
 
+import org.mauritania.photosync.olympus.client.FileInfo
+
 import scala.collection.immutable.Seq
 import scala.util.Try
 

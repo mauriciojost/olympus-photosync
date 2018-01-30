@@ -1,4 +1,4 @@
-package org.mauritania.photosync.olympus.sync
+package org.mauritania.photosync.olympus.client
 
 import java.time.LocalDate
 

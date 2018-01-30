@@ -3,6 +3,8 @@ package org.mauritania.photosync.olympus.sync
 import java.time.LocalDate
 import java.nio.file.{FileSystems, Paths}
 
+import org.mauritania.photosync.olympus.client.FileInfo
+
 object FileInfoFilter {
 
   val PatternPrefix = "glob:"

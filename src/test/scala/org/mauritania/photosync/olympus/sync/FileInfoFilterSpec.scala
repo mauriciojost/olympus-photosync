@@ -2,6 +2,7 @@ package org.mauritania.photosync.olympus.sync
 
 import java.time.LocalDate
 
+import org.mauritania.photosync.olympus.client.FileInfo
 import org.specs2.mutable.Specification
 
 
