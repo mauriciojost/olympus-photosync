@@ -1,7 +1,6 @@
 package org.mauritania.photosync.olympus.client
 
-import java.awt.image.BufferedImage
-import java.io.{ByteArrayInputStream, File, FileOutputStream}
+import java.io.{File, FileOutputStream}
 import java.net.URL
 import java.nio.channels.Channels
 import java.nio.charset.StandardCharsets
