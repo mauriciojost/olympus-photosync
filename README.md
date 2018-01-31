@@ -43,7 +43,7 @@ No installation needed. Decompress the release in `C:\olympus\` (you will need t
 
 The executables will be under the unzipped directory, in the `bin` subdirectory: you will use `olympus-photosync.bat`.
 
-### Use Linux native packages
+### Install on Linux via native packages
 
 For Linux both _.deb_ and _.rpm_ packages are provided. Download the latest release
 for your own distribution:
@@ -189,7 +189,7 @@ To synchronize only `AVI` or `ORF` files:
 photosync --file-patterns *.AVI,*.ORF
 ```
 
-To launch the **GUI (in beta)** (requires Java 1.8.40 or higher):
+You can launch the GUI for Linux/MacOS (as in Windows GUI is launched automatically)
 
 ```
 photosync --gui
@@ -227,6 +227,8 @@ its settings). See the output of the command above for more information.
 
 This is a recently added feature, so be cool! I am very open to feedback.
 
+Requires `Java 1.8.40` or higher.
+
 ![GUI](doc/images/gui-sample-v0.13.png)
 
 In Linux/MacOS launch with:
@@ -235,17 +237,7 @@ In Linux/MacOS launch with:
 photosync --gui
 ```
 
-In Windows you better modify `photosync.bat` replacing:
-
-```
-set _APP_ARGS=
-```
-
-with:
-
-```
-set _APP_ARGS=--gui
-```
+In Windows the GUI is launched automatically.
 
 Feel free to give your [opinion](mailto:mauriciojostx@gmail.com) or
 create [issues here](https://github.com/mauriciojost/olympus-photosync/issues)!
