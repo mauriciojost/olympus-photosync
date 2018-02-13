@@ -179,3 +179,5 @@
 - commit Ease releasing
 - commit Update correctly the versions in Constants.scala and version.sbt
 - commit Update release notes
+
+
