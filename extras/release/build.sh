@@ -40,7 +40,7 @@ function release_notes(){
   echo ""
   echo "## RELEASE: $release_version"
   echo ""
-  git log $from..HEAD --pretty=format:'- commit %s' --reverse | \
+  git log $from..HEAD --pretty=format:'- %s' --reverse | \
     grep -v .gitignore | \
     grep -vi README | \
     grep -vi TODO | \
