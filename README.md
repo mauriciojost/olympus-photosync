@@ -87,11 +87,11 @@ chmod +x bin/olympus-photosync
 
 To transfer media from your camera to your PC follow these steps:
 
-1. Switch on your camera and go to the _Setup Menu_
+1. Switch on your camera and go to the _Setup Menu_.
 
     ![Step 0](doc/images/wifi-0.jpg)
 
-2. Set up the WIFI service of your camera as _Private_
+2. Set up the WIFI service of your camera as _Private_.
 
     This step needs to be done only once as your camera
     will remember this setting.
@@ -107,7 +107,7 @@ To transfer media from your camera to your PC follow these steps:
     This step is **very important**. If not set up correctly the camera won't let
     this application download media files.
 
-3. Launch the WIFI service from your camera
+3. Launch the WIFI service from your camera.
 
     ![Step 3](doc/images/wifi-3.jpg)
 
@@ -115,7 +115,7 @@ To transfer media from your camera to your PC follow these steps:
 
     ![Step 4](doc/images/wifi-4.jpg)
 
-4. Connect your PC to the WIFI provided by the camera
+4. Connect your PC to the WIFI provided by the camera.
 
     In the example above, the WIFI network (SSID) was `E-M10-P-V5PG56225`. You
     will need to find your own camera SSID.
@@ -132,7 +132,7 @@ To transfer media from your camera to your PC follow these steps:
 
     You can close that browser and continue with the steps below.
 
-5. Now you are ready to execute the application
+5. Now you are ready to execute the application.
 
     Execute the application. This step depends on the Operating System (Windows, Linux, etc.)
     you have.
@@ -189,7 +189,7 @@ To synchronize only `AVI` or `ORF` files:
 photosync --file-patterns *.AVI,*.ORF
 ```
 
-You can launch the GUI for Linux/MacOS (as in Windows GUI is launched automatically)
+You can launch the GUI for Linux/MacOS (as in Windows GUI is launched automatically):
 
 ```
 photosync --gui
