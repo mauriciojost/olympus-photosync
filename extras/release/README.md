@@ -11,3 +11,4 @@ bash build.sh
 ```
 
 Packages will be generated in the `output` directory.
+
