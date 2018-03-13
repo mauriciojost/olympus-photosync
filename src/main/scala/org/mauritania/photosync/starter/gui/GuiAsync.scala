@@ -12,8 +12,9 @@ object GuiAsync {
 
   val ThreadPoolSize = 4
 
+  val ThreadPool = Executors.newFixedThreadPool(ThreadPoolSize);
+
   private val AsyncExecutionContext = new ExecutionContext {
-    val ThreadPool = Executors.newFixedThreadPool(ThreadPoolSize);
     override def execute(runnable: Runnable) = ThreadPool.submit(runnable)
     override def reportFailure(t: Throwable): Unit = logger.error("Error", t)
   }

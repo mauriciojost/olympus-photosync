@@ -124,7 +124,9 @@ object GuiStarter extends JFXApp {
 
   val CloseButton = new Button("Quit") {
     onMouseClicked = handle {
-      Platform.runLater(runnable(stage.close()))
+      Platform.runLater(runnable{
+        stopApp()
+      })
     }
   }
 
@@ -155,7 +157,6 @@ object GuiStarter extends JFXApp {
       mediaFilter = config.mediaFilter
     )
     new FilesManager(cameraClient, managerConfig)
-    //new FilesManagerMock(managerConfig)
   }
 
   stage = new PrimaryStage {
@@ -222,6 +223,11 @@ object GuiStarter extends JFXApp {
   def syncFile(manager: FilesManager, syncPlanItem: SyncPlanItem) = {
     updateStatus(s"Synchronizing ${syncPlanItem.fileInfo.name} (${syncPlanItem.index.percentageAsStr})")
     manager.syncFile(syncPlanItem)
+  }
+
+  override def stopApp(): Unit = {
+    GuiAsync.ThreadPool.shutdownNow()
+    stage.close()
   }
 
 
