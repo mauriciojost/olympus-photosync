@@ -2,6 +2,7 @@ package org.mauritania.photosync.starter.gui
 
 import java.io.File
 import java.time.LocalDate
+import java.util.concurrent.Executors
 
 import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.client.CameraClient
@@ -36,6 +37,9 @@ object GuiStarter extends JFXApp {
   val TitleStyle = "-fx-font: normal bold 15pt sans-serif"
   val StatusStyle = "-fx-font: normal italic 10pt sans-serif"
   val DefaultSpacing = 20
+  val ThreadPoolSize = 4
+  val ThreadPool = Executors.newFixedThreadPool(ThreadPoolSize);
+  val GuiAsync = new GuiAsync(ThreadPool)
 
   val baseConfigVar = Var[Option[PhotosyncConfig]](None)
   val fileGlobVar = Var(NoneText)
@@ -226,7 +230,7 @@ object GuiStarter extends JFXApp {
   }
 
   override def stopApp(): Unit = {
-    GuiAsync.ThreadPool.shutdownNow()
+    ThreadPool.shutdownNow()
     stage.close()
   }
 

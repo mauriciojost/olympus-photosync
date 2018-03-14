@@ -2,20 +2,18 @@ package org.mauritania.photosync.starter.gui
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
-import java.util.concurrent.Executors
+import java.util.concurrent.ExecutorService
+
 import org.slf4j.LoggerFactory
+
 import scalafx.application.Platform
 
-object GuiAsync {
+class GuiAsync(threadPool: ExecutorService) {
 
-  private val logger = LoggerFactory.getLogger(this.getClass)
-
-  val ThreadPoolSize = 4
-
-  val ThreadPool = Executors.newFixedThreadPool(ThreadPoolSize);
+  private final val logger = LoggerFactory.getLogger(this.getClass)
 
   private val AsyncExecutionContext = new ExecutionContext {
-    override def execute(runnable: Runnable) = ThreadPool.submit(runnable)
+    override def execute(runnable: Runnable) = threadPool.submit(runnable)
     override def reportFailure(t: Throwable): Unit = logger.error("Error", t)
   }
 

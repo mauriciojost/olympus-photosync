@@ -5,7 +5,7 @@ import javafx.scene.input.KeyEvent
 import javafx.scene.input.KeyCode
 
 import org.mauritania.photosync.olympus.sync.{CameraMock, TempDir}
-import org.mauritania.photosync.starter.gui.GuiStarter
+import org.mauritania.photosync.starter.gui.{GuiAsync, GuiStarter}
 import org.specs2.mutable.Specification
 
 import scalafx.event.Event
@@ -59,6 +59,8 @@ class GuiStarterSpec extends Specification with TempDir with CameraMock {
           fireEvent(GuiStarter.CloseButton, MouseClick)
 
           guiThread.isAlive must beFalse
+
+          GuiStarter.ThreadPool.isShutdown must beTrue
 
         }
       }
