@@ -34,7 +34,7 @@ The remaining installation procedure depends on your operating system. See below
 
 [![All releases](https://img.shields.io/badge/all-releases-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/)
 
-Latest release is: [v0.15.0](https://github.com/mauriciojost/olympus-photosync/releases/tag/v0.15.0)
+Latest release is: [v1master](https://github.com/mauriciojost/olympus-photosync/releases/tag/v1master)
 
 ### Install on Windows
 
