@@ -57,7 +57,7 @@ echo "### 3. Create releases..."
 sleep 6
 
 set -e
-set -x
+#set -x
 
 
 echo "### Building packages..."
