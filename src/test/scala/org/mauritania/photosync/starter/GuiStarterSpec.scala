@@ -38,11 +38,17 @@ class GuiStarterSpec extends Specification with TempDir with CameraMock {
     "work correctly under normal conditions and close correctly" in {
       withTmpDir { tmp =>
         val port = HttpPort
-        withCameraMock(port){
+        withCameraMock(port){ camera =>
+
+
           val expectedDownloadedOrfFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
           val expectedDownloadedAviFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath)
 
           val guiThread = launchGuiStarterAsync(mockedGuiArgs(tmp, port))
+
+
+          camera.start()
+          Thread.sleep(WaitMs) // Let the camera initialize
 
           expectedDownloadedOrfFile.exists() must beFalse
           expectedDownloadedAviFile.exists() must beFalse

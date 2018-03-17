@@ -9,12 +9,10 @@ trait CameraMock {
 
   val WaitMs = 1000
 
-  def withCameraMock[T](port: Int)(f: => T): T = {
+  def withCameraMock[T](port: Int)(f: HttpServer => T): T = {
     val cameraMockServer = httpCameraMock(port)
-    cameraMockServer.start()
-    Thread.sleep(WaitMs) // Let the GUI initialize
     try {
-      f
+      f(cameraMockServer)
     } finally {
       Thread.sleep(WaitMs)
       cameraMockServer.stop(0)
