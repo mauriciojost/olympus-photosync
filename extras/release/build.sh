@@ -89,18 +89,28 @@ echo "### Packages generated:"
 cat $root_dir/packages.log
 cat $root_dir/packages.md5sum
 
-echo "### 4. Review and create 2 commits (in dev branch): one for release notes, and one for the bump (that will be reverted in dev branch)"
+echo "### 4. Changes were done. Review them, stage them and do 2 commits (in dev branch): "
+echo "           - one for release notes"
+echo "           - one for the bump (that will be reverted in dev branch)"
 
-echo "### 5. Tag commit: git tag -a v$release_version -m $release_version"
-
-echo "### 6. Push tags: git push origin master --tags"
-
-echo "### 7. Make master branch in sync with such tagged commit."
-
-echo "### 8. Create release in github and upload release packages with release notes."
-
-echo "### 9. Revert in dev branch the bump commit."
+echo "### 5. Tag commit:"
+echo "          git tag -a v$release_version -m $release_version"
 
 
+echo "### 6. Make master branch in sync with such tagged commit."
+echo "          git checkout master"
+echo "          git rebase dev"
+echo "          git push origin master --tags"
+echo "          git push origin dev --tags"
+
+echo "### 7. Create release in github and upload release packages with the generated notes."
+
+echo "### 8. Revert in dev branch the bump commit."
+echo "          git checkout dev"
+echo "          git revert <xxx>"
+
+echo "### 9. Push tags:" 
+echo "          git push origin dev --tags"
+echo "          git push bitbucket dev --tags"
 
 echo "### Done."
