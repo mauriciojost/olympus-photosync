@@ -181,3 +181,14 @@
 - Update release notes
 
 
+## RELEASE: 0.15.0
+
+- Add more detailed steps to releaser
+- Update pointers to v0.14.0
+- Improve release logs format
+- Create code of conduct for contributors
+- Improve documentation around customization in Windows #55
+- Kill GUI threads on "Quit" #56
+- App (GUI) checks if the camera is correctly connected #49
+- Update build.sh
+- Disable debug for build.sh
