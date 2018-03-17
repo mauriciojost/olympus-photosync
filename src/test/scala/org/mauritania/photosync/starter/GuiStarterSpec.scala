@@ -12,6 +12,8 @@ import scalafx.event.Event
 import scalafx.scene.input.{MouseButton, MouseEvent, PickResult}
 import javafx.{event => jfxe}
 
+import org.mauritania.photosync.olympus.client.CameraClient
+
 
 class GuiStarterSpec extends Specification with TempDir with CameraMock {
 
@@ -40,32 +42,44 @@ class GuiStarterSpec extends Specification with TempDir with CameraMock {
         val port = HttpPort
         withCameraMock(port){ camera =>
 
+          // Files expected to exist in the filesystem after a synchronization (they do not exist yet)
+          val expectedDownloadedOrfFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath) // ORF
+          val expectedDownloadedAviFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath) // AVI
 
-          val expectedDownloadedOrfFile = new File(tmp, new File("100OLYMP", "OR.ORF").getPath)
-          val expectedDownloadedAviFile = new File(tmp, new File("100OLYMP", "VI.AVI").getPath)
-
+          // Launch the GUI
           val guiThread = launchGuiStarterAsync(mockedGuiArgs(tmp, port))
 
+           // Let attempts to connect expire and ensure disconnected status is shown
+          Thread.sleep(CameraClient.IsConnectedTimeout + WaitMs * 2)
+          GuiStarter.ConnectivityText.text.value mustEqual GuiStarter.DisconnectedText
 
+          // Launch camera, let initialize and ensure connected status is shown
           camera.start()
-          Thread.sleep(WaitMs) // Let the camera initialize
+          Thread.sleep(WaitMs)
+          Thread.sleep(2 * GuiStarter.ConnectivityCheckPeriodMs)
+          GuiStarter.ConnectivityText.text.value mustEqual GuiStarter.ConnectedText
 
+          // Ensure 2 files are matched, and that firing a sync actually brings them from remote to local
+          GuiStarter.SyncPlanList.items.get().size() mustEqual 2
           expectedDownloadedOrfFile.exists() must beFalse
           expectedDownloadedAviFile.exists() must beFalse
-
           fireEvent(GuiStarter.SyncButton, MouseClick)
-
           expectedDownloadedOrfFile.exists() must beTrue
           expectedDownloadedAviFile.exists() must beTrue
 
-          GuiStarter.FileGlobText.text = "*.AVI" // only 1 file matches (out of the two existent)
-
+          // Choose only one file (AVI) and ensure only this one is shown
+          GuiStarter.FileGlobText.text = "*.AVI"
           fireEvent(GuiStarter.FileGlobText, EnterPress)
+          GuiStarter.SyncPlanList.items.get().size() mustEqual 1
 
+          // Stop the camera and ensure the status goes back to disconnected
+          camera.stop(0)
+          Thread.sleep(2 * GuiStarter.ConnectivityCheckPeriodMs)
+          GuiStarter.ConnectivityText.text.value mustEqual GuiStarter.DisconnectedText
+
+          // Close the app and ensure resources are released properly
           fireEvent(GuiStarter.CloseButton, MouseClick)
-
           guiThread.isAlive must beFalse
-
           GuiStarter.ThreadPool.isShutdown must beTrue
 
         }

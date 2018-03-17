@@ -84,12 +84,21 @@ class CameraClient(
   }
 
   /**
+    * Tells if the camera is reachable
+    * @return true if connected
+    */
+  def isConnected(): Boolean = {
+    val rootUrl = baseDirFileUrl(Some(configuration.serverBaseUrl))
+    Try(get(rootUrl, IsConnectedTimeout, IsConnectedTimeout)).isSuccess
+  }
+
+  /**
     * Retrieves the URL of the thumbnail of a given media file
     * @param remoteDir directory
     * @param remoteFile file
     * @return the URL pointing to the thumbnail image
     */
-  def thumbnailFileUrl(remoteDir: String, remoteFile: String): URL = {
+  private[client] def thumbnailFileUrl(remoteDir: String, remoteFile: String): URL = {
     val fileUrlPart = baseDirFileUrl(Some(configuration.serverBaseUrl), Some(remoteDir), Some(remoteFile))
     val relativeUrl = s"/get_thumbnail.cgi?DIR=$fileUrlPart"
     val fullUrl = configuration.fileUrl(relativeUrl)
@@ -112,6 +121,7 @@ class CameraClient(
     * @return the collection of lines result of the query
     */
   private[client] def getAsString(relativeUrl: String): Seq[String] = {
+    logger.debug(s"Querying URL $relativeUrl...")
     val str = new String(get(relativeUrl), StandardCharsets.ISO_8859_1)
     val strLines = str.split(NewLineSplit)
     Seq.empty[String] ++ strLines
@@ -119,14 +129,16 @@ class CameraClient(
 
   /**
     * Does a GET to the given relative url
-    * @param relativeUrl
+    * @param relativeUrl relative url to perform the verb against (base url is taken from configuration)
+    * @param readTimeout read timeout as per [[java.net.URLConnection]]
+    * @param connectTimeout connect timeout as per [[java.net.URLConnection]]
     * @return the reply result of the query
     */
-  private[client] def get(relativeUrl: String): Array[Byte] = {
+  private[client] def get(relativeUrl: String, readTimeout: Int = ReadTimeoutMs, connectTimeout: Int = ConnectTimeoutMs): Array[Byte] = {
     val url = configuration.fileUrl(relativeUrl)
-    logger.info(s"Querying URL $url...")
     val connection = url.openConnection
     connection.setConnectTimeout(ConnectTimeoutMs)
+    connection.setReadTimeout(ReadTimeoutMs)
     val inputStream = connection.getInputStream
     try {
       Streamable.bytes(inputStream)
@@ -192,7 +204,9 @@ class CameraClient(
 
 object CameraClient {
   val UrlSeparator = "/"
-  val ConnectTimeoutMs = 5000
+  val IsConnectedTimeout = 1000
+  val ConnectTimeoutMs = 20000
+  val ReadTimeoutMs = 20000
   val NewLineSplit = "\\r?\\n"
 }
 

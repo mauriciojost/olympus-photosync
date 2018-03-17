@@ -11,6 +11,7 @@ import org.mauritania.photosync.starter.{ArgumentsParserBuilder, PhotosyncConfig
 import org.mauritania.photosync.starter.gui.CustomCell.CellType
 import org.slf4j.LoggerFactory
 import rx._
+import rx.async.Timer
 
 import scala.collection.immutable.Seq
 import scalafx.Includes._
@@ -23,6 +24,10 @@ import scalafx.scene.control._
 import scalafx.scene.input.{KeyCode, KeyEvent}
 import scalafx.scene.layout.{HBox, VBox}
 import scalafx.scene.text.Text
+import rx.async.Platform._
+
+import scala.concurrent.duration._
+import scala.util.Try
 
 
 object GuiStarter extends JFXApp {
@@ -33,6 +38,9 @@ object GuiStarter extends JFXApp {
   val SeqSeparator = ','
   val SloganText = "Synchronize your photos with Olympus Photosync!!!"
   val StatusTextIdle = "Idle"
+  val DisconnectedText = "Disconnected (!!!)"
+  val ConnectedText = "Connected"
+  val ConnectivityCheckPeriodMs = 1000
   val StatusSyncdFinished = "Sync finished"
   val TitleStyle = "-fx-font: normal bold 15pt sans-serif"
   val StatusStyle = "-fx-font: normal italic 10pt sans-serif"
@@ -65,6 +73,17 @@ object GuiStarter extends JFXApp {
     val managerValue = managerRx()
     StatusText.text = "Refreshing..."
     managerValue.map(refreshSyncPlan(_))
+  }
+
+  Timer(ConnectivityCheckPeriodMs millis).trigger {
+    Try {
+      val managerValue = managerRx.now
+      if (managerValue.filter(_.isRemoteConnected).isDefined) {
+        ConnectivityText.text = ConnectedText
+      } else {
+        ConnectivityText.text = DisconnectedText
+      }
+    }
   }
 
   val FileGlobText = new TextField {
@@ -109,6 +128,11 @@ object GuiStarter extends JFXApp {
 
   val StatusText = new Text {
     text = StatusTextIdle
+    style = StatusStyle
+  }
+
+  val ConnectivityText = new Text {
+    text = DisconnectedText
     style = StatusStyle
   }
 
@@ -187,7 +211,8 @@ object GuiStarter extends JFXApp {
               UntilDateText,
               SyncPlanList,
               Separator,
-              StatusText
+              StatusText,
+              ConnectivityText
             )
           }
         )

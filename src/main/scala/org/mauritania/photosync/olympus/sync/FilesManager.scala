@@ -102,6 +102,12 @@ class FilesManager(
         api.downloadFile(syncPlanItem.fileInfo.folder, syncPlanItem.fileInfo.name, config.outputDir)
     }
   }
+
+  /**
+    * Tell if the camera is reachable.
+    * @return true if the camera is reachable, false otherwise
+    */
+  def isRemoteConnected(): Boolean = api.isConnected
 }
 
 object FilesManager {
