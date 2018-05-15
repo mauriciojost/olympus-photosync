@@ -25,7 +25,7 @@ This application has been successfully tested on the following operating systems
 
 # 2. Get started
 
-## 2.a. Install the application
+## 2.a. Download and install the application
 
 The installation procedure depends on your operating system. See below all releases:
 
