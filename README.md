@@ -26,7 +26,7 @@ This application has been successfully tested on the following operating systems
 
 # 2. Get started
 
-## 2.a. Install the application
+## 2.a. Download and install the application
 
 You need to install `Java 1.8.40` or higher as a first step.
 
