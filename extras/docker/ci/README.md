@@ -14,7 +14,7 @@ sudo apt-get install docker-ce
 Then launch:
 
 ```
-bash build.sh
+./build
 ```
 
 (you will need an account at `docker.com` to publish your image).
