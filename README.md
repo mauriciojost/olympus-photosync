@@ -263,7 +263,9 @@ sbt run      # To launch it
 ```
 
 If building with `openjdk`, you will need to install the Linux
-package `openjfx`.
+package `openjfx`. Also `xvfb` tool needs to be started prior to tests
+so that the GUI tests can launch even without display (if running from a display-less
+CI server like Jenkins).
 
 You can also use the provided docker image to use `Jenkinsfile`.
 

@@ -14,7 +14,7 @@ pipeline {
     stage('Test') {
       steps {
 	echo "My branch is: ${env.BRANCH_NAME}"
-        sh 'sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 test'
+        sh '/usr/bin/xvfb-run sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 test'
       }
     }
     stage('Document') {
