@@ -27,7 +27,9 @@ This application has been successfully tested on the following operating systems
 
 ## 2.a. Download and install the application
 
-The installation procedure depends on your operating system. See below all releases:
+You need to install `Java 1.8.40` or higher as a first step.
+
+The remaining installation procedure depends on your operating system. See below all releases:
 
 [![All releases](https://img.shields.io/badge/all-releases-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/)
 
@@ -35,7 +37,7 @@ Latest release is: [v1master](https://github.com/mauriciojost/olympus-photosync/
 
 ### Install on Windows
 
-Download the latest release for Windows:
+One Java is installed, download the latest release for Windows:
 
 [![Windows releases](https://img.shields.io/badge/windows-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master.zip)
 
@@ -45,8 +47,7 @@ The executables will be under the unzipped directory, in the `bin` subdirectory:
 
 ### Install on Linux via native packages
 
-For Linux both _.deb_ and _.rpm_ packages are provided. Download the latest release
-for your own distribution:
+For Linux both _.deb_ and _.rpm_ packages are provided. With Java installed, download the latest release for your own distribution:
 
 [![Debian release](https://img.shields.io/badge/debian-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync_1master_all.deb)
 [![RedHat release](https://img.shields.io/badge/redhat-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master-1.noarch.rpm)
@@ -64,7 +65,7 @@ The tool `olympus-photosync` will be added to the `PATH` so that you can use it 
 
 ### Install on MacOS / Linux as standalone
 
-Download the latest release:
+With Java installed, download the latest release:
 
 [![MacOS release](https://img.shields.io/badge/macos-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master.tgz)
 [![Linux release (standalone)](https://img.shields.io/badge/linux-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master.tgz)
@@ -226,8 +227,6 @@ its settings). See the output of the command above for more information.
 ## 2.d. Use the Graphical User Interface (**new!**)
 
 This is a recently added feature, so be cool! I am very open to feedback.
-
-Requires `Java 1.8.40` or higher.
 
 ![GUI](doc/images/gui-sample-v0.13.png)
 
