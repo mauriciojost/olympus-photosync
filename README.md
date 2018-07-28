@@ -12,6 +12,7 @@ It has been successfully tested on the following cameras:
 - _Olympus OMD E-M5 Mark II_ (thanks David!)
 - _Olympus PEN Lite E-PL7_ (thanks Dmitri!)
 - _Olympus OMD E-M10_ (thanks Mauricio!)
+- _Olympus OMD E-M10 MK3_ (thanks Alex!)
 
 Also it should work _out-of-the-box_ with other similar Olympus cameras.
 
