@@ -10,7 +10,7 @@ rpmLicense := Some("Apache License Version 2.0")
 
 name := "olympus-photosync"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.7"
 
 mainClass in Compile := Some("org.mauritania.photosync.starter.Starter")
 
@@ -31,7 +31,7 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-api" % "1.7.5",
   "org.slf4j" % "slf4j-log4j12" % "1.7.5",
   "com.typesafe" % "config" % "1.2.1",
-  "com.github.scopt" %% "scopt" % "3.3.0",
+  "com.github.scopt" %% "scopt" % "3.7.0",
   "org.scalafx" %% "scalafx" % "8.0.144-R12",
   "com.lihaoyi" %% "scalarx" % "0.3.2"
 )
