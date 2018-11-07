@@ -1,3 +1,0 @@
-# INDEX
-
-![Architecture](architecture.png)
