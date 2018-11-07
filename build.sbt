@@ -1,10 +1,4 @@
-import com.banno.plantuml.PlantUMLPlugin
-
-enablePlugins(WindowsPlugin, UniversalPlugin, JavaAppPackaging, PlantUMLPlugin, ParadoxPlugin)
-
-sequenceDiagramsLocation := file("src/main/paradox/")
-sequenceDiagramExtension := ".plantuml"
-sequenceDiagramsOutput := file("target/paradox/site/main/")
+enablePlugins(WindowsPlugin, UniversalPlugin, JavaAppPackaging)
 
 rpmRelease := "1"
 
@@ -15,8 +9,6 @@ rpmUrl := Some("https://github.com/mauriciojost/olympus-photosync")
 rpmLicense := Some("Apache License Version 2.0")
 
 name := "olympus-photosync"
-
-paradoxTheme := Some(builtinParadoxTheme("generic"))
 
 scalaVersion := "2.11.8"
 
