@@ -246,7 +246,7 @@ create [issues here](https://github.com/mauriciojost/olympus-photosync/issues)!
 # 3. Develop
 
 [![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
-[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=dev)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=dev)
 
 The main repository is in [GitHub](https://github.com/mauriciojost/olympus-photosync).
 
