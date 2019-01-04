@@ -192,3 +192,12 @@
 - App (GUI) checks if the camera is correctly connected #49
 - Update build.sh
 - Disable debug for build.sh
+
+
+## RELEASE: 0.16.0
+
+- Add supported M10 MK3 (thanks Alex!)
+- Major cleanup of unused stuff and SBT upgrade
+- Upgrade scala to 2.12
+- Show coverage of dev branch
+- Preserve file date/time from camera #58
