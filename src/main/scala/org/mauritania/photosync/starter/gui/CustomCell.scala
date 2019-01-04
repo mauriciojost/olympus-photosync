@@ -17,7 +17,7 @@ class CustomCell extends javafxcontrol.ListCell[CellType] {
   override def updateItem(item: CellType, empty: Boolean): Unit = {
     super.updateItem(item, empty)
     if (!empty) {
-      val fileDate = item.fileInfo.getHumanDate
+      val fileDate = item.fileInfo.humanDate
       val fileSize = item.fileInfo.size
       val fileDir = item.fileInfo.folder
       val fileName = item.fileInfo.name

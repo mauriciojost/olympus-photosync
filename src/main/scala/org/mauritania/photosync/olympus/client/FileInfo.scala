@@ -1,13 +1,14 @@
 package org.mauritania.photosync.olympus.client
 
 import java.net.URL
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime, LocalTime}
 
 case class FileInfo(
   folder: String,
   name: String,
   size: Long,
   date: Int = FileInfo.DefaultDate,
+  time: Int = FileInfo.DefaultTime,
   thumbnailUrl: Option[URL] = None // if local, no thumbnail will be available
 ) {
 
@@ -19,12 +20,16 @@ case class FileInfo(
 
   private def maskAndShift(i: Int, mask: Int, shift: Int): Int = (i & mask) >>> shift
 
-  def getHumanDate: LocalDate = {
+  val humanDate: LocalDate = {
     val days = maskAndShift(date, MaskDays, 0)
     val months = maskAndShift(date, MaskMont, 5)
     val years = maskAndShift(date, MaskYear, 9) + 1980
     LocalDate.of(years, months, days)
   }
+
+  val humanTime: LocalTime = LocalTime.ofSecondOfDay(time)
+
+  val humanDateTime: LocalDateTime = humanDate.atTime(humanTime)
 
 }
 
@@ -38,6 +43,7 @@ object FileInfo {
   val MinMachineDayticks = 10273
 
   val DefaultDate = MinMachineDayticks
+  val DefaultTime = 0
 
   val MaxDate = LocalDate.of(2099, 12, 31)
   val MinDate = LocalDate.of(2000, 1, 1)

@@ -22,6 +22,7 @@ object ArgumentsParserBuilder {
         serverPort = configFile.getInt("server.port"),
         serverBaseUrl = configFile.getString("server.base.url"),
         fileRegex = configFile.getString("file.regex"),
+        preserveCreationDate = configFile.getBoolean("file.preservedate"),
         urlTranslator = None
       ),
       mediaFilter = FileInfoFilter.Criteria(
@@ -73,6 +74,10 @@ object ArgumentsParserBuilder {
     opt[String]('r', "file-regex").valueName("<file-regex>").
       action { (propx, c) => c.copy(client = c.client.copy(fileRegex = propx)) }.
       text("internal, regular expression used to detect files from camera server response")
+
+    opt[Unit]('K', "do-not-preserve-date").
+      action { (propx, c) => c.copy(client = c.client.copy(preserveCreationDate = false)) }.
+      text("do not preserve file creation date when copying the media files from the camera server")
 
     opt[String]('o', "output-directory").valueName("<path>").
       action { (propx, c) => c.copy(outputDirectory = propx) }.

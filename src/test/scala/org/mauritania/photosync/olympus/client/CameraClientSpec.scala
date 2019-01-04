@@ -5,6 +5,7 @@ import java.net.URL
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import java.io.File
+import java.time.{LocalDateTime, LocalTime}
 
 import org.mauritania.photosync.TestHelper
 
@@ -12,6 +13,7 @@ import scala.collection.immutable.Seq
 
 class CameraClientSpec extends Specification with Mockito {
 
+  val ADateTime = LocalDateTime.of(2015, 9, 21, 12, 5, 41)
   val ServerBaseUrl = "./src/test/resources/org/mauritania/photosync/"
 
   val DefaultCameraClientConfig = CameraClientConfig(
@@ -20,6 +22,7 @@ class CameraClientSpec extends Specification with Mockito {
     serverBaseUrl = "/DCIM",
     serverPort = 0,
     fileRegex = """wlan.*=.*,(.*),(\d+),(\d+),(\d+),(\d+).*""",
+    preserveCreationDate = true,
     urlTranslator = None
   )
 
@@ -46,7 +49,6 @@ class CameraClientSpec extends Specification with Mockito {
       cc.listFiles().size mustEqual 135
     }
 
-
     "correctly list remote files and download when having one remote file from OMD E-M10" in {
       val cc = new CameraClient(
         generateClientCameraConfig(
@@ -62,14 +64,44 @@ class CameraClientSpec extends Specification with Mockito {
       remoteFiles.head.name mustEqual "OR.ORF"
       remoteFiles.head.size mustEqual 15441739L
       remoteFiles.head.date mustEqual 18229
+      remoteFiles.head.time mustEqual 43541
+      remoteFiles.head.humanTime mustEqual LocalTime.ofSecondOfDay(43541)
       remoteFiles.head.thumbnailUrl must beSome
 
       val outputDirectory = TestHelper.createTmpDir("output")
-      cc.downloadFile("100OLYMP", "OR.ORF", outputDirectory)
+      cc.downloadFile("100OLYMP", "OR.ORF", outputDirectory, ADateTime)
 
       val downloadedFileToCheck = new File(new File(outputDirectory, "100OLYMP"), "OR.ORF")
 
       downloadedFileToCheck.exists mustEqual true
+
+      downloadedFileToCheck.deleteOnExit()
+
+      done
+
+    }
+
+    "correctly download remote file preserving the creation date" in {
+      val cc = new CameraClient(
+        generateClientCameraConfig(
+          "01-root-em10-onefolder.html",
+          specialMappingUrlTranslator("01-root-em10-onefolder.html", "0002-em10-downloadable-file.html")
+        )
+      )
+
+      // wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
+      val remoteFiles = cc.listFiles()
+      remoteFiles.size mustEqual 1
+      remoteFiles.head.date mustEqual 18229
+      remoteFiles.head.humanDateTime mustEqual ADateTime
+
+      val outputDirectory = TestHelper.createTmpDir("output")
+      cc.downloadFile("100OLYMP", "OR.ORF", outputDirectory, ADateTime)
+
+      val downloadedFileToCheck = new File(new File(outputDirectory, "100OLYMP"), "OR.ORF")
+
+      downloadedFileToCheck.exists mustEqual true
+      downloadedFileToCheck.lastModified() mustEqual ADateTime.toEpochSecond(CameraClient.LocalZoneOffset) * 1000
 
       downloadedFileToCheck.deleteOnExit()
 

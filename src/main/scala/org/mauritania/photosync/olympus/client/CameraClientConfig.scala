@@ -30,6 +30,11 @@ case class CameraClientConfig(
    */
   fileRegex: String,
 
+  /*
+   * Flag to preserve the creation date for each file, as provided by the server
+   */
+  preserveCreationDate: Boolean,
+
   /**
     * URL translator, used only for testing purposes
     */
