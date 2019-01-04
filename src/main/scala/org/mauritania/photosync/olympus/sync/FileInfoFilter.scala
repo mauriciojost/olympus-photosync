@@ -10,7 +10,7 @@ object FileInfoFilter {
   val PatternPrefix = "glob:"
 
   def isFileEligible(f: FileInfo, c: Criteria): Boolean = {
-    val fileDate = f.getHumanDate
+    val fileDate = f.humanDate
     val fileName = f.name
     val fromRespected = c.fromDateCondition.forall(d => fileDate.isAfter(d) || fileDate.isEqual(d))
     val untilRespected = c.untilDateCondition.forall(d => fileDate.isBefore(d) || fileDate.isEqual(d))

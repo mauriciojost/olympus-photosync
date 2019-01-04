@@ -1,6 +1,7 @@
 package org.mauritania.photosync.olympus.sync
 
 import java.io.File
+import java.time.LocalDateTime
 
 import org.mauritania.photosync.TestHelper
 import org.mauritania.photosync.olympus.client.{CameraClient, FileInfo}
@@ -13,6 +14,7 @@ import scala.util.{Failure, Success}
 
 class FilesManagerSpec extends Specification with Mockito with TempDir {
 
+  val ADateTime = LocalDateTime.of(2000, 1, 1, 0, 0, 0)
   val AnyDirectory = new File(".")
   val Separator = "/"
   val OlympFolder = "100OLYMP"
@@ -49,7 +51,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
         val cameraClientMock = mock[CameraClient]
         val remoteFilesMock = Seq(FileInfo(OlympFolder, "photo2.jpg", 100L))
         cameraClientMock.listFiles().returns(remoteFilesMock)
-        cameraClientMock.downloadFile(OlympFolder, "photo2.jpg", localDirectoryOfDownloads).
+        cameraClientMock.downloadFile(OlympFolder, "photo2.jpg", localDirectoryOfDownloads, ADateTime).
           returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo2.jpg")))
 
         // The manager should download the file photo2.jpg
@@ -74,7 +76,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
         val cameraClientMock = mock[CameraClient]
         val remoteFilesMock = Seq(FileInfo(OlympFolder, "photo1.jpg", 0L))
         cameraClientMock.listFiles().returns(remoteFilesMock)
-        cameraClientMock.downloadFile(OlympFolder, "photo1.jpg", localDirectoryOfDownloads).
+        cameraClientMock.downloadFile(OlympFolder, "photo1.jpg", localDirectoryOfDownloads, ADateTime).
           returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo1.jpg")))
 
         // The manager should skip downloading file photo1.jpg
@@ -92,7 +94,7 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
         val cameraClientMock = mock[CameraClient]
         val remoteFilesMock = Seq(FileInfo(OlympFolder, "photo1.jpg", 100L))
         cameraClientMock.listFiles().returns(remoteFilesMock)
-        cameraClientMock.downloadFile(OlympFolder, "photo1.jpg", localDirectoryOfDownloads).
+        cameraClientMock.downloadFile(OlympFolder, "photo1.jpg", localDirectoryOfDownloads, ADateTime).
           returns(Failure(new RuntimeException()))
 
         // The manager should download the file photo2.jpg

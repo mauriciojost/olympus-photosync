@@ -43,6 +43,7 @@ class ArgumentsParserBuilderSpec extends Specification {
           serverPort = 80,
           serverBaseUrl = "/DCIM",
           fileRegex = "wlan.*=.*,(.*),(\\d+),(\\d+),(\\d+),(\\d+).*",
+          preserveCreationDate = true,
           urlTranslator = None
         ),
         mediaFilter = FileInfoFilter.Criteria.Bypass,
@@ -65,6 +66,7 @@ class ArgumentsParserBuilderSpec extends Specification {
         serverPort = 0,
         serverBaseUrl = "",
         fileRegex = "",
+        preserveCreationDate = false,
         urlTranslator = None
       ),
       mediaFilter = FileInfoFilter.Criteria.Bypass,

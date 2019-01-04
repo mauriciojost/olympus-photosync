@@ -4,13 +4,13 @@ import java.io.{File, FileOutputStream}
 import java.net.URL
 import java.nio.channels.Channels
 import java.nio.charset.StandardCharsets
+import java.time.{LocalDate, LocalDateTime, OffsetDateTime, ZoneOffset}
 
 import org.mauritania.photosync.olympus.sync.Directories
 import org.slf4j.LoggerFactory
 
 import scala.util.Try
 import scala.collection.immutable.Seq
-
 import scala.reflect.io.Streamable
 
 /**
@@ -53,19 +53,31 @@ class CameraClient(
       filesFromDirHtml(dirHtmlLines, dir)
     }
 
-    files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.getHumanDate})"))
+    files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.humanDateTime})"))
 
     files
   }
 
+  private def setDateTime(destinationFile: File, dateTime: LocalDateTime) = {
+    if (configuration.preserveCreationDate) {
+      val epochSecs = dateTime.toEpochSecond(LocalZoneOffset)
+      val success = destinationFile.setLastModified(epochSecs * 1000)
+      if (!success) {
+        logger.warn(s"Could not setup file date for: ${destinationFile.getName}")
+      }
+    }
+  }
+
   /**
     * Downloads a specific file
+    *
     * @param remoteDir the remote directory
     * @param remoteFile the remote filename
     * @param localTargetDirectory the target local directory
+    * @param dateTime the date time to be set as 'modified' in the newly created file (in user's timezone)
     * @return the [[Try]] containing the downloaded local file
     */
-  def downloadFile(remoteDir: String, remoteFile: String, localTargetDirectory: File): Try[File] = {
+  def downloadFile(remoteDir: String, remoteFile: String, localTargetDirectory: File, dateTime: LocalDateTime): Try[File] = {
     val urlSourceFile = configuration.fileUrl(baseDirFileUrl(Some(configuration.serverBaseUrl), Some(remoteDir), Some(remoteFile)))
     Try {
       val inputStream = urlSourceFile.openStream()
@@ -76,6 +88,7 @@ class CameraClient(
         val destinationFile = new File(localDirectory, remoteFile)
         val outputStream = new FileOutputStream(destinationFile)
         outputStream.getChannel.transferFrom(channel, 0, Long.MaxValue)
+        setDateTime(destinationFile, dateTime)
         destinationFile.getAbsoluteFile
       } finally {
         inputStream.close()
@@ -178,7 +191,7 @@ class CameraClient(
         htmlLineToBeParsed match {
           case fileRegex(fileName, fileSizeBytes, _, date, time) =>
             val thumbnail = thumbnailFileUrl(fileDir, fileName)
-            Some(FileInfo(fileDir, fileName, fileSizeBytes.toLong, date.toInt, Some(thumbnail)))
+            Some(FileInfo(fileDir, fileName, fileSizeBytes.toLong, date.toInt, time.toInt, Some(thumbnail)))
           case _ =>
             None
         }
@@ -208,5 +221,6 @@ object CameraClient {
   val ConnectTimeoutMs = 20000
   val ReadTimeoutMs = 20000
   val NewLineSplit = "\\r?\\n"
+  val LocalZoneOffset = OffsetDateTime.now().getOffset()
 }
 
