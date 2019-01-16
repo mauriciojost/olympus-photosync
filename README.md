@@ -34,13 +34,13 @@ The remaining installation procedure depends on your operating system. See below
 
 [![All releases](https://img.shields.io/badge/all-releases-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/)
 
-Latest release is: [v0.16.0](https://github.com/mauriciojost/olympus-photosync/releases/tag/v0.16.0)
+Latest release is: [v0.16.1](https://github.com/mauriciojost/olympus-photosync/releases/tag/v0.16.1)
 
 ### Install on Windows
 
 One Java is installed, download the latest release for Windows:
 
-[![Windows releases](https://img.shields.io/badge/windows-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.0/olympus-photosync-0.16.0.zip)
+[![Windows releases](https://img.shields.io/badge/windows-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync-0.16.1.zip)
 
 No installation needed. Decompress the release in `C:\olympus\` (you will need to create the directory).
 
@@ -50,8 +50,8 @@ The executables will be under the unzipped directory, in the `bin` subdirectory:
 
 For Linux both _.deb_ and _.rpm_ packages are provided. With Java installed, download the latest release for your own distribution:
 
-[![Debian release](https://img.shields.io/badge/debian-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.0/olympus-photosync_0.16.0_all.deb)
-[![RedHat release](https://img.shields.io/badge/redhat-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.0/olympus-photosync-0.16.0-1.noarch.rpm)
+[![Debian release](https://img.shields.io/badge/debian-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync_0.16.1_all.deb)
+[![RedHat release](https://img.shields.io/badge/redhat-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync-0.16.1-1.noarch.rpm)
 
 You can install such packages using _dpkg_ and _rpm_ tools.
 
@@ -68,8 +68,8 @@ The tool `olympus-photosync` will be added to the `PATH` so that you can use it 
 
 With Java installed, download the latest release:
 
-[![MacOS release](https://img.shields.io/badge/macos-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.0/olympus-photosync-0.16.0.tgz)
-[![Linux release (standalone)](https://img.shields.io/badge/linux-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.0/olympus-photosync-0.16.0.tgz)
+[![MacOS release](https://img.shields.io/badge/macos-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync-0.16.1.tgz)
+[![Linux release (standalone)](https://img.shields.io/badge/linux-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync-0.16.1.tgz)
 
 These packages are provided so that the application can be used without
 installation. Download the release and decompress it somewhere
@@ -170,31 +170,36 @@ Command line arguments take precedence over the configuration file.
 There are several parameters to be set. To list these parameters you can execute:
 
 ```
-photosync --help
+# In Linux
+olympus-photosync --help
 ```
 
 For instance, to synchronize files and download them to local directory `/home/john/output` do:
 
 ```
-photosync --output-directory /home/john/output
+# In Linux
+olympus-photosync --output-directory /home/john/output
+
+# On Windows
+olympus-photosync --output-directory C:\output
 ```
 
 To synchronize files of SEP2017 do:
 
 ```
-photosync --from 01-09-2017 --until 30-09-2017
+olympus-photosync --from 01-09-2017 --until 30-09-2017
 ```
 
 To synchronize only `AVI` or `ORF` files:
 
 ```
-photosync --file-patterns *.AVI,*.ORF
+olympus-photosync --file-patterns *.AVI,*.ORF
 ```
 
 You can launch the GUI for Linux/MacOS (as in Windows GUI is launched automatically):
 
 ```
-photosync --gui
+olympus-photosync --gui
 ```
 
 In Windows such command line arguments can be passed by modifying the
@@ -218,7 +223,7 @@ the application, you can store it in a configuration file and reuse it.
 You can generate a template configuration file using:
 
 ```
-photosync --init-config
+olympus-photosync --init-config
 ```
 
 Then you can customize as you wish.
@@ -234,7 +239,7 @@ This is a recently added feature, so be cool! I am very open to feedback.
 In Linux/MacOS launch with:
 
 ```
-photosync --gui
+olympus-photosync --gui
 ```
 
 In Windows the GUI is launched automatically.

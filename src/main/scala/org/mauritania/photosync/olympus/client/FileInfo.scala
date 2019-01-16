@@ -18,16 +18,23 @@ case class FileInfo(
     folder + "/" + name
   }
 
-  private def maskAndShift(i: Int, mask: Int, shift: Int): Int = (i & mask) >>> shift
-
   val humanDate: LocalDate = {
-    val days = maskAndShift(date, MaskDays, 0)
-    val months = maskAndShift(date, MaskMont, 5)
-    val years = maskAndShift(date, MaskYear, 9) + 1980
+    // ..yyyyyyyymmmmddddd
+    //   65432109876543210
+    val days = maskShift(date, 4, 0)
+    val months = maskShift(date, 8, 5)
+    val years = maskShift(date, 16, 9) + 1980
     LocalDate.of(years, months, days)
   }
 
-  val humanTime: LocalTime = LocalTime.ofSecondOfDay(time)
+  val humanTime: LocalTime = {
+    // ...hhhhhhmmmmmmsssss
+    //    65432109876543210
+    val s = FileInfo.maskShift(time, 4, 0)
+    val m = FileInfo.maskShift(time, 10, 5)
+    val h = FileInfo.maskShift(time, 16, 11)
+    LocalTime.of(h, m, s)
+  }
 
   val humanDateTime: LocalDateTime = humanDate.atTime(humanTime)
 
@@ -47,5 +54,8 @@ object FileInfo {
 
   val MaxDate = LocalDate.of(2099, 12, 31)
   val MinDate = LocalDate.of(2000, 1, 1)
+
+  def maskShift(i: Int, upperMaskBitPos: Int, lowerMaskBitPos: Int): Int =
+    (i % (2 << upperMaskBitPos)) >> lowerMaskBitPos
 
 }

@@ -4,7 +4,7 @@ import java.io.{File, FileOutputStream}
 import java.net.URL
 import java.nio.channels.Channels
 import java.nio.charset.StandardCharsets
-import java.time.{LocalDate, LocalDateTime, OffsetDateTime, ZoneOffset}
+import java.time._
 
 import org.mauritania.photosync.olympus.sync.Directories
 import org.slf4j.LoggerFactory
@@ -58,9 +58,9 @@ class CameraClient(
     files
   }
 
-  private def setDateTime(destinationFile: File, dateTime: LocalDateTime) = {
+  private def setDateTime(destinationFile: File, dateTime: ZonedDateTime): Unit = {
     if (configuration.preserveCreationDate) {
-      val epochSecs = dateTime.toEpochSecond(LocalZoneOffset)
+      val epochSecs = dateTime.toEpochSecond
       val success = destinationFile.setLastModified(epochSecs * 1000)
       if (!success) {
         logger.warn(s"Could not setup file date for: ${destinationFile.getName}")
@@ -71,24 +71,23 @@ class CameraClient(
   /**
     * Downloads a specific file
     *
-    * @param remoteDir the remote directory
-    * @param remoteFile the remote filename
+    * @param file the remote file information
     * @param localTargetDirectory the target local directory
     * @param dateTime the date time to be set as 'modified' in the newly created file (in user's timezone)
     * @return the [[Try]] containing the downloaded local file
     */
-  def downloadFile(remoteDir: String, remoteFile: String, localTargetDirectory: File, dateTime: LocalDateTime): Try[File] = {
-    val urlSourceFile = configuration.fileUrl(baseDirFileUrl(Some(configuration.serverBaseUrl), Some(remoteDir), Some(remoteFile)))
+  def downloadFile(file: FileInfo, localTargetDirectory: File): Try[File] = {
+    val urlSourceFile = configuration.fileUrl(baseDirFileUrl(Some(configuration.serverBaseUrl), Some(file.folder), Some(file.name)))
     Try {
       val inputStream = urlSourceFile.openStream()
       try {
         val channel = Channels.newChannel(inputStream)
-        val localDirectory = new File(localTargetDirectory, remoteDir)
+        val localDirectory = new File(localTargetDirectory, file.folder)
         Directories.mkdirs(localDirectory)
-        val destinationFile = new File(localDirectory, remoteFile)
+        val destinationFile = new File(localDirectory, file.name)
         val outputStream = new FileOutputStream(destinationFile)
         outputStream.getChannel.transferFrom(channel, 0, Long.MaxValue)
-        setDateTime(destinationFile, dateTime)
+        setDateTime(destinationFile, file.humanDateTime.atZone(configuration.zoneOffset))
         destinationFile.getAbsoluteFile
       } finally {
         inputStream.close()
