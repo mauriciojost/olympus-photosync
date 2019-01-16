@@ -201,3 +201,9 @@
 - Upgrade scala to 2.12
 - Show coverage of dev branch
 - Preserve file date/time from camera #58
+
+
+## RELEASE: 0.16.1
+
+- Fix time & timezones interpretation from server #58
+- Fix documentation issues #59
