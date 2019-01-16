@@ -170,31 +170,36 @@ Command line arguments take precedence over the configuration file.
 There are several parameters to be set. To list these parameters you can execute:
 
 ```
-photosync --help
+# In Linux
+olympus-photosync --help
 ```
 
 For instance, to synchronize files and download them to local directory `/home/john/output` do:
 
 ```
-photosync --output-directory /home/john/output
+# In Linux
+olympus-photosync --output-directory /home/john/output
+
+# On Windows
+olympus-photosync --output-directory C:\output
 ```
 
 To synchronize files of SEP2017 do:
 
 ```
-photosync --from 01-09-2017 --until 30-09-2017
+olympus-photosync --from 01-09-2017 --until 30-09-2017
 ```
 
 To synchronize only `AVI` or `ORF` files:
 
 ```
-photosync --file-patterns *.AVI,*.ORF
+olympus-photosync --file-patterns *.AVI,*.ORF
 ```
 
 You can launch the GUI for Linux/MacOS (as in Windows GUI is launched automatically):
 
 ```
-photosync --gui
+olympus-photosync --gui
 ```
 
 In Windows such command line arguments can be passed by modifying the
@@ -218,7 +223,7 @@ the application, you can store it in a configuration file and reuse it.
 You can generate a template configuration file using:
 
 ```
-photosync --init-config
+olympus-photosync --init-config
 ```
 
 Then you can customize as you wish.
@@ -234,7 +239,7 @@ This is a recently added feature, so be cool! I am very open to feedback.
 In Linux/MacOS launch with:
 
 ```
-photosync --gui
+olympus-photosync --gui
 ```
 
 In Windows the GUI is launched automatically.
