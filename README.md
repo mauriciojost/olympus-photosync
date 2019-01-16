@@ -34,13 +34,13 @@ The remaining installation procedure depends on your operating system. See below
 
 [![All releases](https://img.shields.io/badge/all-releases-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/)
 
-Latest release is: [v1master](https://github.com/mauriciojost/olympus-photosync/releases/tag/v1master)
+Latest release is: [v0.16.1](https://github.com/mauriciojost/olympus-photosync/releases/tag/v0.16.1)
 
 ### Install on Windows
 
 One Java is installed, download the latest release for Windows:
 
-[![Windows releases](https://img.shields.io/badge/windows-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master.zip)
+[![Windows releases](https://img.shields.io/badge/windows-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync-0.16.1.zip)
 
 No installation needed. Decompress the release in `C:\olympus\` (you will need to create the directory).
 
@@ -50,8 +50,8 @@ The executables will be under the unzipped directory, in the `bin` subdirectory:
 
 For Linux both _.deb_ and _.rpm_ packages are provided. With Java installed, download the latest release for your own distribution:
 
-[![Debian release](https://img.shields.io/badge/debian-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync_1master_all.deb)
-[![RedHat release](https://img.shields.io/badge/redhat-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master-1.noarch.rpm)
+[![Debian release](https://img.shields.io/badge/debian-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync_0.16.1_all.deb)
+[![RedHat release](https://img.shields.io/badge/redhat-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync-0.16.1-1.noarch.rpm)
 
 You can install such packages using _dpkg_ and _rpm_ tools.
 
@@ -68,8 +68,8 @@ The tool `olympus-photosync` will be added to the `PATH` so that you can use it 
 
 With Java installed, download the latest release:
 
-[![MacOS release](https://img.shields.io/badge/macos-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master.tgz)
-[![Linux release (standalone)](https://img.shields.io/badge/linux-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master.tgz)
+[![MacOS release](https://img.shields.io/badge/macos-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync-0.16.1.tgz)
+[![Linux release (standalone)](https://img.shields.io/badge/linux-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v0.16.1/olympus-photosync-0.16.1.tgz)
 
 These packages are provided so that the application can be used without
 installation. Download the release and decompress it somewhere
