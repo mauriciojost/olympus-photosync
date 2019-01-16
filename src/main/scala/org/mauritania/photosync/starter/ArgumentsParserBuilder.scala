@@ -1,6 +1,6 @@
 package org.mauritania.photosync.starter
 
-import java.time.LocalDate
+import java.time.{LocalDate, ZoneId}
 
 import com.typesafe.config.ConfigFactory
 import org.mauritania.photosync.Constants
@@ -23,7 +23,8 @@ object ArgumentsParserBuilder {
         serverBaseUrl = configFile.getString("server.base.url"),
         fileRegex = configFile.getString("file.regex"),
         preserveCreationDate = configFile.getBoolean("file.preservedate"),
-        urlTranslator = None
+        urlTranslator = None,
+        forcedTimezone = Try(configFile.getString("server.timezone")).toOption.map(ZoneId.of)
       ),
       mediaFilter = FileInfoFilter.Criteria(
         fromDateCondition = Try(configFile.getString("output.fromdate")).toOption.map(LocalDate.parse(_)),

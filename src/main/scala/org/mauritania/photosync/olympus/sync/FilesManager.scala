@@ -99,7 +99,7 @@ class FilesManager(
         Failure(new AlreadyDownloadedException(syncPlanItem.fileInfo.name))
       case i @ (SyncPlanItem.OnlyRemote | SyncPlanItem.PartiallyDownloaded) =>
         logger.debug(s"Downloading file ${syncPlanItem.fileInfo} to ${config.outputDir} (previous status ${syncPlanItem.downloadStatus})")
-        api.downloadFile(syncPlanItem.fileInfo.folder, syncPlanItem.fileInfo.name, config.outputDir, syncPlanItem.fileInfo.humanDateTime)
+        api.downloadFile(syncPlanItem.fileInfo, config.outputDir)
     }
   }
 

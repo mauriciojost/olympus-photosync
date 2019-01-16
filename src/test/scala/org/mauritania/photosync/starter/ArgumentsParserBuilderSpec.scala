@@ -44,7 +44,8 @@ class ArgumentsParserBuilderSpec extends Specification {
           serverBaseUrl = "/DCIM",
           fileRegex = "wlan.*=.*,(.*),(\\d+),(\\d+),(\\d+),(\\d+).*",
           preserveCreationDate = true,
-          urlTranslator = None
+          urlTranslator = None,
+          forcedTimezone = None
         ),
         mediaFilter = FileInfoFilter.Criteria.Bypass,
         outputDirectory = "output",
@@ -67,7 +68,8 @@ class ArgumentsParserBuilderSpec extends Specification {
         serverBaseUrl = "",
         fileRegex = "",
         preserveCreationDate = false,
-        urlTranslator = None
+        urlTranslator = None,
+        forcedTimezone = None
       ),
       mediaFilter = FileInfoFilter.Criteria.Bypass,
       outputDirectory = "",

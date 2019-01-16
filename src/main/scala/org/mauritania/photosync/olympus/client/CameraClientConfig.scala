@@ -1,6 +1,7 @@
 package org.mauritania.photosync.olympus.client
 
 import java.net.URL
+import java.time.{OffsetDateTime, ZoneId}
 
 case class CameraClientConfig(
 
@@ -38,12 +39,26 @@ case class CameraClientConfig(
   /**
     * URL translator, used only for testing purposes
     */
-  urlTranslator: Option[URL => URL] = None
+  urlTranslator: Option[URL => URL] = None,
+
+
+  /**
+    * Forced timezone (for tests mainly)
+    */
+  forcedTimezone: Option[ZoneId]
 
 ) {
   def fileUrl(relativeUrl: String) = {
     val r = new URL(serverProtocol, serverName, serverPort, relativeUrl)
     urlTranslator.getOrElse((i: URL) => i)(r)
   }
+
+  /**
+    * Zone offset to be used to interpret dates coming from the camera (which apparently has no information
+    * about timezones).
+    * The assumption: the timezone used to set up the time of the camera must be the same timezone on which
+    * this application is executed.
+    */
+  val zoneOffset = forcedTimezone.getOrElse(OffsetDateTime.now().getOffset)
 }
 

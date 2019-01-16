@@ -49,9 +49,10 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
 
         // Simulate camera reporting that photo2.jpg is available
         val cameraClientMock = mock[CameraClient]
-        val remoteFilesMock = Seq(FileInfo(OlympFolder, "photo2.jpg", 100L))
+        val fiPhoto2 = FileInfo(OlympFolder, "photo2.jpg", 100L)
+        val remoteFilesMock = Seq(fiPhoto2)
         cameraClientMock.listFiles().returns(remoteFilesMock)
-        cameraClientMock.downloadFile(OlympFolder, "photo2.jpg", localDirectoryOfDownloads, ADateTime).
+        cameraClientMock.downloadFile(fiPhoto2, localDirectoryOfDownloads).
           returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo2.jpg")))
 
         // The manager should download the file photo2.jpg
@@ -74,9 +75,10 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
 
         // Simulate camera telling that photo1.jpg is available
         val cameraClientMock = mock[CameraClient]
-        val remoteFilesMock = Seq(FileInfo(OlympFolder, "photo1.jpg", 0L))
+        val fiPhoto1 = FileInfo(OlympFolder, "photo1.jpg", 0L)
+        val remoteFilesMock = Seq(fiPhoto1)
         cameraClientMock.listFiles().returns(remoteFilesMock)
-        cameraClientMock.downloadFile(OlympFolder, "photo1.jpg", localDirectoryOfDownloads, ADateTime).
+        cameraClientMock.downloadFile(fiPhoto1, localDirectoryOfDownloads).
           returns(Success(TestHelper.touchFile(new File(localDirectoryOfDownloads, OlympFolder), "photo1.jpg")))
 
         // The manager should skip downloading file photo1.jpg
@@ -92,9 +94,10 @@ class FilesManagerSpec extends Specification with Mockito with TempDir {
       withTmpDir { localDirectoryOfDownloads =>
         // Simulate camera telling that photo1.jpg is available
         val cameraClientMock = mock[CameraClient]
-        val remoteFilesMock = Seq(FileInfo(OlympFolder, "photo1.jpg", 100L))
+        val fiPhoto1 = FileInfo(OlympFolder, "photo1.jpg", 100L)
+        val remoteFilesMock = Seq(fiPhoto1)
         cameraClientMock.listFiles().returns(remoteFilesMock)
-        cameraClientMock.downloadFile(OlympFolder, "photo1.jpg", localDirectoryOfDownloads, ADateTime).
+        cameraClientMock.downloadFile(fiPhoto1, localDirectoryOfDownloads).
           returns(Failure(new RuntimeException()))
 
         // The manager should download the file photo2.jpg

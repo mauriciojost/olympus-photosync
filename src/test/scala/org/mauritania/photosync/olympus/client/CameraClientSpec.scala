@@ -1,19 +1,19 @@
 package org.mauritania.photosync.olympus.client
 
-import java.net.URL
-
-import org.specs2.mock.Mockito
-import org.specs2.mutable.Specification
 import java.io.File
-import java.time.{LocalDateTime, LocalTime}
+import java.net.URL
+import java.time._
 
 import org.mauritania.photosync.TestHelper
+import org.specs2.mock.Mockito
+import org.specs2.mutable.Specification
 
 import scala.collection.immutable.Seq
 
 class CameraClientSpec extends Specification with Mockito {
 
-  val ADateTime = LocalDateTime.of(2015, 9, 21, 12, 5, 41)
+  val ParisZone = ZoneId.of("Europe/Paris")
+  val ADateTime = ZonedDateTime.of(2015, 9, 21, 21, 16, 21, 0, ParisZone)
   val ServerBaseUrl = "./src/test/resources/org/mauritania/photosync/"
 
   val DefaultCameraClientConfig = CameraClientConfig(
@@ -23,7 +23,11 @@ class CameraClientSpec extends Specification with Mockito {
     serverPort = 0,
     fileRegex = """wlan.*=.*,(.*),(\d+),(\d+),(\d+),(\d+).*""",
     preserveCreationDate = true,
-    urlTranslator = None
+    urlTranslator = None,
+    forcedTimezone = Some(
+      // the app figures out the zone of the PC, which must be the same as the one in the camera
+      ParisZone
+    )
   )
 
   "The camera server client" should {
@@ -65,13 +69,49 @@ class CameraClientSpec extends Specification with Mockito {
       remoteFiles.head.size mustEqual 15441739L
       remoteFiles.head.date mustEqual 18229
       remoteFiles.head.time mustEqual 43541
-      remoteFiles.head.humanTime mustEqual LocalTime.ofSecondOfDay(43541)
       remoteFiles.head.thumbnailUrl must beSome
 
       val outputDirectory = TestHelper.createTmpDir("output")
-      cc.downloadFile("100OLYMP", "OR.ORF", outputDirectory, ADateTime)
+
+      val downloaded = cc.downloadFile(remoteFiles.head, outputDirectory)
+      downloaded must aSuccessfulTry[File]
 
       val downloadedFileToCheck = new File(new File(outputDirectory, "100OLYMP"), "OR.ORF")
+
+      downloadedFileToCheck.exists mustEqual true
+
+      downloadedFileToCheck.deleteOnExit()
+
+      done
+
+    }
+
+    "correctly list remote files and tell their date/time" in {
+      val cc = new CameraClient(
+        generateClientCameraConfig(
+          "01-root-em10-onefolder.html",
+          specialMappingUrlTranslator("01-root-em10-onefolder.html", "0003-em10-downloadable-file-with-dates.html")
+        )
+      )
+
+      // Picture taken at 21h59 on Jan14 2019, in Nice, France
+      // wlansd[0]="/DCIM/100OLYMP/,OR.ORF,15441739,0,18229,43541";
+      val remoteFiles = cc.listFiles()
+      remoteFiles.size mustEqual 1
+      remoteFiles.head.folder mustEqual "100OLYMP"
+      remoteFiles.head.name mustEqual "P1144737.ORF"
+      remoteFiles.head.date mustEqual 20014
+      remoteFiles.head.time mustEqual 44917
+      remoteFiles.head.humanDate mustEqual LocalDate.of(2019, 1, 14)
+      remoteFiles.head.humanTime mustEqual LocalTime.of(21, 59, 21)
+      remoteFiles.head.thumbnailUrl must beSome
+
+      val outputDirectory = TestHelper.createTmpDir("output")
+
+      val downloaded = cc.downloadFile(remoteFiles.head, outputDirectory)
+      downloaded must aSuccessfulTry[File]
+
+      val downloadedFileToCheck = new File(new File(outputDirectory, "100OLYMP"), "P1144737.ORF")
 
       downloadedFileToCheck.exists mustEqual true
 
@@ -93,15 +133,17 @@ class CameraClientSpec extends Specification with Mockito {
       val remoteFiles = cc.listFiles()
       remoteFiles.size mustEqual 1
       remoteFiles.head.date mustEqual 18229
-      remoteFiles.head.humanDateTime mustEqual ADateTime
+      remoteFiles.head.humanDateTime mustEqual ADateTime.toLocalDateTime
 
       val outputDirectory = TestHelper.createTmpDir("output")
-      cc.downloadFile("100OLYMP", "OR.ORF", outputDirectory, ADateTime)
+
+      val downloaded = cc.downloadFile(remoteFiles.head, outputDirectory)
+      downloaded must aSuccessfulTry[File]
 
       val downloadedFileToCheck = new File(new File(outputDirectory, "100OLYMP"), "OR.ORF")
 
       downloadedFileToCheck.exists mustEqual true
-      downloadedFileToCheck.lastModified() mustEqual ADateTime.toEpochSecond(CameraClient.LocalZoneOffset) * 1000
+      downloadedFileToCheck.lastModified() mustEqual ADateTime.toEpochSecond * 1000
 
       downloadedFileToCheck.deleteOnExit()
 
@@ -134,6 +176,7 @@ class CameraClientSpec extends Specification with Mockito {
         .replace(rootHtmlName + "/100OLYMP", "100OLYMP/" + folderHtmlName)
         .replace(folderHtmlName + "/", "photosample/")
     }
+
     val relativeUrl = url.getFile
     val newRelativeUrl = transformRelativeUrl(relativeUrl)
     new URL(url.getProtocol, url.getHost, url.getPort, newRelativeUrl)
