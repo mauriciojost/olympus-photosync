@@ -28,11 +28,13 @@ class FileInfoSpec extends Specification {
       DefaultFileInfo.copy(date = 10337).humanDate mustEqual LocalDate.of(2000, 3, 1)
       DefaultFileInfo.copy(date = 10849).humanDate mustEqual LocalDate.of(2001, 3, 1)
       DefaultFileInfo.copy(date = 11361).humanDate mustEqual LocalDate.of(2002, 3, 1)
+      DefaultFileInfo.copy(date = 20014).humanDate mustEqual LocalDate.of(2019, 1, 14)
     }
 
     "correctly retrieve the time from a machine time" in {
       DefaultFileInfo.copy(time = 0).humanTime mustEqual LocalTime.of(0, 0, 0)
-      DefaultFileInfo.copy(time = 60 * 60 * 24 - 1).humanTime mustEqual LocalTime.of(23, 59, 59)
+      DefaultFileInfo.copy(time = 44917).humanTime mustEqual LocalTime.of(21, 59, 21)
+
     }
 
   }

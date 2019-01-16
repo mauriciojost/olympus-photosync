@@ -102,8 +102,6 @@ class CameraClientSpec extends Specification with Mockito {
       remoteFiles.head.name mustEqual "P1144737.ORF"
       remoteFiles.head.date mustEqual 20014
       remoteFiles.head.time mustEqual 44917
-      remoteFiles.head.humanDate mustEqual LocalDate.of(2019, 1, 14)
-      remoteFiles.head.humanTime mustEqual LocalTime.of(21, 59, 21)
       remoteFiles.head.thumbnailUrl must beSome
 
       val outputDirectory = TestHelper.createTmpDir("output")
@@ -133,6 +131,7 @@ class CameraClientSpec extends Specification with Mockito {
       val remoteFiles = cc.listFiles()
       remoteFiles.size mustEqual 1
       remoteFiles.head.date mustEqual 18229
+      remoteFiles.head.time mustEqual 43541
       remoteFiles.head.humanDateTime mustEqual ADateTime.toLocalDateTime
 
       val outputDirectory = TestHelper.createTmpDir("output")
