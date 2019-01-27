@@ -1,6 +1,9 @@
 // https://jenkins.io/doc/book/pipeline/jenkinsfile/
 // Scripted pipeline (not declarative)
 pipeline {
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+  }
   agent {
     docker { image 'mauriciojost/scala-olympus-photosync:latest' }
   }
