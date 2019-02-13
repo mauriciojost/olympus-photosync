@@ -230,9 +230,9 @@ Then you can customize as you wish.
 After that you can launch the application using such configuration file (and
 its settings). See the output of the command above for more information.
 
-## 2.d. Use the Graphical User Interface (**new!**)
+## 2.d. Use the Graphical User Interface
 
-This is a recently added feature, so be cool! I am very open to feedback.
+This is a relatively recent feature, so be cool! I am very open to feedback.
 
 ![GUI](doc/images/gui-sample-v0.13.png)
 
