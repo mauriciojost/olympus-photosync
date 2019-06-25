@@ -2,10 +2,10 @@ language: scala
 scala:
         - 2.11.8
 
-before_script: 
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - "sleep 3"
-script: "sbt clean coverage test"
-after_success: "sbt coverageReport coveralls"
+dist: xenial
+services:
+  - xvfb
+
+script: "xvfb-run sbt clean coverage test"
+after_success: "xvfb-run sbt coverageReport coveralls"
 
