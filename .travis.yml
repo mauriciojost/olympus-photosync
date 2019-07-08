@@ -1,13 +1,12 @@
-dist: xenial
-services:
-  - xvfb
 language: scala
-scala:
-  - 2.11.8
-before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - "sleep 3"
-script: "sbt clean coverage test"
-after_success: "sbt coverageReport coveralls"
+
+services:
+  - docker
+
+before_install:
+- docker pull mauriciojost/scala-olympus-photosync:latest
+- docker run mauriciojost/scala-olympus-photosync:latest /bin/sh -c "cd /root/ && ps -ef && pwd && whoami"
+
+script:
+- sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean compile
 
