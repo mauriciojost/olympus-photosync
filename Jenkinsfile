@@ -20,6 +20,17 @@ pipeline {
         sh '/usr/bin/xvfb-run sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 test'
       }
     }
+    stage('Coverage') {
+      steps {
+        wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
+          sh '/usr/bin/xvfb-run sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean "set every coverageEnabled := true" test coverageReport'
+        }
+        wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
+          sh 'sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 coverageAggregate'
+        }
+        step([$class: 'ScoveragePublisher', reportDir: 'target/scala-2.12/scoverage-report', reportFile: 'scoverage.xml'])
+      }
+    }
     stage('Release') {
       when {
         expression { env.BRANCH_NAME.matches("v(\\d+)\\.(\\d+)") } // is a version
