@@ -190,8 +190,7 @@ object GuiStarter extends JFXApp {
   stage = new PrimaryStage {
     title = "Olympus Photosync v" + Constants.Version
     scene = new Scene {
-      resizable = true
-      content = new VBox {
+      root = new VBox {
         alignment = Pos.Center
         spacing = DefaultSpacing
         padding = Insets(DefaultSpacing, DefaultSpacing, DefaultSpacing, DefaultSpacing)
@@ -258,7 +257,6 @@ object GuiStarter extends JFXApp {
     ThreadPool.shutdownNow()
     stage.close()
   }
-
 
   private def resolvedConfig(
     baseConfig: PhotosyncConfig,
