@@ -12,7 +12,7 @@ import javafx.util.Callback
 
 import scalafx.scene.image.ImageView
 
-class CustomCell(px: Double) extends javafxcontrol.ListCell[CellType] {
+class CustomCell(thumbnailSize: Double, showFilename: Boolean) extends javafxcontrol.ListCell[CellType] {
 
   override def updateItem(item: CellType, empty: Boolean): Unit = {
     super.updateItem(item, empty)
@@ -30,13 +30,17 @@ class CustomCell(px: Double) extends javafxcontrol.ListCell[CellType] {
            |Size:  $fileSize bytes
            |Date:  $fileDate
            |Status: $downloadStatus""".stripMargin
-      setText(fileNameDir + " [" + downloadStatusCode + "]")
+      if (showFilename) {
+        setText(fileNameDir + " [" + downloadStatusCode + "]")
+      } else {
+        setText("")
+      }
       setTooltip(new Tooltip(toolTipText))
       fileThumbnail match {
         case Some(t) => {
           val i = new ImageView(t.toString)
-          i.setFitWidth(px)
-          i.setFitHeight(px)
+          i.setFitWidth(thumbnailSize)
+          i.setFitHeight(thumbnailSize)
           setGraphic(i)
         }
         case None => setGraphic(getRectangle(downloadStatus))
@@ -50,7 +54,7 @@ class CustomCell(px: Double) extends javafxcontrol.ListCell[CellType] {
 
   def getRectangle(downloadStatus: DownloadedStatus): Rectangle = {
     val statusColor = asColor(downloadStatus)
-    val rect = new Rectangle(px, px)
+    val rect = new Rectangle(thumbnailSize, thumbnailSize)
     rect.setFill(statusColor)
     rect.setAccessibleText(downloadStatus.toString)
     rect
@@ -81,9 +85,9 @@ object CustomCell {
 
   type CellType = SyncPlanItem
 
-  def customCellFactory(px: Double) = new Callback[javafxcontrol.ListView[CellType], javafxcontrol.ListCell[CellType]] {
+  def customCellFactory(thumbnailSize: Double, showFilename: Boolean) = new Callback[javafxcontrol.ListView[CellType], javafxcontrol.ListCell[CellType]] {
     def call(param: javafxcontrol.ListView[CellType]): javafxcontrol.ListCell[CellType] = {
-      return new CustomCell(px)
+      return new CustomCell(thumbnailSize, showFilename)
     }
   }
 
