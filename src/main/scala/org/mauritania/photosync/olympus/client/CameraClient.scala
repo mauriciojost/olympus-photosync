@@ -34,7 +34,7 @@ class CameraClient(
     */
   def listFiles(): Seq[FileInfo] = {
     val rootUrl = baseDirFileUrl(Some(configuration.serverBaseUrl))
-    val rootHtmlLines = getAsString(rootUrl)
+    val rootHtmlLines = httpGetAsString(rootUrl)
 
     logger.debug(s"Html root begin ($rootUrl)")
     rootHtmlLines.foreach(logger.debug)
@@ -46,7 +46,7 @@ class CameraClient(
 
     val files = remoteDirs.flatMap { dir =>
       val dirUrl = baseDirFileUrl(Some(configuration.serverBaseUrl), Some(dir))
-      val dirHtmlLines = getAsString(dirUrl)
+      val dirHtmlLines = httpGetAsString(dirUrl)
       logger.debug(s"Html for directory begin ($dirUrl / $dir)")
       dirHtmlLines.foreach(logger.debug)
       logger.debug(s"Html for directory end\n")
@@ -100,7 +100,7 @@ class CameraClient(
     */
   def isConnected(): Boolean = {
     val rootUrl = baseDirFileUrl(Some(configuration.serverBaseUrl))
-    Try(get(rootUrl, IsConnectedTimeout, IsConnectedTimeout)).isSuccess
+    Try(httpGet(rootUrl, IsConnectedTimeout, IsConnectedTimeout)).isSuccess
   }
 
   /**
@@ -121,7 +121,7 @@ class CameraClient(
     * @return the response from the server
     */
   def shutDown(): Seq[String] = {
-    val reply = getAsString("/exec_pwoff.cgi")
+    val reply = httpGetAsString("/exec_pwoff.cgi")
     logger.info(s"Shutdown complete: $reply")
     reply
   }
@@ -131,9 +131,9 @@ class CameraClient(
     * @param relativeUrl
     * @return the collection of lines result of the query
     */
-  private[client] def getAsString(relativeUrl: String): Seq[String] = {
+  private[client] def httpGetAsString(relativeUrl: String): Seq[String] = {
     logger.debug(s"Querying URL $relativeUrl...")
-    val str = new String(get(relativeUrl), StandardCharsets.ISO_8859_1)
+    val str = new String(httpGet(relativeUrl), StandardCharsets.ISO_8859_1)
     val strLines = str.split(NewLineSplit)
     Seq.empty[String] ++ strLines
   }
@@ -145,7 +145,7 @@ class CameraClient(
     * @param connectTimeout connect timeout as per [[java.net.URLConnection]]
     * @return the reply result of the query
     */
-  private[client] def get(relativeUrl: String, readTimeout: Int = ReadTimeoutMs, connectTimeout: Int = ConnectTimeoutMs): Array[Byte] = {
+  private[client] def httpGet(relativeUrl: String, readTimeout: Int = ReadTimeoutMs, connectTimeout: Int = ConnectTimeoutMs): Array[Byte] = {
     val url = configuration.fileUrl(relativeUrl)
     val connection = url.openConnection
     connection.setConnectTimeout(ConnectTimeoutMs)
