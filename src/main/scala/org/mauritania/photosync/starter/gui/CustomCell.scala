@@ -12,7 +12,7 @@ import javafx.util.Callback
 
 import scalafx.scene.image.ImageView
 
-class CustomCell extends javafxcontrol.ListCell[CellType] {
+class CustomCell(px: Double) extends javafxcontrol.ListCell[CellType] {
 
   override def updateItem(item: CellType, empty: Boolean): Unit = {
     super.updateItem(item, empty)
@@ -33,7 +33,12 @@ class CustomCell extends javafxcontrol.ListCell[CellType] {
       setText(fileNameDir + " [" + downloadStatusCode + "]")
       setTooltip(new Tooltip(toolTipText))
       fileThumbnail match {
-        case Some(t) => setGraphic(new ImageView(t.toString))
+        case Some(t) => {
+          val i = new ImageView(t.toString)
+          i.setFitWidth(px)
+          i.setFitHeight(px)
+          setGraphic(i)
+        }
         case None => setGraphic(getRectangle(downloadStatus))
       }
     } else {
@@ -45,7 +50,7 @@ class CustomCell extends javafxcontrol.ListCell[CellType] {
 
   def getRectangle(downloadStatus: DownloadedStatus): Rectangle = {
     val statusColor = asColor(downloadStatus)
-    val rect = new Rectangle(20, 20)
+    val rect = new Rectangle(px, px)
     rect.setFill(statusColor)
     rect.setAccessibleText(downloadStatus.toString)
     rect
@@ -76,9 +81,9 @@ object CustomCell {
 
   type CellType = SyncPlanItem
 
-  val CustomCellCallback = new Callback[javafxcontrol.ListView[CellType], javafxcontrol.ListCell[CellType]] {
+  def customCellFactory(px: Double) = new Callback[javafxcontrol.ListView[CellType], javafxcontrol.ListCell[CellType]] {
     def call(param: javafxcontrol.ListView[CellType]): javafxcontrol.ListCell[CellType] = {
-      return new CustomCell()
+      return new CustomCell(px)
     }
   }
 

@@ -44,6 +44,7 @@ object GuiStarter extends JFXApp {
   val StatusStyle = "-fx-font: normal italic 10pt sans-serif"
   val DefaultSpacing = 20
   val ThreadPoolSize = 4
+  val cellImageSize = 400
   val ThreadPool = Executors.newFixedThreadPool(ThreadPoolSize);
   val GuiAsync = new GuiAsync(ThreadPool)
 
@@ -170,7 +171,7 @@ object GuiStarter extends JFXApp {
       case conf @ Some(c) => conf
       case invalid => throw new IllegalArgumentException(s"Bad command line arguments: $invalid")
     }
-    SyncPlanList.setCellFactory(CustomCell.CustomCellCallback)
+    SyncPlanList.setCellFactory(CustomCell.customCellFactory(cellImageSize))
 
 
     baseConfigVar() = parsedConfig
