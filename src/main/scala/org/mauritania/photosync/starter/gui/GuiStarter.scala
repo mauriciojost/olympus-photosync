@@ -22,7 +22,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
 import scalafx.scene.control._
 import scalafx.scene.input.{KeyCode, KeyEvent}
-import scalafx.scene.layout.{HBox, VBox}
+import scalafx.scene.layout.{HBox, Priority, VBox}
 import scalafx.scene.text.Text
 import rx.async.Platform._
 
@@ -36,13 +36,11 @@ object GuiStarter extends JFXApp {
 
   val NoneText = ""
   val SeqSeparator = ','
-  val SloganText = "Synchronize your photos with Olympus Photosync!!!"
   val StatusTextIdle = "Idle"
   val DisconnectedText = "Disconnected (!!!)"
   val ConnectedText = "Connected"
   val ConnectivityCheckPeriodMs = 1000
   val StatusSyncdFinished = "Sync finished"
-  val TitleStyle = "-fx-font: normal bold 15pt sans-serif"
   val StatusStyle = "-fx-font: normal italic 10pt sans-serif"
   val DefaultSpacing = 20
   val ThreadPoolSize = 4
@@ -90,6 +88,7 @@ object GuiStarter extends JFXApp {
     text = NoneText
     style = StatusStyle
     promptText = "Glob: *.*"
+    vgrow = Priority.Never
     onKeyPressed = (event: KeyEvent) => {
       if (event.code == KeyCode.Enter) {
         updateControls
@@ -101,6 +100,7 @@ object GuiStarter extends JFXApp {
     text = NoneText
     style = StatusStyle
     promptText = "From: 2000-01-01"
+    vgrow = Priority.Never
     onKeyPressed = (event: KeyEvent) => {
       if (event.code == KeyCode.Enter) {
         updateControls
@@ -112,6 +112,7 @@ object GuiStarter extends JFXApp {
     text = NoneText
     style = StatusStyle
     promptText = "Until: 2000-01-01"
+    vgrow = Priority.Never
     onKeyPressed = (event: KeyEvent) => {
       if (event.code == KeyCode.Enter) {
         updateControls
@@ -119,24 +120,27 @@ object GuiStarter extends JFXApp {
     }
   }
 
-  val Separator = new Separator { }
-
-  val TitleText = new Text {
-    text = SloganText
-    style = TitleStyle
+  val Separator = new Separator {
+    vgrow = Priority.Never
   }
 
   val StatusText = new Text {
     text = StatusTextIdle
     style = StatusStyle
+    alignmentInParent = Pos.BottomCenter
+    vgrow = Priority.Never
   }
 
   val ConnectivityText = new Text {
     text = DisconnectedText
     style = StatusStyle
+    alignmentInParent = Pos.BottomCenter
+    vgrow = Priority.Never
   }
 
-  val SyncPlanList = new ListView[CellType] {}
+  val SyncPlanList = new ListView[CellType] {
+    vgrow = Priority.Always
+  }
 
   val RefreshButton = new Button("Refresh") {
     onMouseClicked = handle {
@@ -195,15 +199,16 @@ object GuiStarter extends JFXApp {
         spacing = DefaultSpacing
         padding = Insets(DefaultSpacing, DefaultSpacing, DefaultSpacing, DefaultSpacing)
         children = Seq(
-          TitleText,
           new VBox {
             alignment = Pos.Center
             spacing = DefaultSpacing
+            vgrow = Priority.Always
             children = Seq(
               new HBox {
                 alignment = Pos.Center
                 spacing = DefaultSpacing
                 children = Seq(RefreshButton, SyncButton, CloseButton)
+                vgrow = Priority.Never
               },
               FileGlobText,
               FromDateText,
