@@ -215,9 +215,9 @@ class CameraClient(
 
 object CameraClient {
   val UrlSeparator = "/"
-  val IsConnectedTimeout = 1000
-  val ConnectTimeoutMs = 20000
-  val ReadTimeoutMs = 20000
+  val IsConnectedTimeout = 1000 // TODO make configurable
+  val ConnectTimeoutMs = 20000 // TODO make configurable
+  val ReadTimeoutMs = 20000 // TODO make configurable
   val NewLineSplit = "\\r?\\n"
 }
 
