@@ -2,7 +2,9 @@ package org.mauritania.photosync.starter
 
 import org.mauritania.photosync.olympus.client.CameraClientConfig
 import org.mauritania.photosync.olympus.sync.FileInfoFilter
+import org.mauritania.photosync.starter.gui.GuiConfig
 import org.specs2.mutable.Specification
+
 import scala.collection.immutable.Seq
 
 class ArgumentsParserBuilderSpec extends Specification {
@@ -52,7 +54,11 @@ class ArgumentsParserBuilderSpec extends Specification {
         guiMode = false,
         commandLineMode = false,
         initConfig = false,
-        shutDownAfterSync = false
+        shutDownAfterSync = false,
+        guiConfig = GuiConfig(
+          showFilename = true,
+          thumbnailSize = 100
+        )
       )
 
     }
@@ -76,7 +82,11 @@ class ArgumentsParserBuilderSpec extends Specification {
       guiMode = false,
       commandLineMode = false,
       initConfig = false,
-      shutDownAfterSync = false
+      shutDownAfterSync = false,
+      guiConfig = GuiConfig(
+        showFilename = true,
+        thumbnailSize = 100
+      )
     )
 
   }

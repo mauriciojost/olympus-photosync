@@ -207,3 +207,10 @@
 
 - Fix time & timezones interpretation from server #58
 - Fix documentation issues #59
+
+
+## RELEASE: 1.0.0
+
+- Add TG-6 in the supported list
+- Make GUI window resizable #52
+- Add gui settings: showfilename and thumbnailsize #52

@@ -36,7 +36,7 @@ object Starter {
 
     logger.info(s"Loading file configuration: $fileConfiguration")
 
-    val osIswindows = (Os.currentOs(Os.JavaOsProperty) == Windows)
+    val osIswindows = (Os.currentOs(Os.defaultOsPropertyValue) == Windows)
 
     ArgumentsParserBuilder.Parser.parse(args, fileConfiguration) match {
       case Some(config) if config.initConfig => initConfig(args)

@@ -7,7 +7,7 @@ import org.mauritania.photosync.olympus.sync.FilesManager.Config
 import org.slf4j.LoggerFactory
 
 import scala.collection.immutable.Seq
-import scala.util.{Failure, Success, Try}
+import scala.util.{Failure, Try}
 
 /**
   * Manages the file synchronization between camera and local filesystem.

@@ -22,7 +22,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
 import scalafx.scene.control._
 import scalafx.scene.input.{KeyCode, KeyEvent}
-import scalafx.scene.layout.{HBox, VBox}
+import scalafx.scene.layout.{HBox, Priority, VBox}
 import scalafx.scene.text.Text
 import rx.async.Platform._
 
@@ -36,13 +36,11 @@ object GuiStarter extends JFXApp {
 
   val NoneText = ""
   val SeqSeparator = ','
-  val SloganText = "Synchronize your photos with Olympus Photosync!!!"
   val StatusTextIdle = "Idle"
   val DisconnectedText = "Disconnected (!!!)"
   val ConnectedText = "Connected"
   val ConnectivityCheckPeriodMs = 1000
   val StatusSyncdFinished = "Sync finished"
-  val TitleStyle = "-fx-font: normal bold 15pt sans-serif"
   val StatusStyle = "-fx-font: normal italic 10pt sans-serif"
   val DefaultSpacing = 20
   val ThreadPoolSize = 4
@@ -90,6 +88,7 @@ object GuiStarter extends JFXApp {
     text = NoneText
     style = StatusStyle
     promptText = "Glob: *.*"
+    vgrow = Priority.Never
     onKeyPressed = (event: KeyEvent) => {
       if (event.code == KeyCode.Enter) {
         updateControls
@@ -101,6 +100,7 @@ object GuiStarter extends JFXApp {
     text = NoneText
     style = StatusStyle
     promptText = "From: 2000-01-01"
+    vgrow = Priority.Never
     onKeyPressed = (event: KeyEvent) => {
       if (event.code == KeyCode.Enter) {
         updateControls
@@ -112,6 +112,7 @@ object GuiStarter extends JFXApp {
     text = NoneText
     style = StatusStyle
     promptText = "Until: 2000-01-01"
+    vgrow = Priority.Never
     onKeyPressed = (event: KeyEvent) => {
       if (event.code == KeyCode.Enter) {
         updateControls
@@ -119,24 +120,27 @@ object GuiStarter extends JFXApp {
     }
   }
 
-  val Separator = new Separator { }
-
-  val TitleText = new Text {
-    text = SloganText
-    style = TitleStyle
+  val Separator = new Separator {
+    vgrow = Priority.Never
   }
 
   val StatusText = new Text {
     text = StatusTextIdle
     style = StatusStyle
+    alignmentInParent = Pos.BottomCenter
+    vgrow = Priority.Never
   }
 
   val ConnectivityText = new Text {
     text = DisconnectedText
     style = StatusStyle
+    alignmentInParent = Pos.BottomCenter
+    vgrow = Priority.Never
   }
 
-  val SyncPlanList = new ListView[CellType] {}
+  val SyncPlanList = new ListView[CellType] {
+    vgrow = Priority.Always
+  }
 
   val RefreshButton = new Button("Refresh") {
     onMouseClicked = handle {
@@ -162,14 +166,13 @@ object GuiStarter extends JFXApp {
     val args = parameters.raw.toArray
     val fileConfiguration = ArgumentsParserBuilder.loadConfigFile
     val parsedArgs = ArgumentsParserBuilder.Parser.parse(args, fileConfiguration)
-    val parsedConfig = parsedArgs match {
-      case conf @ Some(c) => conf
+    parsedArgs match {
+      case conf @ Some(c) => {
+        SyncPlanList.setCellFactory(CustomCell.customCellFactory(c.guiConfig.thumbnailSize, c.guiConfig.showFilename))
+        baseConfigVar() = conf
+      }
       case invalid => throw new IllegalArgumentException(s"Bad command line arguments: $invalid")
     }
-    SyncPlanList.setCellFactory(CustomCell.CustomCellCallback)
-
-
-    baseConfigVar() = parsedConfig
   }
 
   def updateControls(): Unit = {
@@ -190,21 +193,21 @@ object GuiStarter extends JFXApp {
   stage = new PrimaryStage {
     title = "Olympus Photosync v" + Constants.Version
     scene = new Scene {
-      resizable = true
-      content = new VBox {
+      root = new VBox {
         alignment = Pos.Center
         spacing = DefaultSpacing
         padding = Insets(DefaultSpacing, DefaultSpacing, DefaultSpacing, DefaultSpacing)
         children = Seq(
-          TitleText,
           new VBox {
             alignment = Pos.Center
             spacing = DefaultSpacing
+            vgrow = Priority.Always
             children = Seq(
               new HBox {
                 alignment = Pos.Center
                 spacing = DefaultSpacing
                 children = Seq(RefreshButton, SyncButton, CloseButton)
+                vgrow = Priority.Never
               },
               FileGlobText,
               FromDateText,
@@ -221,18 +224,18 @@ object GuiStarter extends JFXApp {
   }
 
   def refreshSyncPlan(manager: FilesManager) = {
-    def onAsyncThread(): Seq[SyncPlanItem] = manager.syncPlan()
+    def syncPlan(): Seq[SyncPlanItem] = manager.syncPlan()
 
-    def onFxSyncThread(files: Seq[SyncPlanItem]) = {
+    def updateUi(files: Seq[SyncPlanItem]) = {
       SyncPlanList.items = ObservableBuffer[CellType](files)
       StatusText.text = StatusTextIdle
     }
 
-    GuiAsync.asyncThenSync(onAsyncThread, onFxSyncThread)
+    GuiAsync.asyncThenSync(syncPlan, updateUi)
   }
 
   def syncSyncableFiles(manager: FilesManager) = {
-    def onAsyncThread(): String = {
+    def startSynchronization(): String = {
       val syncPlan = manager.syncPlan()
       logger.debug(s"Synchronizing ${syncPlan.map(_.fileInfo.name)}")
       syncPlan.foreach { syncPlanItem =>
@@ -242,11 +245,11 @@ object GuiStarter extends JFXApp {
       StatusSyncdFinished + s"(output at: $outputDirectory)"
     }
 
-    def onFxSyncThread(msg: String) = {
+    def updateUi(msg: String) = {
       StatusText.text = msg
     }
 
-    GuiAsync.asyncThenSync(onAsyncThread, onFxSyncThread)
+    GuiAsync.asyncThenSync(startSynchronization, updateUi)
   }
 
   def syncFile(manager: FilesManager, syncPlanItem: SyncPlanItem) = {
@@ -258,7 +261,6 @@ object GuiStarter extends JFXApp {
     ThreadPool.shutdownNow()
     stage.close()
   }
-
 
   private def resolvedConfig(
     baseConfig: PhotosyncConfig,

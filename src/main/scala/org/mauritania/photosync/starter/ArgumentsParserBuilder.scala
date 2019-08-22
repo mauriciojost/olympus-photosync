@@ -6,6 +6,7 @@ import com.typesafe.config.ConfigFactory
 import org.mauritania.photosync.Constants
 import org.mauritania.photosync.olympus.client.CameraClientConfig
 import org.mauritania.photosync.olympus.sync.FileInfoFilter
+import org.mauritania.photosync.starter.gui.GuiConfig
 
 import scala.util.Try
 
@@ -32,10 +33,14 @@ object ArgumentsParserBuilder {
         fileNameConditions = Try(configFile.getString("output.patterns")).toOption.map(_.split(SeqSeparator))
       ),
       outputDirectory = configFile.getString("output.directory"),
-      guiMode = configFile.getBoolean("gui"),
+      guiMode = configFile.getBoolean("guimode"),
       commandLineMode = configFile.getBoolean("commandline"),
       initConfig = configFile.getBoolean("init.config"),
-      shutDownAfterSync = configFile.getBoolean("shutdownaftersync")
+      shutDownAfterSync = configFile.getBoolean("shutdownaftersync"),
+      guiConfig = GuiConfig(
+        showFilename = configFile.getBoolean("gui.showfilename"),
+        thumbnailSize = configFile.getInt("gui.thumbnailsize")
+      )
     )
   }
 

@@ -2,6 +2,7 @@ package org.mauritania.photosync.starter
 
 import org.mauritania.photosync.olympus.client.CameraClientConfig
 import org.mauritania.photosync.olympus.sync.FileInfoFilter
+import org.mauritania.photosync.starter.gui.GuiConfig
 
 case class PhotosyncConfig(
 
@@ -38,6 +39,11 @@ case class PhotosyncConfig(
   /**
     * If true, shut down camera when sync is complete
     */
-  shutDownAfterSync: Boolean
+  shutDownAfterSync: Boolean,
+
+  /**
+    * GUI customization settings.
+    */
+  guiConfig: GuiConfig
 
 )

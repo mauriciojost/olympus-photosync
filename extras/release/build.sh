@@ -85,32 +85,42 @@ find $root_dir/target -name *.rpm >> $root_dir/packages.log
 
 cat $root_dir/packages.log | xargs -I% md5sum % >> $root_dir/packages.md5sum
 
+echo ""
 echo "### Packages generated:"
 cat $root_dir/packages.log
+echo ""
+echo "### Checksums:"
 cat $root_dir/packages.md5sum
+echo ""
 
+echo ""
 echo "### 4. Changes were done. Review them, stage them and do 2 commits (in dev branch): "
-echo "           - one for release notes"
-echo "           - one for the bump (that will be reverted in dev branch)"
+echo "           - first: one for release notes"
+echo "           - second: one for the bump (that will be reverted in dev branch)"
 
+echo ""
 echo "### 5. Tag commit:"
 echo "          git tag -a v$release_version -m $release_version"
 
 
+echo ""
 echo "### 6. Make master branch in sync with such tagged commit."
 echo "          git checkout master"
-echo "          git rebase dev"
-echo "          git push origin master --tags"
-echo "          git push origin dev --tags"
+echo "          git merge dev -Xtheirs"
 
+echo ""
 echo "### 7. Create release in github and upload release packages with the generated notes."
 
+echo ""
 echo "### 8. Revert in dev branch the bump commit."
 echo "          git checkout dev"
-echo "          git revert <xxx>"
+echo "          git revert HEAD"
 
+echo ""
 echo "### 9. Push tags:" 
+echo "          git push origin master --tags"
 echo "          git push origin dev --tags"
+echo "          git push bitbucket master --tags"
 echo "          git push bitbucket dev --tags"
 
 echo "### Done."
