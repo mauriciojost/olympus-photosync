@@ -262,7 +262,7 @@ There are two branches that are important to know:
 [![Build Status](https://travis-ci.org/mauriciojost/olympus-photosync.svg?branch=master)](https://travis-ci.org/mauriciojost/olympus-photosync)
 [![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
 
-- branch `dev` (latest release) with the following status:
+- branch `dev` (latest development) with the following status:
 
 [![Build Status](https://travis-ci.org/mauriciojost/olympus-photosync.svg?branch=dev)](https://travis-ci.org/mauriciojost/olympus-photosync)
 [![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=dev)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=dev)
