@@ -220,18 +220,18 @@ object GuiStarter extends JFXApp {
   }
 
   def refreshSyncPlan(manager: FilesManager) = {
-    def onAsyncThread(): Seq[SyncPlanItem] = manager.syncPlan()
+    def syncPlan(): Seq[SyncPlanItem] = manager.syncPlan()
 
-    def onFxSyncThread(files: Seq[SyncPlanItem]) = {
+    def updateUi(files: Seq[SyncPlanItem]) = {
       SyncPlanList.items = ObservableBuffer[CellType](files)
       StatusText.text = StatusTextIdle
     }
 
-    GuiAsync.asyncThenSync(onAsyncThread, onFxSyncThread)
+    GuiAsync.asyncThenSync(syncPlan, updateUi)
   }
 
   def syncSyncableFiles(manager: FilesManager) = {
-    def onAsyncThread(): String = {
+    def startSynchronization(): String = {
       val syncPlan = manager.syncPlan()
       logger.debug(s"Synchronizing ${syncPlan.map(_.fileInfo.name)}")
       syncPlan.foreach { syncPlanItem =>
@@ -241,11 +241,11 @@ object GuiStarter extends JFXApp {
       StatusSyncdFinished + s"(output at: $outputDirectory)"
     }
 
-    def onFxSyncThread(msg: String) = {
+    def updateUi(msg: String) = {
       StatusText.text = msg
     }
 
-    GuiAsync.asyncThenSync(onAsyncThread, onFxSyncThread)
+    GuiAsync.asyncThenSync(startSynchronization, updateUi)
   }
 
   def syncFile(manager: FilesManager, syncPlanItem: SyncPlanItem) = {
