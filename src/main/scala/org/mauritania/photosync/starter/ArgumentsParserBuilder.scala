@@ -32,7 +32,7 @@ object ArgumentsParserBuilder {
         fileNameConditions = Try(configFile.getString("output.patterns")).toOption.map(_.split(SeqSeparator))
       ),
       outputDirectory = configFile.getString("output.directory"),
-      guiMode = configFile.getBoolean("gui"),
+      guiMode = configFile.getBoolean("guimode"),
       commandLineMode = configFile.getBoolean("commandline"),
       initConfig = configFile.getBoolean("init.config"),
       shutDownAfterSync = configFile.getBoolean("shutdownaftersync")
