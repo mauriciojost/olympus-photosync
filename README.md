@@ -251,14 +251,25 @@ create [issues here](https://github.com/mauriciojost/olympus-photosync/issues)!
 
 # 3. Develop
 
-[![Build Status](https://api.travis-ci.org/mauriciojost/olympus-photosync.svg)](https://travis-ci.org/mauriciojost/olympus-photosync)
-[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=dev)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=dev)
-
-The main repository is in [GitHub](https://github.com/mauriciojost/olympus-photosync).
+The main repository is in [GitHub](https://github.com/mauriciojost/olympus-photosync). A secondary repository is in [BitBucket](https://bitbucket.org/mauriciojost/olympus-photosync).
 
 This application is written in _Scala_ and uses _SBT_.
 
+There are two branches that are important to know: 
+
+- branch `master` (latest release) with the following status:
+
+[![Build Status](https://travis-ci.org/mauriciojost/olympus-photosync.svg?branch=master)](https://travis-ci.org/mauriciojost/olympus-photosync)
+[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
+
+- branch `dev` (latest release) with the following status:
+
+[![Build Status](https://travis-ci.org/mauriciojost/olympus-photosync.svg?branch=dev)](https://travis-ci.org/mauriciojost/olympus-photosync)
+[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=dev)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=dev)
+
 ## 3.a. Get started
+
+If you aim to contribute fork the `dev` branch, clone your fork, and create a dedicated branch. 
 
 Find below some useful commands for basic actions.
 
