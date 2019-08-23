@@ -4,6 +4,8 @@
 
 This application allows to wirelessly download media from Olympus cameras to your PC.
 
+**More than 4000 downloads** ([gh](https://github.com/mauriciojost/olympus-photosync/releases/)/[bb](https://bitbucket.org/mauriciojost/olympus-photosync/downloads/))!!!
+
 It has been successfully tested on the following cameras:
 
 - _Olympus TG-860_ (thanks Lee!)
