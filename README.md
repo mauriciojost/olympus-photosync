@@ -9,6 +9,7 @@ This application allows to wirelessly download media from Olympus cameras to you
 It has been successfully tested on the following cameras:
 
 - _Olympus TG-860_ (thanks Lee!)
+- _Olympus TG-4_ (thanks Alain!)
 - _Olympus TG-5_ (thanks Jim!)
 - _Olympus TG-6_ (thanks Ivan!)
 - _Olympus OMD E-M1_ (thanks Jean Pierre!)
@@ -31,7 +32,7 @@ This application has been successfully tested on the following operating systems
 
 ## 2.a. Download and install the application
 
-You need to install `Java 1.8.40` or higher as a first step.
+You need to install `Java 1.8.40` or higher as a first step (until Java 10 included, higher versions of Java are not yet supported).
 
 The remaining installation procedure depends on your operating system. See below all releases:
 
