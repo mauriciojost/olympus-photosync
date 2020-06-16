@@ -38,8 +38,8 @@ libraryDependencies ++= Seq(
 
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.1" % "test",
-  "org.specs2" %% "specs2-core" % "3.8.9" % "test",
-  "org.specs2" %% "specs2-mock" % "3.8.9" % "test",
+  "org.specs2" %% "specs2-core" % "3.10.0" % "test",
+  "org.specs2" %% "specs2-mock" % "3.10.0" % "test",
   "commons-io" % "commons-io" % "2.5" % "test"
 )
 
