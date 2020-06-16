@@ -33,7 +33,7 @@ libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.2.1",
   "com.github.scopt" %% "scopt" % "3.7.0",
   "org.scalafx" %% "scalafx" % "8.0.144-R12",
-  "com.lihaoyi" %% "scalarx" % "0.3.2"
+  "com.lihaoyi" %% "scalarx" % "0.4.3"
 )
 
 libraryDependencies ++= Seq(
