@@ -28,19 +28,19 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "org.slf4j" % "slf4j-api" % "1.7.5",
-  "org.slf4j" % "slf4j-log4j12" % "1.7.5",
+  "org.slf4j" % "slf4j-api" % "1.7.30",
+  "org.slf4j" % "slf4j-log4j12" % "1.7.30",
   "com.typesafe" % "config" % "1.4.0",
-  "com.github.scopt" %% "scopt" % "3.7.0",
+  "com.github.scopt" %% "scopt" % "3.7.1",
   "org.scalafx" %% "scalafx" % "8.0.144-R12",
   "com.lihaoyi" %% "scalarx" % "0.3.2"
 )
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+  "org.scalatest" %% "scalatest" % "3.0.8" % "test",
   "org.specs2" %% "specs2-core" % "3.8.9" % "test",
   "org.specs2" %% "specs2-mock" % "3.8.9" % "test",
-  "commons-io" % "commons-io" % "2.5" % "test"
+  "commons-io" % "commons-io" % "2.7" % "test"
 )
 
 
