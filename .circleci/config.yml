@@ -42,5 +42,7 @@ jobs:
           key: v1-dependencies--{{ checksum "build.sbt" }}
 
       # run tests!
+      - run: cat /dev/null | set
+      - run: cat /dev/null | env
       - run: cat /dev/null | /usr/bin/xvfb-run sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 coverage test 
       - run: cat /dev/null | sbt coverageReport coveralls
