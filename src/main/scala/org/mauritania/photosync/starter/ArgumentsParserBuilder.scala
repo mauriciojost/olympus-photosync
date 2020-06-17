@@ -89,11 +89,11 @@ object ArgumentsParserBuilder {
       action { (propx, c) => c.copy(outputDirectory = propx) }.
       text("local directory where media will be stored, default is 'output'")
 
-    opt[String]('B', "until").valueName("<DD-MM-YYYY>").
+    opt[String]('B', "until").valueName("<YYYY-MM-DD>").
       action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(untilDateCondition = Some(LocalDate.parse(propx)))) }.
       text("synchronize only files created strictly before or on a given date")
 
-    opt[String]('A', "from").valueName("<DD-MM-YYYY>").
+    opt[String]('A', "from").valueName("<YYYY-MM-DD>").
       action { (propx, c) => c.copy(mediaFilter = c.mediaFilter.copy(fromDateCondition = Some(LocalDate.parse(propx)))) }.
       text("synchronize only files created after or on a given date")
 
