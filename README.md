@@ -38,13 +38,9 @@ The remaining installation procedure depends on your operating system. See below
 
 [![All releases](https://img.shields.io/badge/all-releases-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/)
 
-Latest release is: [v1master](https://github.com/mauriciojost/olympus-photosync/releases/tag/v1master)
-
 ### Install on Windows
 
-One Java is installed, download the latest release for Windows:
-
-[![Windows releases](https://img.shields.io/badge/windows-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master.zip)
+One Java is installed, download the latest release for Windows from the above link, `.zip` extension is recommended.
 
 No installation needed. Decompress the release in `C:\olympus\` (you will need to create the directory).
 
@@ -52,10 +48,7 @@ The executables will be under the unzipped directory, in the `bin` subdirectory:
 
 ### Install on Linux via native packages
 
-For Linux both _.deb_ and _.rpm_ packages are provided. With Java installed, download the latest release for your own distribution:
-
-[![Debian release](https://img.shields.io/badge/debian-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync_1master_all.deb)
-[![RedHat release](https://img.shields.io/badge/redhat-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master-1.noarch.rpm)
+For Linux both _.deb_ and _.rpm_ packages are provided. With Java installed, download the latest release for your own distribution (see above releases link).
 
 You can install such packages using _dpkg_ and _rpm_ tools.
 
@@ -70,10 +63,7 @@ The tool `olympus-photosync` will be added to the `PATH` so that you can use it 
 
 ### Install on MacOS / Linux as standalone
 
-With Java installed, download the latest release:
-
-[![MacOS release](https://img.shields.io/badge/macos-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master.tgz)
-[![Linux release (standalone)](https://img.shields.io/badge/linux-latest-22bb22.svg)](https://github.com/mauriciojost/olympus-photosync/releases/download/v1master/olympus-photosync-1master.tgz)
+With Java installed, download the latest release from the above releases link. Extension `.tgz` is recommended.
 
 These packages are provided so that the application can be used without
 installation. Download the release and decompress it somewhere
