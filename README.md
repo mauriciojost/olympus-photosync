@@ -248,21 +248,14 @@ The main repository is in [GitHub](https://github.com/mauriciojost/olympus-photo
 
 This application is written in _Scala_ and uses _SBT_.
 
-There are two branches that are important to know: 
-
-- branch `master` (latest release) with the following status:
+The build status:
 
 [![CircleCI](https://circleci.com/gh/mauriciojost/olympus-photosync/tree/master.svg?style=svg)](https://circleci.com/gh/mauriciojost/olympus-photosync/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=master)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=master)
 
-- branch `dev` (latest development) with the following status:
-
-[![CircleCI](https://circleci.com/gh/mauriciojost/olympus-photosync/tree/dev.svg?style=svg)](https://circleci.com/gh/mauriciojost/olympus-photosync/tree/dev)
-[![Coverage Status](https://coveralls.io/repos/github/mauriciojost/olympus-photosync/badge.svg?branch=dev)](https://coveralls.io/github/mauriciojost/olympus-photosync?branch=dev)
-
 ## 3.a. Get started
 
-If you aim to contribute fork the `dev` branch, clone your fork, and create a dedicated branch. 
+If you aim to contribute fork the `master` branch, clone your fork, and create a dedicated branch. 
 
 Find below some useful commands for basic actions.
 
@@ -304,7 +297,7 @@ This project is _open source_ so you can help make it better!
 - **Found issues?** Then please [**file an issue** here](https://github.com/mauriciojost/olympus-photosync/issues)
 or send me by mail the logs.
 - **Own an OMD E-MX camera not supported?** Then please contact me by e-mail too.
-- **Want to code-contribute?** You can create a _PR_ versus [dev](https://github.com/mauriciojost/olympus-photosync/tree/dev) branch in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as _deprecated_ in the future.
+- **Want to code-contribute?** You can create a _PR_ versus [master](https://github.com/mauriciojost/olympus-photosync/tree/master) branch in the [**main repository at GitHub**](https://github.com/mauriciojost/olympus-photosync). Keep in mind that there is a [**mirror repository at BitBucket**](https://bitbucket.org/mauriciojost/olympus-photosync) that will be probably marked as _deprecated_ in the future.
 - **Need more information?** Send me an [e-mail to _mauriciojostx@gmail.com_](mailto:mauriciojostx@gmail.com).
 - **Liked the project?** Then please [give it a star on Github](https://github.com/mauriciojost/olympus-photosync)!
 - **Want it to be maintained?** Then please [give it a star on Github](https://github.com/mauriciojost/olympus-photosync)!
