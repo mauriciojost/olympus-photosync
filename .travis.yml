@@ -1,5 +1,7 @@
 sudo: required
 
+language: bash
+
 services:
   - docker
 
@@ -8,3 +10,5 @@ before_install:
 - docker run -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" -e TRAVIS_BRANCH="$TRAVIS_BRANCH" --mount type=bind,source=$(pwd),target=$(pwd) mauriciojost/scala-olympus-photosync:latest /bin/sh -c "cd "$(pwd)" && ps -ef && pwd && whoami && sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean compile && /usr/bin/xvfb-run sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 coverage test && sbt coverageReport coveralls"
 
 
+script: 
+- echo "I don't like travis default values"
