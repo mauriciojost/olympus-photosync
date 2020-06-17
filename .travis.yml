@@ -7,6 +7,6 @@ services:
 
 before_install:
 - docker pull mauriciojost/scala-olympus-photosync:latest
-- docker run --mount type=bind,source=$(pwd),target=/root/op mauriciojost/scala-olympus-photosync:latest /bin/sh -c "cd /root/op && ps -ef && pwd && whoami && sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean compile && /usr/bin/xvfb-run sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 coverage test"
+- docker run --mount type=bind,source=$(pwd),target=/home/travis/build/mauriciojost/olympus-photosync/ mauriciojost/scala-olympus-photosync:latest /bin/sh -c "cd /home/travis/build/mauriciojost/olympus-photosync/ && ps -ef && pwd && whoami && sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean compile && /usr/bin/xvfb-run sbt -Dsbt.log.noformat=true -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 coverage test"
 #- sbt coverageReport coveralls
 
