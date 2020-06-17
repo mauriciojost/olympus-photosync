@@ -181,7 +181,7 @@ olympus-photosync --output-directory C:\output
 To synchronize files of SEP2017 do:
 
 ```
-olympus-photosync --from 01-09-2017 --until 30-09-2017
+olympus-photosync --from 2017-09-01 --until 2017-09-30
 ```
 
 To synchronize only `AVI` or `ORF` files:
