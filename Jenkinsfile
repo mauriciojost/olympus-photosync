@@ -31,16 +31,6 @@ pipeline {
         step([$class: 'ScoveragePublisher', reportDir: 'target/scala-2.12/scoverage-report', reportFile: 'scoverage.xml'])
       }
     }
-    stage('Release') {
-      when {
-        expression { env.BRANCH_NAME.matches("v(\\d+)\\.(\\d+)") } // is a version
-      }
-      steps {
-	echo "My branch is: ${env.BRANCH_NAME}"
-	// Should check if already published though
-        sh 'bash extras/packager/build.sh'
-      }
-    }
   }
   post {  
     failure {  

@@ -7,9 +7,13 @@ src_dir=$root_dir/src
 release_version=$1
 previous_release_version=$2
 
-echo "Example of use: bash build.sh 0.15.0 0.14.0 # bash build.sh new_release old_release"
+echo "Example of use:"
+echo "   bash build.sh <new_release> <old_release>"
+echo "   bash build.sh  0.15.0        0.14.0"
+echo ""
 echo "Generating release: v$release_version"
 echo "Previous release: v$previous_release_version"
+echo ""
 
 sleep 5
 
@@ -94,9 +98,9 @@ cat $root_dir/packages.md5sum
 echo ""
 
 echo ""
-echo "### 4. Changes were done. Review them, stage them and do 2 commits (in dev branch): "
-echo "           - first: one for release notes"
-echo "           - second: one for the bump (that will be reverted in dev branch)"
+echo "### 4. Changes were done. Review them, stage them and do 2 commits: "
+echo "           - first: one for release notes and non revertable stuff"
+echo "           - second: one for the bump (that will be reverted)"
 
 echo ""
 echo "### 5. Tag commit:"
@@ -104,23 +108,15 @@ echo "          git tag -a v$release_version -m $release_version"
 
 
 echo ""
-echo "### 6. Make master branch in sync with such tagged commit."
-echo "          git checkout master"
-echo "          git merge dev -Xtheirs"
-
-echo ""
 echo "### 7. Create release in github and upload release packages with the generated notes."
 
 echo ""
 echo "### 8. Revert in dev branch the bump commit."
-echo "          git checkout dev"
 echo "          git revert HEAD"
 
 echo ""
 echo "### 9. Push tags:" 
 echo "          git push origin master --tags"
-echo "          git push origin dev --tags"
 echo "          git push bitbucket master --tags"
-echo "          git push bitbucket dev --tags"
 
 echo "### Done."
