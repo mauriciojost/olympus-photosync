@@ -32,7 +32,9 @@ This application has been successfully tested on the following operating systems
 
 ## 2.a. Download and install the application
 
-You need to install `Java 1.8.40` or higher as a first step (until Java 10 included, higher versions of Java are not yet supported).
+If you're planning to use Java 11 or higher, download `olympus-photosync` v1.1.0 or greater.
+
+For older versions of Java (8, 9 or 10) download `olympus-photosync` v1.0.0 (or lower).
 
 The remaining installation procedure depends on your operating system. See below all releases:
 
