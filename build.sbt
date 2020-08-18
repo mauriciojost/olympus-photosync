@@ -33,7 +33,9 @@ libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.2.1",
   "com.github.scopt" %% "scopt" % "3.7.1",
   "org.scalafx" %% "scalafx" % "8.0.144-R12",
-  "com.lihaoyi" %% "scalarx" % "0.3.2"
+  "com.lihaoyi" %% "scalarx" % "0.3.2",
+  "org.openjfx" % "javafx-controls" % "14",
+  "org.openjfx" % "javafx-fxml" % "14"
 )
 
 libraryDependencies ++= Seq(
