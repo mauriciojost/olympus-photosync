@@ -214,3 +214,13 @@
 - Add TG-6 in the supported list
 - Make GUI window resizable #52
 - Add gui settings: showfilename and thumbnailsize #52
+
+
+## RELEASE: 1.1.0
+
+- Support Java 11 #60
+- Add supported M10 MK3 (thanks Alex!)
+- Technical improvements (code cleanups, upgrade of scala to 2.12, CI/CD)
+- Major cleanup of unused stuff and SBT upgrade
+- Preserve file date/time from camera #58
+- Fix documentation #75
