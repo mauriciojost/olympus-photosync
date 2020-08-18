@@ -1,1 +1,1 @@
-version := "1master"
+version := "1.1.0"
