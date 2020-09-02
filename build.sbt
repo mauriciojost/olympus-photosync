@@ -19,7 +19,7 @@ maintainer := "Mauricio Jost <mauriciojostx@gmail.com>"
 packageSummary := "Synchronize media from Olympus cameras to your PC wirelessly."
 
 coverageMinimum := 92
-coverageFailOnMinimum := true
+coverageFailOnMinimum := false
 
 parallelExecution in Test := false
 
