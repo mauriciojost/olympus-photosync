@@ -19,7 +19,7 @@ maintainer := "Mauricio Jost <mauriciojostx@gmail.com>"
 packageSummary := "Synchronize media from Olympus cameras to your PC wirelessly."
 
 coverageMinimum := 92
-coverageFailOnMinimum := true
+coverageFailOnMinimum := false
 
 parallelExecution in Test := false
 
@@ -42,7 +42,7 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.2.2" % "test",
   "org.specs2" %% "specs2-core" % "4.10.3" % "test",
   "org.specs2" %% "specs2-mock" % "4.10.3" % "test",
-  "commons-io" % "commons-io" % "2.7" % "test"
+  "commons-io" % "commons-io" % "2.8.0" % "test"
 )
 
 
