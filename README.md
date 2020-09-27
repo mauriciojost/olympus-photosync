@@ -42,7 +42,7 @@ The remaining installation procedure depends on your operating system. See below
 
 ### Install on Windows
 
-One Java is installed, download the latest release for Windows from the above link, `.zip` extension is recommended.
+Once Java is installed, download the latest release for Windows from the above link, `.zip` extension is recommended.
 
 No installation needed. Decompress the release in `C:\olympus\` (you will need to create the directory).
 
