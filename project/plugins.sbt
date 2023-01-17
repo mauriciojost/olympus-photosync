@@ -3,7 +3,7 @@ resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releas
 
 resolvers += Resolver.url("bintray-banno-oss-releases", url("https://dl.bintray.com/banno/oss"))(Resolver.ivyStylePatterns)
 
-addSbtPlugin("com.typesafe.sbt" %% "sbt-native-packager" % "1.8.1")
+addSbtPlugin("com.github.sbt" %% "sbt-native-packager" % "1.9.12")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.1")
 
