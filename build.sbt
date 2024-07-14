@@ -12,7 +12,7 @@ name := "olympus-photosync"
 
 scalaVersion := "2.12.7"
 
-mainClass in Compile := Some("org.mauritania.photosync.starter.Starter")
+(Compile / mainClass) := Some("org.mauritania.photosync.starter.Starter")
 
 maintainer := "Mauricio Jost <mauriciojostx@gmail.com>"
 
@@ -21,7 +21,7 @@ packageSummary := "Synchronize media from Olympus cameras to your PC wirelessly.
 coverageMinimum := 92
 coverageFailOnMinimum := false
 
-parallelExecution in Test := false
+(Test / parallelExecution) := false
 
 resolvers ++= Seq(
   "Bintray repository" at "https://dl.bintray.com/scalaz-releases/"
