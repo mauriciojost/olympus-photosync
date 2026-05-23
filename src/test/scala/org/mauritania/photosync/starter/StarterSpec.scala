@@ -44,6 +44,32 @@ class StarterSpec extends Specification with TempDir {
       }
     }
 
+    "works correctly with CGI-only camera (newer cameras like TG-7)" in {
+      withTmpDir { tmp =>
+        val expectedFile1 = new File(tmp, new File("100OMSYS", "P5180001.JPG").getPath)
+        val expectedFile2 = new File(tmp, new File("100OMSYS", "P5230002.JPG").getPath)
+
+        val server = HttpServer.create(new InetSocketAddress(8086), 0)
+        server.createContext("/", new HttpCameraCgiMock())
+        server.setExecutor(null)
+        server.start()
+
+        Starter.main(
+          Array(
+            "--commandline",
+            "--server-name", "localhost",
+            "--server-port", "8086",
+            "--output-directory", tmp.getAbsolutePath
+          )
+        )
+
+        server.stop(0)
+
+        expectedFile1.exists() must beTrue
+        expectedFile2.exists() must beTrue
+      }
+    }
+
   }
 
   "creates correctly the init config file" in {

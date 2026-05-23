@@ -16,3 +16,6 @@ extras/packager/tmp/
 /packages.md5sum
 /packages.log
 /extras/packager/logs/default.log
+
+# Coursier cache
+null/

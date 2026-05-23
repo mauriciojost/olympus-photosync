@@ -159,6 +159,38 @@ class CameraClientSpec extends Specification with Mockito {
 
     }
 
+    "correctly parse folders from CGI response" in {
+      val cc = new CameraClient(DefaultCameraClientConfig)
+      val lines = Seq("VER_100", "/DCIM,100OMSYS,0,16,23730,17529")
+      val dirs = cc.dirsFromCgiResponse(lines)
+      dirs mustEqual Seq("100OMSYS")
+    }
+
+    "correctly parse empty CGI response" in {
+      val cc = new CameraClient(DefaultCameraClientConfig)
+      val lines = Seq("VER_100")
+      val dirs = cc.dirsFromCgiResponse(lines)
+      dirs mustEqual Seq.empty[String]
+    }
+
+    "correctly parse files from CGI response" in {
+      val cc = new CameraClient(DefaultCameraClientConfig)
+      val lines = Seq(
+        "VER_100",
+        "/DCIM/100OMSYS,P5180001.JPG,2643976,0,23730,17529",
+        "/DCIM/100OMSYS,P5230002.JPG,2562502,0,23735,30721"
+      )
+      val files = cc.filesFromCgiResponse(lines, "100OMSYS")
+      files.size mustEqual 2
+      files.head.folder mustEqual "100OMSYS"
+      files.head.name mustEqual "P5180001.JPG"
+      files.head.size mustEqual 2643976L
+      files.head.date mustEqual 23730
+      files.head.time mustEqual 17529
+      files(1).name mustEqual "P5230002.JPG"
+      files(1).size mustEqual 2562502L
+    }
+
   }
 
   def generateClientCameraConfig(rootHtmlName: String, mapping: URL => URL): CameraClientConfig = {

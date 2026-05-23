@@ -9,7 +9,7 @@ import java.time._
 import org.mauritania.photosync.olympus.sync.Directories
 import org.slf4j.LoggerFactory
 
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 import scala.collection.immutable.Seq
 import scala.reflect.io.Streamable
 
@@ -30,9 +30,20 @@ class CameraClient(
 
   /**
     * Lists all remote files
+    * Tries legacy direct-path method first, falls back to CGI endpoint for newer cameras.
     * @return the list of remote [[FileInfo]] with their attributes
     */
   def listFiles(): Seq[FileInfo] = {
+    Try(listFilesLegacy()) match {
+      case Success(files) => files
+      case Failure(_: java.io.FileNotFoundException) =>
+        logger.info("Legacy listing not available, trying CGI endpoint (newer camera detected)...")
+        listFilesCgi()
+      case Failure(e) => throw e
+    }
+  }
+
+  private def listFilesLegacy(): Seq[FileInfo] = {
     val rootUrl = baseDirFileUrl(Some(configuration.serverBaseUrl))
     val rootHtmlLines = httpGetAsString(rootUrl)
 
@@ -51,6 +62,32 @@ class CameraClient(
       dirHtmlLines.foreach(logger.debug)
       logger.debug(s"Html for directory end\n")
       filesFromDirHtml(dirHtmlLines, dir)
+    }
+
+    files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.humanDateTime})"))
+
+    files
+  }
+
+  private def listFilesCgi(): Seq[FileInfo] = {
+    val rootUrl = s"/get_imglist.cgi?DIR=${configuration.serverBaseUrl}"
+    val rootLines = httpGetAsString(rootUrl)
+
+    logger.debug(s"CGI root begin ($rootUrl)")
+    rootLines.foreach(logger.debug)
+    logger.debug("CGI root end")
+
+    val remoteDirs = dirsFromCgiResponse(rootLines)
+
+    remoteDirs.foreach(folder => logger.info(s"Detected remote folder (CGI): $folder"))
+
+    val files = remoteDirs.flatMap { dir =>
+      val dirUrl = s"/get_imglist.cgi?DIR=${configuration.serverBaseUrl}/$dir"
+      val dirLines = httpGetAsString(dirUrl)
+      logger.debug(s"CGI directory begin ($dirUrl / $dir)")
+      dirLines.foreach(logger.debug)
+      logger.debug(s"CGI directory end\n")
+      filesFromCgiResponse(dirLines, dir)
     }
 
     files.foreach(file => logger.info(s"Detected remote file: $file (created on ${file.humanDateTime})"))
@@ -101,7 +138,9 @@ class CameraClient(
     */
   def isConnected(): Boolean = {
     val rootUrl = baseDirFileUrl(Some(configuration.serverBaseUrl))
-    Try(httpGet(rootUrl, IsConnectedTimeout, IsConnectedTimeout)).isSuccess
+    val cgiUrl = s"/get_imglist.cgi?DIR=${configuration.serverBaseUrl}"
+    Try(httpGet(rootUrl, IsConnectedTimeout, IsConnectedTimeout)).isSuccess ||
+      Try(httpGet(cgiUrl, IsConnectedTimeout, IsConnectedTimeout)).isSuccess
   }
 
   /**
@@ -200,6 +239,44 @@ class CameraClient(
   }
 
   /**
+    * Gets the collection of directories from CGI response
+    * @param responseLines text lines as obtained from a GET to /get_imglist.cgi?DIR=
+    * @return the collection of remote directories
+    */
+  private[client] def dirsFromCgiResponse(responseLines: Seq[String]): Seq[String] = {
+    val cgiRegex = CgiFileRegex.r
+    val folderNames = responseLines.flatMap(
+      line =>
+        line match {
+          case cgiRegex(folderName, _, _, _, _) => Some(folderName)
+          case _ => None
+        }
+    )
+    folderNames.distinct
+  }
+
+  /**
+    * Gets the collection of files from CGI response at directory level
+    * @param responseLines text lines as obtained from a GET to /get_imglist.cgi?DIR=
+    * @param fileDir directory that is being targetted
+    * @return the collection of [[FileInfo]] inside such directory
+    */
+  private[client] def filesFromCgiResponse(responseLines: Seq[String], fileDir: String): Seq[FileInfo] = {
+    val cgiRegex = CgiFileRegex.r
+    val fileIdsAndSize = responseLines.flatMap(
+      line =>
+        line match {
+          case cgiRegex(fileName, fileSizeBytes, _, date, time) =>
+            val thumbnail = thumbnailFileUrl(fileDir, fileName)
+            Some(FileInfo(fileDir, fileName, fileSizeBytes.toLong, date.toInt, time.toInt, Some(thumbnail)))
+          case _ =>
+            None
+        }
+    )
+    fileIdsAndSize.distinct
+  }
+
+  /**
     * Builds a relative URL from the arguments
     * @param base base url
     * @param dir directory
@@ -221,5 +298,6 @@ object CameraClient {
   val ReadTimeoutMs = 20000 // TODO make configurable
   val NewLineSplit = "\\r?\\n"
   val LocalZoneOffset = OffsetDateTime.now().getOffset()
+  val CgiFileRegex = """/[^,]+,([^,]+),(\d+),(\d+),(\d+),(\d+)"""
 }
 
